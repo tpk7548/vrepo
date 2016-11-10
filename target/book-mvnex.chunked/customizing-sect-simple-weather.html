@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.2. Defining the Simple Weather Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-intro.html" title="4.1. Introduction" />
+    <link rel="next" href="customizing-sect-creating-simple-weather.html" title="4.3. Creating the Simple Weather Project" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-intro.html">
+            <span>Prev : 4.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-creating-simple-weather.html">
+            <span>Next : 4.3. Creating the Simple Weather Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-simple-weather"></a>4.2. Defining the Simple Weather Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>Before we start customizing this project, let’s take a step back and
+talk about the Simple Weather project. What is it? It’s a contrived
+example, created to demonstrate some of the features of Maven. It is
+an application that is representative of the kind you might need to
+build. The Simple Weather application is a basic command-line-driven
+application that takes a zip code and retrieves some data from the
+Yahoo Weather RSS feed. It then parses the result and prints the
+result to standard output.</p>
+      <p>We chose this example for a number of reasons. First, it is
+straightforward. A user supplies input via the command line, the app
+takes that zip code, makes a request to Yahoo Weather, parses the
+result, and formats some simple data to the screen. This example is a
+simple <code class="literal">main()</code> function and some supporting classes; there is no
+enterprise framework to introduce and explain, just XML parsing and
+some logging statements. Second, it gives us a good excuse to
+introduce some interesting libraries such as Velocity, Dom4J, and
+Log4J. Although this book is focused on Maven, we won’t shy away from
+an opportunity to introduce interesting utilities. Lastly, it is an
+example that can be introduced, developed, and deployed in a single
+chapter.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-yahoo-weather"></a>4.2.1. Yahoo Weather RSS</h3>
+            </div>
+          </div>
+        </div>
+        <p>Before you build this application, you should know something about the
+Yahoo Weather RSS feed. To start with, the service is made available
+under the following terms:</p>
+        <pre class="screen">The feeds are provided free of charge for use by individuals and
+nonprofit organizations for personal, noncommercial uses. We ask that
+you provide attribution to Yahoo Weather in connection with your use
+of the feeds.</pre>
+        <p>In other words, if you are thinking of integrating these feeds into
+your commercial web site, think again—this feed is for personal,
+noncommercial use. The use we’re encouraging in this chapter is
+personal educational use. For more information about these terms of
+service, see the Yahoo Weather! API documentation here:
+<a class="ulink" href="http://developer.yahoo.com/weather/" target="_top">http://developer.yahoo.com/weather/</a>.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-intro.html">
+            <span>Prev : 4.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-creating-simple-weather.html">
+            <span>Next : 4.3. Creating the Simple Weather Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.10. Conclusion</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-running-simple-command.html" title="7.9. Running the Simple Command" />
+    <link rel="next" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-running-simple-command.html">
+            <span>Prev : 7.9. Running the Simple Command</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing.html">
+            <span>Next : Chapter 8. Optimizing and Refactoring POMs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-conclusion"></a>7.10. Conclusion</h2>
+          </div>
+        </div>
+      </div>
+      <p>We’ve spent a great deal of time on topics not directly related to Maven
+to get this far. We’ve done this to present a complete and meaningful
+example project which you can use to implement real-world systems. We
+didn’t take any shortcuts to produce slick, canned results quickly,
+and we’re not going to dazzle you with some Ruby on Rails-esque
+wizardry and lead you to believe that you can create a finished Java
+Enterprise application in "10 easy minutes!" There’s too much of this
+in the market; there are too many people trying to sell you the
+easiest framework that requires zero investment of time or
+attention. What we’re trying to do in this chapter is present the
+entire picture, the entire ecosystem of a multi-module build. What
+we’ve done is present Maven in the context of a application which
+resembles something you could see in the wild—not the fast-food, 10
+minute screen-cast that slings mud at Apache Ant and tries to convince
+you to adopt Apache Maven.</p>
+      <p>If you walk away from this chapter wondering what it has to do with
+Maven, we’ve succeeded. We present a complex set of projects, using
+popular frameworks, and we tie them together using declarative
+builds. The fact that more than 60% of this chapter was spent
+explaining Spring and Hibernate should tell you that Maven, for the
+most part, stepped out of the way. It worked. It allowed us to focus
+on the application itself, not on the build process. Instead of
+spending time discussing Maven, and the work you would have to do to
+"build a build" that integrated with Spring and Hibernate, we talked
+almost exclusively about the technologies used in this contrived
+project. If you start to use Maven, and you take the time to learn it,
+you really do start to benefit from the fact that you don’t have to
+spend time coding up some procedural build script. You don’t have to
+spend your time worrying about mundane aspects of your build.</p>
+      <p>You can use the skeleton project introduced in this chapter as the
+foundation for your own, and chances are that when you do, you’ll find
+yourself creating more and more modules as you need them. For example,
+the project on which this chapter was based has two distinct model
+projects, two persistence projects which persist to dramatically
+different databases, several web applications, and a Java mobile
+application. In total, the real world system I based this on contains
+at least 15 interrelated modules. The point is that you’ve seen the
+most complex multi-module example we’re going to include in this book,
+but you should also know that this example just scratches the surface
+of what is possible with Maven.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-interface-projects"></a>7.10.1. Programming to Interface Projects</h3>
+            </div>
+          </div>
+        </div>
+        <p>This chapter explored a multi-module project which was more complex
+than the simple example presented in <a class="xref" href="multimodule.html" title="Chapter 6. A Multi-Module Project">Chapter 6, <em>A Multi-Module Project</em></a>, yet it was still
+a simplification of a real-world project. In a larger project, you
+might find yourself building a system resembling
+<a class="xref" href="multimodule-web-spring-sect-conclusion.html#fig-multimodule-web-spring-projects-complex" title="Figure 7.5. Programming to Interface Projects">Figure 7.5, “Programming to Interface Projects”</a>.</p>
+        <div class="figure">
+          <a id="fig-multimodule-web-spring-projects-complex"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/multimodule-web-spring_projects-complex.png" alt="figs/web/multimodule-web-spring_projects-complex.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 7.5. Programming to Interface Projects</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>When we use the term <span class="emphasis"><em>interface project</em></span> we are referring to a Maven
+project which contains interfaces and constants only. In
+<a class="xref" href="multimodule-web-spring-sect-conclusion.html#fig-multimodule-web-spring-projects-complex" title="Figure 7.5. Programming to Interface Projects">Figure 7.5, “Programming to Interface Projects”</a> the interface projects
+would be <code class="literal">persist-api</code> and <code class="literal">parse-api</code>. If <code class="literal">big-command</code> and
+<code class="literal">big-webapp</code> are written to the interfaces defined in <code class="literal">persist-api</code>,
+then it is very easy to just swap in another implementation of the
+persistence library. This particular diagram shows two implementations
+of the <code class="literal">persist-api</code> project, one which stores data in an XML
+database, and the other which stores data in a relational database. If
+you use some of the concepts in this chapter, you can see how you
+could just pass in a flag to the program that swaps in a different
+Spring application context XML file to swap out data sources of
+persistence implementations. Just like the OO design of the
+application itself, it is often wise to separate the interfaces of an
+API from the implementation of the API into separate Maven projects.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-running-simple-command.html">
+            <span>Prev : 7.9. Running the Simple Command</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing.html">
+            <span>Next : Chapter 8. Optimizing and Refactoring POMs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

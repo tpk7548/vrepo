@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>3.2. Creating a Simple Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="simple-project.html" title="Chapter 3. A Simple Maven Project" />
+    <link rel="prev" href="simple-project-sect-intro.html" title="3.1. Introduction" />
+    <link rel="next" href="simple-project-sect-building-simple.html" title="3.3. Building a Simple Project" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-intro.html">
+            <span>Prev : 3.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-building-simple.html">
+            <span>Next : 3.3. Building a Simple Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-create-simple"></a>3.2. Creating a Simple Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>To start a new Maven project, use the Maven Archetype plugin from the
+command line. Run the <code class="literal">archetype:generate</code> goal, select default
+archetype suggested by pressing "Enter". This will use the archetype
+<code class="literal">org.apache.maven.archetypes:maven-archetype-quickstart</code>. Press
+"Enter" again to confirm the latest version of the archetype and then
+"Enter" to confirm the supplied parameters.</p>
+      <div class="warning" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Warning</h3>
+        <p>At the time of publication, the default
+<code class="literal">maven-archetype-quickstart</code> was item #312 in a list of 860 available
+archetypes. As more and more projects release Maven archetypes, this
+list will change and the number for the default archetype may
+change. When you run <code class="literal">archetype:generate</code> as shown below, the default
+<code class="literal">maven-archetype-quickstart</code> will be selected by default.</p>
+      </div>
+      <pre class="screen">$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook \
+-DartifactId=simple \
+-Dpackage=org.sonatype.mavenbook \
+-Dversion=1.0-SNAPSHOT
+[INFO]
+[INFO] -----------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] -----------------------------------------------------
+[INFO]
+[INFO] &gt;&gt;&gt; maven-archetype-plugin:2.2:generate (default-cli) @ standalone-pom &gt;&gt;&gt;
+[INFO]
+[INFO] &lt;&lt;&lt; maven-archetype-plugin:2.2:generate (default-cli) @ standalone-pom &lt;&lt;&lt;
+[INFO]
+[INFO] --- maven-archetype-plugin:2.2:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Interactive mode
+[INFO] No archetype defined. Using maven-archetype-quickstart (org.apache.maven.archetypes:maven-archetype-quickstart:1.0)
+Choose archetype:
+...
+312: remote -&gt; org.apache.maven.archetypes:maven-archetype-quickstart (An archetype which contains a sample Maven project.)
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 312:
+Choose org.apache.maven.archetypes:maven-archetype-quickstart version:
+1: 1.0-alpha-1
+2: 1.0-alpha-2
+3: 1.0-alpha-3
+4: 1.0-alpha-4
+5: 1.0
+6: 1.1
+Choose a number: 6:
+[INFO] Using property: groupId = org.sonatype.mavenbook
+[INFO] Using property: artifactId = simple
+[INFO] Using property: version = 1.0-SNAPSHOT
+[INFO] Using property: package = org.sonatype.mavenbook
+Confirm properties configuration:
+groupId: org.sonatype.mavenbook
+artifactId: simple
+version: 1.0-SNAPSHOT
+package: org.sonatype.mavenbook
+ Y: :
+[INFO] ---------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-quickstart:1.1
+[INFO] ---------------------------------------------------------
+[INFO] Parameter: groupId, Value: org.sonatype.mavenbook
+[INFO] Parameter: packageName, Value: org.sonatype.mavenbook
+[INFO] Parameter: package, Value: org.sonatype.mavenbook
+[INFO] Parameter: artifactId, Value: simple
+[INFO] Parameter: basedir, Value: /Volumes/mac-data/dev/github/sonatype
+[INFO] Parameter: version, Value: 1.0-SNAPSHOT
+[INFO] project created from Old (1.x) Archetype in dir: /Volumes/mac-data/dev/github/sonatype/simple
+[INFO] BUILD SUCCESS
+...</pre>
+      <p><code class="literal">mvn</code> is the Maven command. <code class="literal">archetype:generate</code> is called a Maven
+goal. An archetype is defined as “an original model or type
+after which other similar things are patterned; a prototype.”  A
+number of archetypes are available in Maven for anything from a simple
+application to a complex web application, and the
+<code class="literal">archetype:generate</code> offers a list of archetypes to
+choose from. In this chapter, we are going to use the most basic
+archetype to create a simple skeleton starter project. The plugin is
+the prefix <code class="literal">archetype</code>, and the goal is <code class="literal">generate</code>.</p>
+      <p>Once we’ve generated a project, take a look at the directory structure
+Maven created under the simple directory:</p>
+      <pre class="screen">simple/<a id="CO1-1"></a>(1)
+simple/pom.xml<a id="CO1-2"></a>(2)
+/src/
+/src/main/<a id="CO1-3"></a>(3)
+/main/java
+/src/test/<a id="CO1-4"></a>(4)
+/test/java</pre>
+      <p>This generated directory adheres to the Maven Standard Directory
+Layout. We’ll get into more details later in this chapter, but for
+now, let’s just try to understand these few basic directories:</p>
+      <div class="calloutlist">
+        <table border="0" summary="Callout list">
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO1-1">(1)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The Maven Archetype plugin creates a directory <code class="literal">simple</code> that
+matches the <code class="literal">artifactId</code>. This is known as the project’s base
+directory.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO1-2">(2)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Every Maven project has what is known as a Project Object Model
+(POM) in a file named <code class="literal">pom.xml</code>. This file describes the project,
+configures plugins, and declares dependencies.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO1-3">(3)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Our project’s source code and resources are placed under
+<code class="literal">src/main</code>. In the case of our simple Java project this will consist
+of a few Java classes and some properties file. In another project,
+this could be the document root of a web application or configuration
+files for an application server. In a Java project, Java classes are
+placed in <code class="literal">src/main/java</code> and classpath resources are placed in
+<code class="literal">src/main/resources</code>.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO1-4">(4)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Our project’s test cases are located in <code class="literal">src/test</code>. Under this
+directory, Java classes such as JUnit or TestNG tests are placed in
+<code class="literal">src/test/java</code>, and classpath resources for tests are located in
+<code class="literal">src/test/resources</code>.
+</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>The Maven Archetype plugin generated a single class
+<code class="literal">org.sonatype.mavenbook.App</code>, which is a 13-line Java class with a
+static main function that prints out a message:</p>
+      <pre class="screen">package org.sonatype.mavenbook;
+
+/**
+ * Hello world!
+ *
+ */
+public class App
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}</pre>
+      <p>The simplest Maven archetype generates the simplest possible program:
+a program which prints "Hello World!" to standard output.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-intro.html">
+            <span>Prev : 3.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-building-simple.html">
+            <span>Next : 3.3. Building a Simple Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

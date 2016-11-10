@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.13. Building a Packaged Command Line Application</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-executing-tests.html" title="4.12. Executing Unit Tests" />
+    <link rel="next" href="web.html" title="Chapter 5. A Simple Web Application" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-executing-tests.html">
+            <span>Prev : 4.12. Executing Unit Tests</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web.html">
+            <span>Next : Chapter 5. A Simple Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-custom-packaged"></a>4.13. Building a Packaged Command Line Application</h2>
+          </div>
+        </div>
+      </div>
+      <p>In <a class="xref" href="customizing-sect-custom-exec.html" title="4.8. Running the Simple Weather Program">Section 4.8, “Running the Simple Weather Program”</a> earlier in descriptor
+in the Maven Assembly plugin to produce a distributable JAR file,
+which contains the project’s bytecode and all of the dependencies.</p>
+      <p>The Maven Assembly plugin is a plugin you can use to create arbitrary
+distributions for your applications. You can use the Maven Assembly
+plugin to assemble the output of your project in any format you desire
+by defining a custom assembly descriptor. In a later chapter we will
+show you how to create a custom assembly descriptor which produces a
+more complex archive for the Simple Weather application. In this
+chapter, we’re going to use the predefined <code class="literal">jar-with-dependencies</code>
+format. To configure the Maven Assembly Plugin, we need to add the
+following plugin configuration to our existing build configuration in
+the <code class="literal">pom.xml</code>.</p>
+      <p><strong>Configuring the Maven Assembly Descriptor. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+  [...]
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;descriptorRefs&gt;
+            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+          &lt;/descriptorRefs&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Once you’ve added this configuration, you can build the assembly by
+running the <code class="literal">assembly:assembly</code> goal. In the following screen listing,
+the <code class="literal">assembly:assembly</code> goal is executed after the Maven build reaches
+the <code class="literal">install</code> lifecycle phase:</p>
+      <pre class="screen">$ mvn install assembly:assembly
+...
+[INFO] [jar:jar]
+[INFO] Building jar:
+~/examples/ch-custom/simple-weather/target/simple-weather-1.0.jar
+[INFO] [assembly:assembly]
+[INFO] Processing DependencySet (output=)
+[INFO] Expanding: \
+.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar into \
+/tmp/archived-file-set.1437961776.tmp
+[INFO] Expanding: .m2/repository/commons-lang/commons-lang/2.1/\
+commons-lang-2.1.jar
+into /tmp/archived-file-set.305257225.tmp
+... (Maven Expands all dependencies into a temporary directory) ...
+[INFO] Building jar: \
+~/examples/ch-custom/simple-weather/target/\
+simple-weather-1.0-jar-with-dependencies.jar</pre>
+      <p>Once our assembly is assembled in
+<code class="literal">target/simple-weather-1.0-jar-with-dependencies.jar</code>, we can run
+the <code class="literal">Main</code> class again from the command line. To run the simple
+weather application’s <code class="literal">Main</code> class, execute the following commands
+from your project’s base directory:</p>
+      <pre class="screen">$ cd target
+$ java -cp simple-weather-1.0-jar-with-dependencies.jar \
+       org.sonatype.mavenbook.weather.Main 10002
+0    INFO  YahooRetriever  - Retrieving Weather Data
+221  INFO  YahooParser  - Creating XML Reader
+399  INFO  YahooParser  - Parsing XML Response
+474  INFO  WeatherFormatter  - Formatting Weather Data
+*********************************
+Current Weather Conditions for:
+New York, NY, US
+
+Temperature: 44
+Condition: Fair
+Humidity: 40
+Wind Chill: 40
+*********************************</pre>
+      <p>The <code class="literal">jar-with-dependencies</code> format creates a single JAR file that
+includes all of the bytecode from the <code class="literal">simple-weather</code> project as well
+as the unpacked bytecode from all of the dependencies. This somewhat
+unconventional format produces a 9 MiB JAR file containing
+approximately 5,290 classes, but it does provide for an easy
+distribution format for applications you’ve developed with
+Maven. Later in this book, we’ll show you how to create a custom
+assembly descriptor to produce a more standard distribution.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-attaching-assembly"></a>4.13.1. Attaching the Assembly Goal to the Package Phase</h3>
+            </div>
+          </div>
+        </div>
+        <p>In Maven 1, a build was customized by stringing together a series of
+plugin goals. Each plugin goal had prerequisites and defined a
+relationship to other plugin goals. With the release of Maven 2, a
+lifecycle was introduced and plugin goals are now associated with a
+series of phases in a default Maven build lifecycle. The lifecycle
+provides a solid foundation that makes it easier to predict and manage
+the plugin goals which will be executed in a given build. In Maven 1,
+plugin goals related to one another directly; in Maven 2, plugin goals
+relate to a set of common lifecycle stages. While it is certainly
+valid to execute a plugin goal directly from the command line as we
+just demonstrated, it is more consistent with the design of Maven to
+configure the Assembly plugin to execute the <code class="literal">assembly:assembly</code> goal
+during a phase in the Maven lifecycle.</p>
+        <p>The following plugin configuration configures the Maven Assembly
+plugin to execute the <code class="literal">attached</code> goal during the <code class="literal">package</code> phase of
+the Maven default build lifecycle. The <code class="literal">attached</code> goal does the same
+thing as the <code class="literal">assembly</code> goal. To bind to <code class="literal">assembly:attached</code> goal to
+the <code class="literal">package</code> phase we use the <code class="literal">executions</code> element under <code class="literal">plugin</code> in the
+<code class="literal">build</code> section of the project’s POM.</p>
+        <p><a id="ex-customization-attach-assembly"></a><strong>Configuring Attached Goal Execution During the Package Lifecycle Phase. </strong>
+</p>
+        <pre class="screen">&lt;project&gt;
+  [...]
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;descriptorRefs&gt;
+            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+          &lt;/descriptorRefs&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;simple-command&lt;/id&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;attached&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;</pre>
+        <p>
+</p>
+        <p>Once you have this configuration in your POM, all you need to do to
+generate the assembly is run <code class="literal">mvn package</code>. The execution
+configuration will make sure that the <code class="literal">assembly:attached</code> goal is
+executed when the Maven lifecycle transitions to the <code class="literal">package</code> phase
+of the lifecycle. The assembly will also be created if you run <code class="literal">mvn
+install</code>, as the <code class="literal">package</code> phase precedes the <code class="literal">install</code> phase in the
+default Maven lifecycle.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-executing-tests.html">
+            <span>Prev : 4.12. Executing Unit Tests</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web.html">
+            <span>Next : Chapter 5. A Simple Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>2.5. Maven Installation Details</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="installation.html" title="Chapter 2. Installing Maven" />
+    <link rel="prev" href="installation-sect-test-install.html" title="2.4. Testing a Maven Installation" />
+    <link rel="next" href="installation-sect-uninstalling.html" title="2.6. Uninstalling Maven" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-test-install.html">
+            <span>Prev : 2.4. Testing a Maven Installation</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-uninstalling.html">
+            <span>Next : 2.6. Uninstalling Maven</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-details"></a>2.5. Maven Installation Details</h2>
+          </div>
+        </div>
+      </div>
+      <p>Maven’s download measures in at a few megabyte only. It has attained such
+a slim download size because the core of Maven has been designed to
+retrieve plugins and dependencies from a remote repository
+on-demand. When you start using Maven, it will start to download
+plugins to a local repository described in
+<a class="xref" href="installation-sect-details.html#installation-sect-user" title="2.5.1. User-Specific Configuration and Repository">Section 2.5.1, “User-Specific Configuration and Repository”</a>. In case you are curious, let’s take a
+quick look at what is in Maven’s installation directory.</p>
+      <pre class="screen">/usr/local/maven $ ls -p1
+LICENSE.txt
+NOTICE
+README.txt
+bin/
+boot/
+conf/
+lib/</pre>
+      <p><code class="literal">LICENSE.txt</code> contains the software license for Apache Maven. The <code class="literal">lib/</code>
+directory contains a the JAR files that contains the core of Maven.</p>
+      <div class="note" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Note</h3>
+        <p>Unless you are working in a shared Unix environment, you should
+avoid customizing the <code class="literal">settings.xml</code> in <code class="literal">conf</code>. Altering the
+global <code class="literal">settings.xml</code> file in the Maven installation itself is usually
+unnecessary and it tends to complicate the upgrade procedure for Maven
+as you’ll have to remember to copy the customized <code class="literal">settings.xml</code> from
+the old Maven installation to the new installation. If you need to
+customize <code class="literal">settings.xml</code>, you should be editing your own
+<code class="literal">settings.xml</code> in <code class="literal">~/.m2/settings.xml</code>.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-user"></a>2.5.1. User-Specific Configuration and Repository</h3>
+            </div>
+          </div>
+        </div>
+        <p>Once you start using Maven extensively, you’ll notice that Maven has
+created some local user-specific configuration files and a local
+repository in your home directory. In <code class="literal">~/.m2</code> there will be:</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+~/.m2/settings.xml
+</span>
+            </dt>
+            <dd>
+   A file containing user-specific configuration for authentication,
+   repositories, and other information to customize the behavior of
+   Maven.
+</dd>
+            <dt>
+              <span class="term">
+~/.m2/repository/
+</span>
+            </dt>
+            <dd>
+   This directory contains your local Maven repository. When you
+   download a dependency from a remote Maven repository, Maven stores
+   a copy of the dependency in your local repository.
+</dd>
+          </dl>
+        </div>
+        <div class="note" style="margin-left: 0; margin-right: 10%;">
+          <h3 class="title">Note</h3>
+          <p>In Unix (and OS X), your home directory will be referred to using
+a tilde (i.e. <code class="literal">~/bin</code> refers to <code class="literal">/home/tobrien/bin</code>). In Windows, we
+will also be using <code class="literal">~</code> to refer to your home directory. In Windows XP,
+your home directory is <code class="literal">C:\Documents and Settings\tobrien</code>, and in
+Windows Vista, your home directory is <code class="literal">C:\Users\tobrien</code>. From this
+point forward, you should translate paths such as <code class="literal">~/m2</code> to your
+operating system’s equivalent.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-upgrade"></a>2.5.2. Upgrading a Maven Installation</h3>
+            </div>
+          </div>
+        </div>
+        <p>If you’ve installed Maven on a Mac OS X or Unix machine according to
+the details in <a class="xref" href="installation-sect-maven-install.html#installation-sect-maven-nix" title="2.3.1. Installing Maven on Linux, BSD and Mac OS X">Section 2.3.1, “Installing Maven on Linux, BSD and Mac OS X”</a>, it should be easy to upgrade to
+newer versions of Maven when they become available. Simply install the
+newer version of Maven (<span class="emphasis"><em>/usr/local/maven-3.future</em></span>) next to the
+existing version of Maven (<span class="emphasis"><em>/usr/local/maven-3.0.3</em></span>). Then switch the
+symbolic link <code class="literal">/usr/local/maven</code> from <code class="literal">/usr/local/maven-3.0.3</code> to
+<code class="literal">/usr/local/maven-3.future</code>. Since you’ve already set your <code class="literal">PATH</code>
+variable to point to <code class="literal">/usr/local/maven</code>, you won’t need to change any
+environment variables.</p>
+        <p>If you have installed Maven on a Windows machine, simply unpack Maven
+to <code class="literal">C:\Program Files\maven-3.future</code> and update your <code class="literal">PATH</code>
+variable.</p>
+        <div class="note" style="margin-left: 0; margin-right: 10%;">
+          <h3 class="title">Note</h3>
+          <p>If you have any customizations to the global <code class="literal">settings.xml</code> in
+<code class="literal">conf</code>, you will need to copy this <code class="literal">settings.xml</code> to the
+<code class="literal">conf</code> directory of the new Maven installation.</p>
+        </div>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-test-install.html">
+            <span>Prev : 2.4. Testing a Maven Installation</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-uninstalling.html">
+            <span>Next : 2.6. Uninstalling Maven</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

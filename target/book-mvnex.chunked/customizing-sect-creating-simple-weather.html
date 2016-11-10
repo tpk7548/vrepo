@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.3. Creating the Simple Weather Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-simple-weather.html" title="4.2. Defining the Simple Weather Project" />
+    <link rel="next" href="customizing-sect-customizing-project-info.html" title="4.4. Customize Project Information" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-simple-weather.html">
+            <span>Prev : 4.2. Defining the Simple Weather Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-customizing-project-info.html">
+            <span>Next : 4.4. Customize Project Information</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-creating-simple-weather"></a>4.3. Creating the Simple Weather Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>First, let’s use the Maven Archetype plugin to create a basic skeleton
+for the Simple Weather project. Execute the following command to
+create a new project, press enter to use the default
+<code class="literal">maven-archetype-quickstart</code> and the latest version of the archetype,
+and then enter "Y" to confirm and  generate the new project.
+Note that the number for the archetype will be different on your execution:</p>
+      <pre class="screen">$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook.custom \
+      -DartifactId=simple-weather \
+      -Dversion=1.0
+
+[INFO] Preparing archetype:generate
+...
+[INFO] [archetype:generate {execution: default-cli}]
+[INFO] Generating project in Interactive mode
+[INFO] No archetype defined. Using maven-archetype-quickstart \
+(org.apache.maven.archetypes:maven-archetype-quickstart:1.0)
+Choose archetype:
+...
+16: internal -&gt; maven-archetype-quickstart ()
+...
+Choose a number:  (...) 16: : 16
+Confirm properties configuration:
+groupId: org.sonatype.mavenbook.custom
+artifactId: simple-weather
+version: 1.0
+package: org.sonatype.mavenbook.custom
+Y: : Y
+[INFO] Parameter: groupId, Value: org.sonatype.mavenbook.custom
+[INFO] Parameter: packageName, Value: org.sonatype.mavenbook.custom
+[INFO] Parameter: package, Value: org.sonatype.mavenbook.custom
+[INFO] Parameter: artifactId, Value: simple-weather
+[INFO] Parameter: basedir, Value: /private/tmp
+[INFO] Parameter: version, Value: 1.0
+[INFO] BUILD SUCCESSFUL</pre>
+      <p>Once the Maven Archetype plugin creates the project, go into the
+<code class="literal">simple-weather</code> directory and take a look at the <code class="literal">pom.xml</code> file. You
+should see the XML document that’s shown in
+<a class="xref" href="customizing-sect-creating-simple-weather.html#ex-initial-pom-for-simple-weather" title="Initial POM for the simple-weather Project">Initial POM for the simple-weather Project</a>.</p>
+      <p><a id="ex-initial-pom-for-simple-weather"></a><strong>Initial POM for the simple-weather Project. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.custom&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-weather&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;name&gt;simple-weather&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Next, you will need to configure the Maven Compiler plugin to target
+Java 5. To do this, add the <code class="literal">build</code> element to the initial POM as shown
+in <a class="xref" href="customizing-sect-creating-simple-weather.html#ex-customization-initial-pom-with-compiler" title="POM for the simple-weather Project with Compiler Configuration">POM for the simple-weather Project with Compiler Configuration</a>.</p>
+      <p><a id="ex-customization-initial-pom-with-compiler"></a><strong>POM for the simple-weather Project with Compiler Configuration. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.custom&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-weather&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;name&gt;simple-weather&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.3&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.5&lt;/source&gt;
+                    &lt;target&gt;1.5&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Notice that we passed in the <code class="literal">version</code> parameter to the
+<code class="literal">archetype:generate</code> goal. This overrides the default value of
+<code class="literal">1.0-SNAPSHOT</code>. In this project, we’re developing the <code class="literal">1.0</code> version of
+the <code class="literal">simple-weather</code> project as you can see in the <code class="literal">pom.xml</code> <code class="literal">version</code>
+element.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-simple-weather.html">
+            <span>Prev : 4.2. Defining the Simple Weather Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-customizing-project-info.html">
+            <span>Next : 4.4. Customize Project Information</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

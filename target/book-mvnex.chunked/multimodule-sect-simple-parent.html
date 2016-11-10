@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>6.2. The Simple Parent Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule.html" title="Chapter 6. A Multi-Module Project" />
+    <link rel="prev" href="multimodule-sect-intro.html" title="6.1. Introduction" />
+    <link rel="next" href="multimodule-sect-simple-weather.html" title="6.3. The Simple Weather Module" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-intro.html">
+            <span>Prev : 6.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-simple-weather.html">
+            <span>Next : 6.3. The Simple Weather Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-sect-simple-parent"></a>6.2. The Simple Parent Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>A multi-module project is defined by a parent POM referencing one or
+more submodules. In the <code class="literal">simple-parent/</code> directory, you will find the
+parent POM (also called the top-level POM) in
+<code class="literal">simple-parent/pom.xml</code>. See <a class="xref" href="multimodule-sect-simple-parent.html#ex-multimodule-parent-pom" title="simple-parent Project POM">simple-parent Project POM</a>.</p>
+      <p><a id="ex-multimodule-parent-pom"></a><strong>simple-parent Project POM. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.sonatype.mavenbook.multi&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;name&gt;Multi Chapter Simple Parent Project&lt;/name&gt;
+
+    &lt;modules&gt;
+        &lt;module&gt;simple-weather&lt;/module&gt;
+        &lt;module&gt;simple-webapp&lt;/module&gt;
+    &lt;/modules&gt;
+
+    &lt;build&gt;
+        &lt;pluginManagement&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.5&lt;/source&gt;
+                        &lt;target&gt;1.5&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/pluginManagement&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Notice that the parent defines a set of Maven coordinates: the
+<code class="literal">groupId</code> is <code class="literal">org.<code class="literal">sonatype.</code>mavenbook.multi</code>, the <code class="literal">artifactId</code> is
+<code class="literal">simple-parent</code>, and the <code class="literal">version</code> is <code class="literal">1.0</code>. The parent project
+doesn’t create a JAR or a WAR like our previous projects; instead, it
+is simply a POM that refers to other Maven projects. The appropriate
+packaging for a project like <code class="literal">simple-parent</code> that simply provides a
+Project Object Model is <code class="literal">pom</code>. The next section in the <code class="literal">pom.xml</code> lists
+the project’s submodules. These modules are defined in the <code class="literal">modules</code>
+element, and each <code class="literal">module</code> element corresponds to a subdirectory of the
+<code class="literal">simple-parent</code> directory. Maven knows to look in these directories
+for <code class="literal">pom.xml</code> files, and it will add submodules to the list of Maven
+projects included in a build.</p>
+      <p>Lastly, we define some settings which will be inherited by all
+submodules. The <code class="literal">simple-parent</code> build configuration configures the
+target for all Java compilation to be the Java 5 JVM. Since the
+compiler plugin is bound to the lifecycle by default, we can use the
+<code class="literal">pluginManagement</code> section do to this. We will discuss <code class="literal">pluginManagement</code>
+in more detail in later chapters, but the separation between providing
+configuration to default plugins and actually binding plugins is much
+easier to see when they are separated this way. The <code class="literal">dependencies</code>
+element adds JUnit 3.8.1 as a global dependency. Both the build
+configuration and the dependencies are inherited by all
+submodules. Using POM inheritance allows you to add common
+dependencies for universal dependencies like JUnit or Log4J.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-intro.html">
+            <span>Prev : 6.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-simple-weather.html">
+            <span>Next : 6.3. The Simple Weather Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.7. Add Resources</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-simple-weather-source.html" title="4.6. Simple Weather Source Code" />
+    <link rel="next" href="customizing-sect-custom-exec.html" title="4.8. Running the Simple Weather Program" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-simple-weather-source.html">
+            <span>Prev : 4.6. Simple Weather Source Code</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-custom-exec.html">
+            <span>Next : 4.8. Running the Simple Weather Program</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-add-resources"></a>4.7. Add Resources</h2>
+          </div>
+        </div>
+      </div>
+      <p>This project depends on two classpath resources: the <code class="literal">Main</code> class that
+configures Log4J with a classpath resource named <code class="literal">log4j.properties</code>,
+and the <code class="literal">WeatherFormatter</code> that references a Velocity template from
+the classpath named <code class="literal">output.vm</code>. Both of these resources need to be in
+the default package (or the root of the classpath).</p>
+      <p>To add these resources, we’ll need to create a new directory from the
+base directory of the project: <code class="literal">src/main/resources</code>. Since this
+directory was not created by the <code class="literal">archetype:generate</code> task, we need to
+create it by executing the following commands from the project’s base
+directory:</p>
+      <pre class="screen">$ cd src/main
+$ mkdir resources
+$ cd resources</pre>
+      <p>Once the resources directory is created, we can add the two
+resources. First, add the <code class="literal">log4j.properties</code> file in the <code class="literal">resources</code>
+directory, as shown in <a class="xref" href="customizing-sect-add-resources.html#ex-simple-weather-log4j-config" title="Simple Weather’s Log4J Configuration File">Simple Weather’s Log4J Configuration File</a>.</p>
+      <p><a id="ex-simple-weather-log4j-config"></a><strong>Simple Weather’s Log4J Configuration File. </strong>
+</p>
+      <pre class="screen"># Set root category priority to INFO and its only appender to CONSOLE.
+log4j.rootCategory=INFO, CONSOLE
+
+# CONSOLE is set to be a ConsoleAppender using a PatternLayout.
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.Threshold=INFO
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=%-4r %-5p %c{1} %x - %m%n</pre>
+      <p>
+</p>
+      <p>This <code class="literal">log4j.properties</code> file simply configures Log4J to print all log
+messages to standard output using a <code class="literal">PatternLayout</code>. Lastly, we need
+to create the <code class="literal">output.vm</code>, which is the Velocity template used to
+render the output of this command-line program. Create <code class="literal">output.vm</code> in
+the <code class="literal">resources</code> directory.</p>
+      <p><strong>Simple Weather’s Output Velocity Template. </strong>
+</p>
+      <pre class="screen">*********************************
+Current Weather Conditions for:
+${weather.city}, ${weather.region}, ${weather.country}
+
+Temperature: ${weather.temp}
+Condition: ${weather.condition}
+Humidity: ${weather.humidity}
+Wind Chill: ${weather.chill}
+*********************************</pre>
+      <p>
+</p>
+      <p>This template contains a number of references to a variable named
+<code class="literal">weather</code>, which is the <code class="literal">Weather</code> bean that was passed to the
+<code class="literal">WeatherFormatter</code>. The <code class="literal">${weather.temp}</code> syntax is shorthand
+for retrieving and displaying the value of the <code class="literal">temp</code> bean
+property. Now that we have all of our project’s code in the right
+place, we can use Maven to run the example.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-simple-weather-source.html">
+            <span>Prev : 4.6. Simple Weather Source Code</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-custom-exec.html">
+            <span>Next : 4.8. Running the Simple Weather Program</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

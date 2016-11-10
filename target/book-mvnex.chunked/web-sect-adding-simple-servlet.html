@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>5.5. Adding a Simple Servlet</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="web.html" title="Chapter 5. A Simple Web Application" />
+    <link rel="prev" href="web-sect-configuring-jetty.html" title="5.4. Configuring the Jetty Plugin" />
+    <link rel="next" href="web-sect-adding-j2ee-depend.html" title="5.6. Adding J2EE Dependencies" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-configuring-jetty.html">
+            <span>Prev : 5.4. Configuring the Jetty Plugin</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-adding-j2ee-depend.html">
+            <span>Next : 5.6. Adding J2EE Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="web-sect-adding-simple-servlet"></a>5.5. Adding a Simple Servlet</h2>
+          </div>
+        </div>
+      </div>
+      <p>A web application with a single JSP page and no configured servlets is
+next to useless. Let’s add a simple servlet to this application and
+make some changes to the <code class="literal">pom.xml</code> and <code class="literal">web.xml</code> to support this
+change. First, we’ll need to create a new package under
+<code class="literal">src/main/java</code> named <code class="literal">org.sonatype.mavenbook.web</code>:</p>
+      <pre class="screen">$ mkdir -p src/main/java/org/sonatype/mavenbook/web
+$ cd src/main/java/org/sonatype/mavenbook/web</pre>
+      <p>Once you’ve created this package, change to the
+<code class="literal">src/main/java/org/sonatype/mavenbook/web</code> directory and create a
+class named <code class="literal">SimpleServlet</code> in <code class="literal">SimpleServlet.java</code>, which contains
+the code shown in the <code class="literal">SimpleServlet</code> class:</p>
+      <p><strong>SimpleServlet Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.web;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SimpleServlet extends HttpServlet {
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
+        out.println( "SimpleServlet Executed" );
+        out.flush();
+        out.close();
+    }
+}</pre>
+      <p>
+</p>
+      <p>Our <code class="literal">SimpleServlet</code> class is just that: a servlet that prints a simple
+message to the response’s <code class="literal">Writer</code>. To add this servlet to your web
+application and map it to a request path, add the <code class="literal">servlet</code> and
+<code class="literal">servlet-mapping</code> elements shown in the following <code class="literal">web.xml</code> to your
+project’s <code class="literal">web.xml</code> file. The <code class="literal">web.xml</code> file can be found in
+<code class="literal">src/main/webapp/WEB-INF</code>.</p>
+      <p><strong>Mapping the Simple Servlet. </strong>
+</p>
+      <pre class="screen">&lt;!DOCTYPE web-app PUBLIC
+          "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+          "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
+
+&lt;web-app&gt;
+  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;simple&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;
+      org.sonatype.mavenbook.web.SimpleServlet
+    &lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;simple&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/simple&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre>
+      <p>
+</p>
+      <p>Everything is in place to test this servlet; the class is in
+<code class="literal">src/main/java</code> and the <code class="literal">web.xml</code> has been updated. Before we launch
+the Jetty plugin, compile your project by running <code class="literal">mvn compile</code>:</p>
+      <pre class="screen">~/examples/ch-simple-web/simple-webapp $ mvn compile
+...
+[INFO] [compiler:compile]
+[INFO] Compiling 1 source file to \
+~/examples/ch-simple-web/simple-webapp/target/classes
+[INFO] -----------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] -----------------------------------------------------
+[INFO] Compilation failure
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[4,0] \
+package javax.servlet does not exist
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[5,0] \
+package javax.servlet.http does not exist
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[7,35] \
+cannot find symbol
+symbol: class HttpServlet
+public class SimpleServlet extends HttpServlet {
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[8,22] \
+cannot find symbol
+symbol  : class HttpServletRequest
+location: class org.sonatype.mavenbook.web.SimpleServlet
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[9,22] \
+cannot find symbol
+symbol  : class HttpServletResponse
+location: class org.sonatype.mavenbook.web.SimpleServlet
+
+/src/main/java/org/sonatype/mavenbook/web/SimpleServlet.java:[10,15] \
+cannot find symbol
+symbol  : class ServletException
+location: class org.sonatype.mavenbook.web.SimpleServlet</pre>
+      <p>The compilation fails because your Maven project doesn’t have a
+dependency on the Servlet API. In the next section, we’ll add the
+Servlet API to this project’s POM.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-configuring-jetty.html">
+            <span>Prev : 5.4. Configuring the Jetty Plugin</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-adding-j2ee-depend.html">
+            <span>Next : 5.6. Adding J2EE Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

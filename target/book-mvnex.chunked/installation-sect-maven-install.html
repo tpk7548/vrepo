@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>2.3. Installing Maven</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="installation.html" title="Chapter 2. Installing Maven" />
+    <link rel="prev" href="installation-sect-maven-download.html" title="2.2. Downloading Maven" />
+    <link rel="next" href="installation-sect-test-install.html" title="2.4. Testing a Maven Installation" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-maven-download.html">
+            <span>Prev : 2.2. Downloading Maven</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-test-install.html">
+            <span>Next : 2.4. Testing a Maven Installation</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-maven-install"></a>2.3. Installing Maven</h2>
+          </div>
+        </div>
+      </div>
+      <p>There are wide differences between operating systems such as Mac OS X
+and Microsoft Windows, and there are subtle differences between
+different versions of Windows. Luckily, the process of installing
+Maven on all of these operating systems is relatively painless and
+straightforward. The following sections outline the recommended
+best-practice for installing Maven on a variety of operating systems.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-maven-nix"></a>2.3.1. Installing Maven on Linux, BSD and Mac OS X</h3>
+            </div>
+          </div>
+        </div>
+        <p>Download the current release of Maven from <a class="ulink" href="http://maven.apache.org/download.html" target="_top">http://maven.apache.org/download.html</a>.
+Choose a format that is convenient for you to work
+with. Pick an appropriate place for it to live, and expand the archive
+there. If you expanded the archive into the directory
+<code class="literal">/usr/local/apache-maven-3.0.5</code>, you may want to create a symbolic
+link to make it easier to work with and to avoid the need to change
+any environment configuration when you upgrade to a newer version:</p>
+        <pre class="screen">/usr/local % cd /usr/local
+/usr/local % ln -s apache-maven-3.0.5 maven
+/usr/local % export PATH=/usr/local/maven/bin:$PATH</pre>
+        <p>Once Maven is installed, you need to add its <code class="literal">bin</code> directory in the
+distribution (in this example, <code class="literal">/usr/local/maven/bin</code>) to your command
+path.</p>
+        <p>You’ll need to add the <code class="literal">PATH</code> configuration to a script that will run
+every time you login. To do this, add the following lines to
+<code class="literal">.bash_login</code> or <code class="literal">.profile</code>.</p>
+        <pre class="screen">export PATH=/usr/local/maven/bin:${PATH}</pre>
+        <p>Once you’ve added these lines to your own environment, you will be
+able to run Maven from the command line.</p>
+        <div class="note" style="margin-left: 0; margin-right: 10%;">
+          <h3 class="title">Note</h3>
+          <p>These installation instructions assume that you are running
+bash.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-windows"></a>2.3.2. Installing Maven on Microsoft Windows</h3>
+            </div>
+          </div>
+        </div>
+        <p>Installing Maven on Windows is very similar to installing Maven on Mac
+OS X, the main differences being the installation location and the
+setting of an environment variable. This book assumes a Maven
+installation directory of <code class="literal">C:\Program Files\apache-maven-3.0.5</code>, but
+it won’t make a difference if you install Maven in another directory
+as long as you configure the proper environment variable. Once you’ve
+unpacked Maven to the installation directory, you will need to update
+the <code class="literal">PATH</code> environment variable:</p>
+        <pre class="screen">C:\Users\tobrien &gt; set PATH="c:\Program Files\apache-maven-3.0.5\bin";%PATH%</pre>
+        <p>Setting this environment variable on the command line will allow you
+to run Maven in your current session. Unless you add them to the
+System or User environment variables through the Control Panel, you’ll have to
+execute these two lines every time you log into your system. You
+should modify both of these variables through the Control Panel in
+Microsoft Windows.</p>
+        <div class="section">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h4 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-set-env-var"></a>Setting Environment Variables</h4>
+              </div>
+            </div>
+          </div>
+          <div class="itemizedlist">
+            <ul class="itemizedlist" style="list-style-type: disc; ">
+              <li class="listitem">
+Go into the <code class="literal">Control Panel</code>
+</li>
+              <li class="listitem">
+Select <code class="literal">System</code>
+</li>
+              <li class="listitem">
+Go in <code class="literal">Advanced</code> tab and click on <code class="literal">Environment Variables</code>.
+</li>
+              <li class="listitem">
+Click on the Path variable in the lower System variables section and click
+the Edit button.
+</li>
+              <li class="listitem">
+Add the string <code class="literal">"C:\Program Files\apache-maven-3.0.5\bin;"</code> in the Variable value field to the
+front of the existing value and click on the OK button in this and the
+following dialogs.
+</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-maven-download.html">
+            <span>Prev : 2.2. Downloading Maven</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-test-install.html">
+            <span>Next : 2.4. Testing a Maven Installation</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

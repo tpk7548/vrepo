@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>1.7. Comparing Maven with Ant</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="introduction.html" title="Chapter 1. Introducing Apache Maven" />
+    <link rel="prev" href="installation-sect-mavenAlternativeAnt.html" title="1.6. Is Maven an alternative to XYZ?" />
+    <link rel="next" href="installation.html" title="Chapter 2. Installing Maven" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-mavenAlternativeAnt.html">
+            <span>Prev : 1.6. Is Maven an alternative to XYZ?</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation.html">
+            <span>Next : Chapter 2. Installing Maven</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-compare-ant-maven"></a>1.7. Comparing Maven with Ant</h2>
+          </div>
+        </div>
+      </div>
+      <p>The authors of this book have no interest in creating a feud between
+Apache Ant and Apache Maven, but we are also cognizant of the fact
+that most organizations have to make a decision between the two
+standard solutions: Apache Ant and Apache Maven. In this section, we
+compare and contrast the tools.</p>
+      <p>Ant excels at build process; it is a build system modeled after <code class="literal">make</code>
+with targets and dependencies. Each target consists of a set of
+instructions which are coded in XML. There is a copy task and a javac
+task as well as a jar task. When you use Ant, you supply Ant with
+specific instructions for compiling and packaging your output. Look at
+the following example of a simple <code class="literal">build.xml</code> file:</p>
+      <p><a id="ex-ant-sample"></a><strong>A Simple Ant build.xml File. </strong>
+</p>
+      <pre class="screen">&lt;project name="my-project" default="dist" basedir="."&gt;
+  &lt;description&gt;simple example build file&lt;/description&gt;
+
+  &lt;!-- set global properties for this build --&gt;
+  &lt;property name="src" location="src/main/java"/&gt;
+  &lt;property name="build" location="target/classes"/&gt;
+  &lt;property name="dist"  location="target"/&gt;
+
+  &lt;target name="init"&gt;
+    &lt;!-- Create the time stamp --&gt;
+    &lt;tstamp/&gt;
+    &lt;!-- Create the build directory structure used by compile --&gt;
+    &lt;mkdir dir="${build}"/&gt;
+  &lt;/target&gt;
+
+  &lt;target name="compile" depends="init"
+          description="compile the source " &gt;
+    &lt;!-- Compile the java code from ${src} into ${build} --&gt;
+    &lt;javac srcdir="${src}" destdir="${build}"/&gt;
+  &lt;/target&gt;
+
+  &lt;target name="dist" depends="compile"
+          description="generate the distribution" &gt;
+    &lt;!-- Create the distribution directory --&gt;
+    &lt;mkdir dir="${dist}/lib"/&gt;
+
+    &lt;!-- Ouput into ${build} into a MyProject-${DSTAMP}.jar file --&gt;
+    &lt;jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar"
+         basedir="${build}"/&gt;
+  &lt;/target&gt;
+
+  &lt;target name="clean"
+          description="clean up" &gt;
+    &lt;!-- Delete the ${build} and ${dist} directory trees --&gt;
+    &lt;delete dir="${build}"/&gt;
+    &lt;delete dir="${dist}"/&gt;
+  &lt;/target&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>In this simple Ant example, you can see how you have to tell Ant
+exactly what to do. There is a <code class="literal">compile</code> goal which includes the <code class="literal">javac</code>
+task that compiles the source in the <code class="literal">src/main/java</code> directory to the
+<span class="emphasis"><em>target/classes</em></span> directory. You have to tell Ant exactly where your
+source is, where you want the resulting bytecode to be stored, and how
+to package this all into a JAR file. While there are some recent
+developments that help make Ant less procedural, a developer’s
+experience with Ant is in coding a procedural language written in XML.</p>
+      <p>Contrast the previous Ant example with a Maven example. In Maven, to
+create a JAR file from some Java source, all you need to do is create
+a simple <code class="literal">pom.xml</code>, place your source code in
+<code class="literal">${basedir}/src/main/java</code> and then run <code class="literal">mvn install</code> from the
+command line. The example Maven <code class="literal">pom.xml</code> that achieves the same
+results as the simple Ant file listed in <a class="xref" href="installation-sect-compare-ant-maven.html#ex-ant-sample" title="A Simple Ant build.xml File">A Simple Ant build.xml File</a> is shown in
+<a class="xref" href="installation-sect-compare-ant-maven.html#ex-maven-sample" title="A Sample Maven pom.xml">A Sample Maven pom.xml</a>.</p>
+      <p><a id="ex-maven-sample"></a><strong>A Sample Maven pom.xml. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;org.sonatype.mavenbook&lt;/groupId&gt;
+  &lt;artifactId&gt;my-project&lt;/artifactId&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>That’s all you need in your <code class="literal">pom.xml</code>. Running <code class="literal">mvn install</code> from the
+command line will process resources, compile source, execute unit
+tests, create a JAR, and install the JAR in a local repository for
+reuse in other projects. Without modification, you can run <code class="literal">mvn site</code>
+and then find an <code class="literal">index.html</code> file in <code class="literal">target/site</code> that contains
+links to JavaDoc and a few reports about your source code.</p>
+      <p>Admittedly, this is the simplest possible example project containing
+nothing more than some source code and producing a simple JAR. It is a
+project which closely follows Maven conventions and doesn’t require
+any dependencies or customization. If we wanted to start customizing
+the behavior, our <code class="literal">pom.xml</code> is going to grow in size, and in the
+largest of projects you can see collections of very complex Maven POMs
+which contain a great deal of plugin customization and dependency
+declarations. But, even when your project’s POM files become more
+substantial, they hold an entirely different kind of information from
+the build file of a similarly sized project using Ant. Maven POMs
+contain declarations: “This is a JAR project”, and “The source code is
+in <code class="literal">src/main/java</code>”. Ant build files contain explicit instructions:
+“This is project”, “The source is in <code class="literal">src/main/java</code>”, “Run <code class="literal">javac</code>
+against this directory”, “Put the results in <code class="literal">target/classes</code>”,
+“Create a JAR from the …”, etc. Where Ant had to be explicit about
+the process, there was something “built-in” to Maven that just knew
+where the source code was and how it should be processed.</p>
+      <p>The differences between Ant and Maven in this example are:</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt>
+            <span class="term">
+Apache Ant
+</span>
+          </dt>
+          <dd>
+            <div class="itemizedlist">
+              <ul class="itemizedlist" style="list-style-type: disc; ">
+                <li class="listitem">
+Ant doesn’t have formal conventions like a common project
+     directory structure or default behavior. You have to tell Ant
+     exactly where to find the source and where to put the
+     output. Informal conventions have emerged over time, but they
+     haven’t been codified into the product.
+</li>
+                <li class="listitem">
+Ant is procedural. You have to tell Ant exactly what to do and
+     when to do it. You have to tell it to compile, then copy, then
+     compress.
+</li>
+                <li class="listitem">
+Ant doesn’t have a lifecycle. You have to define goals and goal
+     dependencies. You have to attach a sequence of tasks to each goal
+     manually.
+</li>
+              </ul>
+            </div>
+          </dd>
+          <dt>
+            <span class="term">
+Apache Maven
+</span>
+          </dt>
+          <dd>
+            <div class="itemizedlist">
+              <ul class="itemizedlist" style="list-style-type: disc; ">
+                <li class="listitem">
+Maven has conventions. It knows where your source code is because
+       you followed the convention. Maven’s Compiler plugin put the
+       bytecode in <code class="literal">target/classes</code>, and it produces a JAR file in
+       target.
+</li>
+                <li class="listitem">
+Maven is declarative. All you had to do was create a <code class="literal">pom.xml</code>
+     file and put your source in the default directory. Maven took
+     care of the rest.
+</li>
+                <li class="listitem">
+Maven has a lifecycle which was invoked when you executed <code class="literal">mvn
+     install</code>. This command told Maven to execute a series of
+     sequential lifecycle phases until it reached the install
+     lifecycle phase. As a side effect of this journey through the
+     lifecycle, Maven executed a number of default plugin goals which
+     did things like compile and create a JAR.
+</li>
+              </ul>
+            </div>
+          </dd>
+        </dl>
+      </div>
+      <p>Maven has built-in intelligence about common project tasks in the form
+of Maven plugins. If you wanted to write and execute unit tests, all
+you would need to do is write the tests, place them in
+<code class="literal">${basedir}/src/test/java</code>, add a test-scoped dependency on
+either TestNG or JUnit, and run <code class="literal">mvn test</code>. If you wanted to deploy a
+web application and not a JAR, all you would need to do is change your
+project type to <code class="literal">war</code> and put your docroot in
+<code class="literal">${basedir}/src/main/webapp</code>. Sure, you can do all of this with
+Ant, but you will be writing the instructions from scratch. In Ant,
+you would first have to figure out where the JUnit JAR file should
+be. Then you would have to create a classpath that includes the JUnit
+JAR file. Then you would tell Ant where it should look for test source
+code, write a goal that compiles the test source to bytecode, and
+execute the unit tests with JUnit.</p>
+      <p>Without supporting technologies like antlibs and Ivy (and even with these
+supporting technologies), Ant has the feeling of a custom procedural
+build. An efficient set of Maven POMs in a project which adheres to
+Maven’s assumed conventions has surprisingly little XML compared to
+the Ant alternative. Another benefit of Maven is the reliance on
+widely-shared Maven plugins. Everyone uses the Maven Surefire plugin
+for unit testing, and if someone adds support for a new unit testing
+framework, you can gain new capabilities in your own build by just
+incrementing the version of a particular Maven plugin in your
+project’s POM.</p>
+      <p>The decision to use Maven or Ant isn’t a binary one, and Ant still has
+a place in a complex build. If your current build contains some highly
+customized process, or if you’ve written some Ant scripts to complete
+a specific process in a specific way that cannot be adapted to the
+Maven standards, you can still use these scripts with Maven. Ant is
+made available as a core Maven plugin. Custom Maven plugins can be
+implemented in Ant, and Maven projects can be configured to execute
+Ant scripts within the Maven project lifecycle.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-mavenAlternativeAnt.html">
+            <span>Prev : 1.6. Is Maven an alternative to XYZ?</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation.html">
+            <span>Next : Chapter 2. Installing Maven</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

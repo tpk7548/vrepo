@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>6.4. The Simple Web Application Module</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule.html" title="Chapter 6. A Multi-Module Project" />
+    <link rel="prev" href="multimodule-sect-simple-weather.html" title="6.3. The Simple Weather Module" />
+    <link rel="next" href="multimodule-sect-building-multimodule.html" title="6.5. Building the Multimodule Project" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-simple-weather.html">
+            <span>Prev : 6.3. The Simple Weather Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-building-multimodule.html">
+            <span>Next : 6.5. Building the Multimodule Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-sect-simple-web"></a>6.4. The Simple Web Application Module</h2>
+          </div>
+        </div>
+      </div>
+      <p>The <code class="literal">simple-webapp</code> module is the second submodule referenced in the
+<code class="literal">simple-parent</code> project. This web application project depends upon the
+<code class="literal">simple-weather</code> module, and it contains some simple servlets that
+present the results of the Yahoo weather service query.</p>
+      <p><strong>simple-webapp Module POM. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.sonatype.mavenbook.multi&lt;/groupId&gt;
+        &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+        &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;simple-webapp&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;simple-webapp Maven Webapp&lt;/name&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.sonatype.mavenbook.multi&lt;/groupId&gt;
+            &lt;artifactId&gt;simple-weather&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;simple-webapp&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-jetty-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>This <code class="literal">simple-webapp</code> module defines a very simple servlet that reads a
+zip code from an HTTP request, calls the <code class="literal">WeatherService</code> shown in
+<a class="xref" href="multimodule-sect-simple-weather.html#multimodule-weather-service" title="The WeatherService Class">The WeatherService Class</a>, and prints the results to the
+response’s <code class="literal">Writer</code>.</p>
+      <p><strong>simple-webapp WeatherServlet. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.web;
+
+import org.sonatype.mavenbook.weather.WeatherService;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class WeatherServlet extends HttpServlet {
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+        String zip = request.getParameter("zip" );
+        WeatherService weatherService = new WeatherService();
+        PrintWriter out = response.getWriter();
+        try {
+            out.println( weatherService.retrieveForecast( zip ) );
+        } catch( Exception e ) {
+            out.println( "Error Retrieving Forecast: " + e.getMessage() );
+        }
+        out.flush();
+        out.close();
+    }
+}</pre>
+      <p>
+</p>
+      <p>In <code class="literal">WeatherServlet</code>, we instantiate an instance of the
+<code class="literal">WeatherService</code> class defined in <code class="literal">simple-weather</code>. The zip code
+supplied in the request parameter is passed to the
+<code class="literal">retrieveForecast()</code> method and the resulting test is printed to the
+response’s <code class="literal">Writer</code>.</p>
+      <p>Finally, to tie all of this together is the <code class="literal">web.xml</code> for
+<code class="literal">simple-webapp</code> in <code class="literal">src/main/webapp/WEB-INF</code>. The <code class="literal">servlet</code> and
+<code class="literal">servlet-mapping</code> elements in the <code class="literal">web.xml</code> shown in
+<a class="xref" href="multimodule-sect-simple-web.html#ex-simple-webapp-web.xml" title="simple-webapp web.xml">simple-webapp web.xml</a> map the request path <code class="literal">/weather</code> to the
+<code class="literal">WeatherServlet</code>.</p>
+      <p><a id="ex-simple-webapp-web.xml"></a><strong>simple-webapp web.xml. </strong>
+</p>
+      <pre class="screen">&lt;!DOCTYPE web-app PUBLIC
+          "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+          "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
+
+&lt;web-app&gt;
+  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;simple&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;
+      org.sonatype.mavenbook.web.SimpleServlet
+    &lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;weather&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;
+      org.sonatype.mavenbook.web.WeatherServlet
+    &lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;simple&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/simple&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;weather&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/weather&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre>
+      <p>
+</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-simple-weather.html">
+            <span>Prev : 6.3. The Simple Weather Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-building-multimodule.html">
+            <span>Next : 6.5. Building the Multimodule Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

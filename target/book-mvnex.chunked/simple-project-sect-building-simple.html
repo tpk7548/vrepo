@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>3.3. Building a Simple Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="simple-project.html" title="Chapter 3. A Simple Maven Project" />
+    <link rel="prev" href="simple-project-sect-create-simple.html" title="3.2. Creating a Simple Project" />
+    <link rel="next" href="simple-project-sect-pom.html" title="3.4. Simple Project Object Model" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-create-simple.html">
+            <span>Prev : 3.2. Creating a Simple Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-pom.html">
+            <span>Next : 3.4. Simple Project Object Model</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-building-simple"></a>3.3. Building a Simple Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>The created directory <code class="literal">simple</code> contains the <code class="literal">pom.xml</code> and you can easily
+build the project:</p>
+      <pre class="screen">$ cd simple
+$ mvn install
+[INFO] Scanning for projects...
+[INFO] -----------------------------------------
+[INFO] Building simple
+[INFO]task-segment: [install]
+[INFO] -----------------------------------------
+[INFO] [resources:resources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:compile]
+[INFO] Compiling 1 source file to /simple/target/classes
+[INFO] [resources:testResources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:testCompile]
+[INFO] Compiling 1 source file to /simple/target/test-classes
+[INFO] [surefire:test]
+[INFO] Surefire report directory: /simple/target/surefire-reports</pre>
+      <p>T E S T S</p>
+      <pre class="screen">Running org.sonatype.mavenbook.AppTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] [jar:jar]
+[INFO] Building jar: /simple/target/simple-1.0-SNAPSHOT.jar
+[INFO] [install:install]
+[INFO] Installing /simple/target/simple-1.0-SNAPSHOT.jar to \
+~/.m2/repository/com/sonatype/maven/simple/simple/1.0-SNAPSHOT/ \
+simple-1.0-SNAPSHOT.jar</pre>
+      <p>You’ve just created, compiled, tested, packaged, and installed the
+simplest possible Maven project. To prove to yourself that this
+program works, run it from the command line.</p>
+      <pre class="screen">$ java -cp target/simple-1.0-SNAPSHOT.jar org.sonatype.mavenbook.App
+Hello World!</pre>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-create-simple.html">
+            <span>Prev : 3.2. Creating a Simple Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-pom.html">
+            <span>Next : 3.4. Simple Project Object Model</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.6. The Simple Web Application Module</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-simple-persist.html" title="7.5. The Simple Persist Module" />
+    <link rel="next" href="multimodule-web-spring-sect-spring-running-web.html" title="7.7. Running the Web Application" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-persist.html">
+            <span>Prev : 7.5. The Simple Persist Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-spring-running-web.html">
+            <span>Next : 7.7. Running the Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-simple-web"></a>7.6. The Simple Web Application Module</h2>
+          </div>
+        </div>
+      </div>
+      <p>The web application is defined in a <code class="literal">simple-webapp</code> project. This
+simple web application project is going to define two Spring MVC
+Controllers: <code class="literal">WeatherController</code> and <code class="literal">simple-weather</code> and the
+<code class="literal">applicationContext-persist.xml</code> file in <code class="literal">simple-persist</code>. The
+component architecture of this simple web application is shown in
+<a class="xref" href="multimodule-web-spring-sect-simple-web.html#fig-web-components" title="Figure 7.3. Spring MVC Controllers Referencing Components in simple-weather and simple-persist.">Figure 7.3, “Spring MVC Controllers Referencing Components in simple-weather and simple-persist.”</a>.</p>
+      <div class="figure">
+        <a id="fig-web-components"></a>
+        <div class="figure-contents">
+          <div class="mediaobject">
+            <img src="figs/web/multimodule-web-web-spring.png" alt="figs/web/multimodule-web-web-spring.png" />
+          </div>
+        </div>
+        <p class="title">
+          <strong>Figure 7.3. Spring MVC Controllers Referencing Components in simple-weather and simple-persist.</strong>
+        </p>
+      </div>
+      <br class="figure-break" />
+      <p>The POM for <code class="literal">simple-webapp</code> is shown in
+<a class="xref" href="multimodule-web-spring-sect-simple-web.html#example_pom-for-simple-webapp" title="POM for simple-webapp">POM for simple-webapp</a>.</p>
+      <p><a id="example_pom-for-simple-webapp"></a><strong>POM for simple-webapp. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+  &lt;/parent&gt;
+
+  &lt;artifactId&gt;simple-webapp&lt;/artifactId&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;name&gt;Simple Web Application&lt;/name&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt; <a id="CO3-1"></a>(1)
+      &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+      &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+      &lt;version&gt;2.4&lt;/version&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+      &lt;artifactId&gt;simple-weather&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+      &lt;artifactId&gt;simple-persist&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring&lt;/artifactId&gt;
+      &lt;version&gt;2.0.7&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.velocity&lt;/groupId&gt;
+      &lt;artifactId&gt;velocity&lt;/artifactId&gt;
+      &lt;version&gt;1.5&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;finalName&gt;simple-webapp&lt;/finalName&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt; <a id="CO3-2"></a>(2)
+        &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-jetty-plugin&lt;/artifactId&gt;
+        &lt;dependencies&gt; <a id="CO3-3"></a>(3)
+          &lt;dependency&gt;
+            &lt;groupId&gt;hsqldb&lt;/groupId&gt;
+            &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+            &lt;version&gt;1.8.0.7&lt;/version&gt;
+          &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt; <a id="CO3-4"></a>(4)
+        &lt;artifactId&gt;hibernate3-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.0&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;components&gt;
+            &lt;component&gt;
+              &lt;name&gt;hbm2ddl&lt;/name&gt;
+              &lt;implementation&gt;annotationconfiguration&lt;/implementation&gt; <a id="CO3-5"></a>(5)
+          &lt;/component&gt;
+        &lt;/components&gt;
+        &lt;/configuration&gt;
+        &lt;dependencies&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;hsqldb&lt;/groupId&gt;
+            &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+            &lt;version&gt;1.8.0.7&lt;/version&gt;
+          &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>As this book progresses and the examples become more and more
+substantial, you’ll notice that the <code class="literal">pom.xml</code> begins to take on some
+weight. In this POM, we’re configuring four dependencies and two
+plugins. Let’s go through this POM in detail and dwell on some of the
+important configuration points:</p>
+      <div class="calloutlist">
+        <table border="0" summary="Callout list">
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO3-1">(1)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+This <code class="literal">simple-webapp</code> project defines four dependencies: the
+Servlet 2.4 specification, the simple-weather service library, the
+simple-persist persistence library, and the entire Spring Framework
+2.0.7.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO3-2">(2)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The Maven Jetty plugin couldn’t be easier to add to this project;
+we simply add a <code class="literal">plugin</code> element that references the appropriate
+<code class="literal">groupId</code> and <code class="literal">artifactId</code>. The fact that this plugin is so trivial to
+configure means that the plugin developers did a good job of providing
+adequate defaults that don’t need to be overridden in most cases. If
+you did need to override the configuration of the Jetty plugin, you
+would do so by providing a <code class="literal">configuration</code> element.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO3-3">(3)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+In our build configuration, we’re going to be configuring the
+Maven Hibernate3 Plugin to hit an embedded HSQLDB instance. For the
+Maven Hibernate 3 plugin to successfully connect to this database
+using JDBC, the plugin will need to reference the HSQLDB JDBC driver on
+the classpath. To make a dependency available for a plugin, we add a
+dependency declaration right inside the plugin declaration. In this case,
+we’re referencing hsqldb:hsqldb:1.8.0.7. The Hibernate plugin also
+needs the JDBC driver to create the database, so we have also added
+this dependency to its configuration.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO3-4">(4)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The Maven Hibernate plugin is when this POM starts to get
+interesting. In the next section, we’re going to run the <code class="literal">hbm2ddl</code>
+goal to generate a HSQLDB database. In this <code class="literal">pom.xml</code>, we’re including
+a reference to version 2.0 of the <code class="literal">hibernate3-maven-plugin</code> hosted by
+the Codehaus Mojo plugin.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO3-5">(5)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The Maven Hibernate3 plugin has different ways to obtain Hibernate
+mapping information that are appropriate for different usage scenarios
+of the Hibernate3 plugin. If you were using Hibernate Mapping XML
+(<code class="literal">.hbm.xml</code>) files, and you wanted to generate model classes using the
+<code class="literal">hbm2java</code> goal, you would set your implementation to
+<code class="literal">configuration</code>. If you were using the Hibernate3 plugin to reverse
+engineer a database to produce <code class="literal">.hbm.xml</code> files and model classes from
+an existing database, you would use an implementation of
+<code class="literal">jdbcconfiguration</code>. In this case, we’re simply using an existing
+annotated object model to generate a database. In other words, we have
+our Hibernate mapping, but we don’t yet have a database. In this usage
+scenario, the appropriate implementation value is
+<code class="literal">annotationconfiguration</code>. The Maven Hibernate3 plugin is discussed in
+more detail in the later section
+<a class="xref" href="multimodule-web-spring-sect-spring-running-web.html" title="7.7. Running the Web Application">Section 7.7, “Running the Web Application”</a>.
+</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>Next, we turn our attention to the two Spring MVC controllers that
+will handle all of the requests. Both of these controllers reference
+the beans defined in <code class="literal">simple-weather</code> and <code class="literal">simple-persist</code>.</p>
+      <p><strong>simple-webapp WeatherController. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.web;
+
+import org.sonatype.mavenbook.weather.model.Weather;
+import org.sonatype.mavenbook.weather.persist.WeatherDAO;
+import org.sonatype.mavenbook.weather.WeatherService;
+import javax.servlet.http.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+public class WeatherController implements Controller {
+
+  private WeatherService weatherService;
+  private WeatherDAO weatherDAO;
+
+  public ModelAndView handleRequest(HttpServletRequest request,
+                                    HttpServletResponse response)
+                                  throws Exception {
+
+    String zip = request.getParameter("zip");
+    Weather weather = weatherService.retrieveForecast(zip);
+    weatherDAO.save(weather);
+    return new ModelAndView("weather", "weather", weather);
+  }
+
+  public WeatherService getWeatherService() {
+    return weatherService;
+  }
+
+  public void setWeatherService(WeatherService weatherService) {
+    this.weatherService = weatherService;
+  }
+
+  public WeatherDAO getWeatherDAO() {
+    return weatherDAO;
+  }
+
+  public void setWeatherDAO(WeatherDAO weatherDAO) {
+    this.weatherDAO = weatherDAO;
+  }
+}</pre>
+      <p>
+</p>
+      <p><code class="literal">WeatherController</code> implements the Spring MVC Controller interface
+that mandates the presence of a <code class="literal">handleRequest()</code> method with the
+signature shown in the example. If you look at the meat of this
+method, you’ll see that it invokes the <code class="literal">retrieveForecast()</code> method on
+the <code class="literal">weatherService</code> instance variable. Unlike the previous chapter,
+which had a Servlet that instantiated the <code class="literal">WeatherService</code> class, the
+<code class="literal">WeatherController</code> is a bean with a <code class="literal">weatherService</code> property. The
+Spring IoC container is responsible for wiring the controller to the
+<code class="literal">weatherService</code> component. Also notice that we’re not using the
+<code class="literal">WeatherFormatter</code> in this Spring controller implementation; instead,
+we’re passing the <code class="literal">Weather</code> object returned by <code class="literal">retrieveForecast()</code> to
+the constructor of <code class="literal">ModelAndView</code>. This <code class="literal">ModelAndView</code> class is going
+to be used to render a Velocity template, and this template will have
+references to a <code class="literal">${weather}</code> variable. The <code class="literal">weather.vm</code> template
+is stored in <code class="literal">src/main/webapp/WEB-INF/vm</code> and is shown in
+<a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-weather-vm" title="weather.vm Template Rendered by WeatherController">weather.vm Template Rendered by WeatherController</a>.</p>
+      <p>In the <code class="literal">WeatherController</code>, before we render the output of the
+forecast, we pass the <code class="literal">Weather</code> object returned by the
+<code class="literal">WeatherService</code> to the <code class="literal">save()</code> method on <code class="literal">WeatherDAO</code>. Here we are
+saving this <code class="literal">Weather</code> object—using Hibernate—to an HSQLDB
+database. Later, in <code class="literal">HistoryController</code>, we will see how we can
+retrieve a history of weather forecasts that were saved by the
+<code class="literal">WeatherController</code>.</p>
+      <p><a id="ex-weather-vm"></a><strong>weather.vm Template Rendered by WeatherController. </strong>
+</p>
+      <pre class="screen">&lt;b&gt;Current Weather Conditions for:
+${weather.location.city}, ${weather.location.region},
+${weather.location.country}&lt;/b&gt;&lt;br/&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Temperature: ${weather.condition.temp}&lt;/li&gt;
+&lt;li&gt;Condition: ${weather.condition.text}&lt;/li&gt;
+&lt;li&gt;Humidity: ${weather.atmosphere.humidity}&lt;/li&gt;
+&lt;li&gt;Wind Chill: ${weather.wind.chill}&lt;/li&gt;
+&lt;li&gt;Date: ${weather.date}&lt;/li&gt;
+&lt;/ul&gt;</pre>
+      <p>
+</p>
+      <p>The syntax for this Velocity template is straightforward: variables
+are referenced using <code class="literal">${}</code> notation. The expression between the
+curly braces references a property, or a property of a property on the
+<code class="literal">weather</code> variable, which was passed to this template by the
+<code class="literal">WeatherController</code>.</p>
+      <p>The <code class="literal">HistoryController</code> is used to retrieve recent forecasts that have
+been requested by the <code class="literal">WeatherController</code>. Whenever we retrieve a
+forecast from the <code class="literal">WeatherController</code>, that controller saves the
+<code class="literal">Weather</code> object to the database via the <code class="literal">WeatherDAO</code>. <code class="literal">WeatherDAO</code>
+then uses Hibernate to dissect the <code class="literal">Weather</code> object into a series of
+rows in a set of related database tables. The <code class="literal">HistoryController</code> is
+shown in <a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-history" title="simple-web HistoryController">simple-web HistoryController</a>.</p>
+      <p><a id="ex-spring-history"></a><strong>simple-web HistoryController. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.web;
+
+import java.util.*;
+import javax.servlet.http.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+import org.sonatype.mavenbook.weather.model.*;
+import org.sonatype.mavenbook.weather.persist.*;
+
+public class HistoryController implements Controller {
+
+  private LocationDAO locationDAO;
+  private WeatherDAO weatherDAO;
+
+  public ModelAndView handleRequest(HttpServletRequest request,
+    HttpServletResponse response) throws Exception {
+
+    String zip = request.getParameter("zip");
+    Location location = locationDAO.findByZip(zip);
+    List&lt;Weather&gt; weathers = weatherDAO.recentForLocation( location );
+
+    Map&lt;String,Object&gt; model = new HashMap&lt;String,Object&gt;();
+    model.put( "location", location );
+    model.put( "weathers", weathers );
+
+    return new ModelAndView("history", model);
+  }
+
+  public WeatherDAO getWeatherDAO() {
+    return weatherDAO;
+  }
+
+  public void setWeatherDAO(WeatherDAO weatherDAO) {
+    this.weatherDAO = weatherDAO;
+  }
+
+  public LocationDAO getLocationDAO() {
+    return locationDAO;
+  }
+
+  public void setLocationDAO(LocationDAO locationDAO) {
+    this.locationDAO = locationDAO;
+  }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">HistoryController</code> is wired to two DAO objects defined in
+<code class="literal">simple-persist</code>. The DAOs are bean properties of the
+<code class="literal">HistoryController</code>: <code class="literal">WeatherDAO</code> and <code class="literal">LocationDAO</code>. The goal of the
+<code class="literal">HistoryController</code> is to retrieve a <code class="literal">List</code> of <code class="literal">Weather</code> objects which
+correspond to the <code class="literal">zip</code> parameter. When the <code class="literal">WeatherDAO</code> saves the
+<code class="literal">Weather</code> object to the database, it doesn’t just store the zip code,
+it stores a <code class="literal">Location</code> object which is related to the <code class="literal">Weather</code> object
+in the <code class="literal">simple-model</code>. To retrieve a <code class="literal">List</code> of <code class="literal">Weather</code> objects, the
+<code class="literal">HistoryController</code> first retrieves the <code class="literal">Location</code> object that
+corresponds to the <code class="literal">zip</code> parameter. It does this by invoking the
+<code class="literal">findByZip()</code> method on <code class="literal">LocationDAO</code>.</p>
+      <p>Once the <code class="literal">Location</code> object has been retrieved, the <code class="literal">HistoryController</code>
+will then attempt to retrieve recent <code class="literal">Weather</code> objects that match the
+given <code class="literal">Location</code>. Once the <code class="literal">List&lt;Weather&gt;</code> has been retrieved, a
+<code class="literal">HashMap</code> is created to hold two variables for the <code class="literal">history.vm</code>
+Velocity template shown in <a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-history-velocity" title="history.vm Rendered by the HistoryController">history.vm Rendered by the HistoryController</a>.</p>
+      <p><a id="ex-spring-history-velocity"></a><strong>history.vm Rendered by the HistoryController. </strong>
+</p>
+      <pre class="screen">&lt;b&gt;
+Weather History for: ${location.city}, ${location.region}, ${location.country}
+&lt;/b&gt;
+&lt;br/&gt;
+
+#foreach( $weather in $weathers )
+&lt;ul&gt;
+&lt;li&gt;Temperature: $weather.condition.temp&lt;/li&gt;
+&lt;li&gt;Condition: $weather.condition.text&lt;/li&gt;
+&lt;li&gt;Humidity: $weather.atmosphere.humidity&lt;/li&gt;
+&lt;li&gt;Wind Chill: $weather.wind.chill&lt;/li&gt;
+&lt;li&gt;Date: $weather.date&lt;/li&gt;
+&lt;/ul&gt;
+#end</pre>
+      <p>
+</p>
+      <p>The <code class="literal">history.vm</code> template in <code class="literal">src/main/webapp/WEB-INF/vm</code> references
+the <code class="literal">location</code> variable to print out information about the location of
+the forecasts retrieved from the <code class="literal">WeatherDAO</code>. This template then uses
+a Velocity control structure, <code class="literal">#foreach</code>, to loop through each element
+in the <code class="literal">weathers</code> variable. Each element in <code class="literal">weathers</code> is assigned to
+a variable named <code class="literal">weather</code> and the template between <code class="literal">#foreach</code> and
+<code class="literal">#end</code> is rendered for each observation.</p>
+      <p>You’ve seen these <code class="literal">Controller</code> implementations, and you’ve seen that
+they reference other beans defined in <code class="literal">simple-weather</code> and
+<code class="literal">simple-persist</code>, they respond to HTTP requests, and they yield
+control to some mysterious templating system that knows how to render
+Velocity templates. All of this magic is configured in a Spring
+application context in
+<code class="literal">src/main/webapp/WEB-INF/weather-servlet.xml</code>. This XML configures the
+controllers and references other Spring-managed beans. It is loaded by
+a <code class="literal">ServletContextListener</code> which is also configured to load the
+<code class="literal">applicationContext-weather.xml</code> and <code class="literal">applicationContext-persist.xml</code>
+from the classpath. Let’s take a closer look at the
+<code class="literal">weather-servlet.xml</code> shown in <a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-weather-servlet" title="Spring Controller Configuration weather-servlet.xml">Spring Controller Configuration weather-servlet.xml</a>.</p>
+      <p><a id="ex-spring-weather-servlet"></a><strong>Spring Controller Configuration weather-servlet.xml. </strong>
+</p>
+      <pre class="screen">&lt;beans&gt;
+  &lt;bean id="weatherController" <a id="CO4-1"></a>(1)
+        class="org.sonatype.mavenbook.web.WeatherController"&gt;
+    &lt;property name="weatherService" ref="weatherService"/&gt;
+    &lt;property name="weatherDAO" ref="weatherDAO"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="historyController"
+        class="org.sonatype.mavenbook.web.HistoryController"&gt;
+    &lt;property name="weatherDAO" ref="weatherDAO"/&gt;
+    &lt;property name="locationDAO" ref="locationDAO"/&gt;
+  &lt;/bean&gt;
+
+  &lt;!-- you can have more than one handler defined --&gt;
+  &lt;bean id="urlMapping"
+        class="org.springframework.web.servlet.handler.
+          SimpleUrlHandlerMapping"&gt;
+    &lt;property name="urlMap"&gt;
+      &lt;map&gt;
+        &lt;entry key="/weather.x"&gt; <a id="CO4-2"></a>(2)
+          &lt;ref bean="weatherController" /&gt;
+        &lt;/entry&gt;
+        &lt;entry key="/history.x"&gt;
+          &lt;ref bean="historyController" /&gt;
+        &lt;/entry&gt;
+      &lt;/map&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="velocityConfig" <a id="CO4-3"></a>(3)
+    class="org.springframework.web.servlet.view.velocity.
+      VelocityConfigurer"&gt;
+    &lt;property name="resourceLoaderPath" value="/WEB-INF/vm/"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="viewResolver" <a id="CO4-4"></a>(4)
+    class="org.springframework.web.servlet.view.velocity.
+      VelocityViewResolver"&gt;
+    &lt;property name="cache" value="true"/&gt;
+    &lt;property name="prefix" value=""/&gt;
+    &lt;property name="suffix" value=".vm"/&gt;
+    &lt;property name="exposeSpringMacroHelpers" value="true"/&gt;
+  &lt;/bean&gt;
+&lt;/beans&gt;</pre>
+      <p>
+</p>
+      <div class="calloutlist">
+        <table border="0" summary="Callout list">
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO4-1">(1)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">weather-servlet.xml</code> defines the two controllers as
+Spring-managed beans. <code class="literal">weatherController</code> has two properties which are
+references to <code class="literal">weatherService</code> and <code class="literal">weatherDAO</code>. <code class="literal">historyController</code>
+references the beans <code class="literal">weatherDAO</code> and <code class="literal">locationDAO</code>. When this
+<code class="literal">ApplicationContext</code> is created, it is created in an environment that
+has access to the <code class="literal">ApplicationContext</code>s defined in both
+<code class="literal">simple-persist</code> and <code class="literal">simple-weather</code>. In <a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-web-xml" title="web.xml for simple-webapp">web.xml for simple-webapp</a> you
+will see how Spring is configured to merge components from multiple
+Spring configuration files.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO4-2">(2)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">urlMapping</code> bean defines the URL patterns which invoke the
+<code class="literal">WeatherController</code> and the <code class="literal">HistoryController</code>. In this example, we
+are using the <code class="literal">SimpleUrlHandlerMapping</code> and mapping <code class="literal">/weather.x</code> to
+<code class="literal">WeatherController</code> and <code class="literal">/history.x</code> to <code class="literal">HistoryController</code>.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO4-3">(3)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Since we are using the Velocity templating engine, we will need to
+pass in some configuration options. In the <code class="literal">velocityConfig</code> bean, we
+are telling Velocity to look for all templates in the <code class="literal">/WEB-INF/vm</code>
+directory.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO4-4">(4)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Last, the <code class="literal">viewResolver</code> is configured with the class
+<code class="literal">VelocityViewResolver</code>. There are a number of <code class="literal">ViewResolver</code>
+implementations in Spring from a standard ViewResolver to render JSP
+or JSTL pages to a resolver which can render Freemarker templates. In
+this example, we’re configuring the Velocity templating engine and
+setting the default prefix and suffix which will be automatically
+appended to the names of the template passed to <code class="literal">ModelAndView</code>.
+</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>Finally, the <code class="literal">simple-webapp</code> project was a <code class="literal">web.xml</code> which provides
+the basic configuration for the web application. The <code class="literal">web.xml</code> file is
+shown in <a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-web-xml" title="web.xml for simple-webapp">web.xml for simple-webapp</a>.</p>
+      <p><a id="ex-spring-web-xml"></a><strong>web.xml for simple-webapp. </strong>
+</p>
+      <pre class="screen">&lt;web-app id="simple-webapp" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+               http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"&gt;
+  &lt;display-name&gt;Simple Web Application&lt;/display-name&gt;
+
+  &lt;context-param&gt; <a id="CO5-1"></a>(1)
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+      &lt;param-value&gt;
+        classpath:applicationContext-weather.xml
+        classpath:applicationContext-persist.xml
+      &lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;context-param&gt; <a id="CO5-2"></a>(2)
+    &lt;param-name&gt;log4jConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;/WEB-INF/log4j.properties&lt;/param-value&gt;
+  &lt;/context-param&gt;
+
+  &lt;listener&gt; <a id="CO5-3"></a>(3)
+    &lt;listener-class&gt;
+      org.springframework.web.util.Log4jConfigListener
+    &lt;/listener-class&gt;
+  &lt;/listener&gt;
+
+  &lt;listener&gt;
+    &lt;listener-class&gt; <a id="CO5-4"></a>(4)
+      org.springframework.web.context.ContextLoaderListener
+    &lt;/listener-class&gt;
+  &lt;/listener&gt;
+
+  &lt;servlet&gt; <a id="CO5-5"></a>(5)
+    &lt;servlet-name&gt;weather&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;
+      org.springframework.web.servlet.DispatcherServlet
+    &lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+
+  &lt;servlet-mapping&gt; <a id="CO5-6"></a>(6)
+    &lt;servlet-name&gt;weather&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;*.x&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre>
+      <p>
+</p>
+      <div class="calloutlist">
+        <table border="0" summary="Callout list">
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-1">(1)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+Here’s a bit of magic which allows us to reuse the
+<code class="literal">applicationContext-weather.xml</code> and <code class="literal">applicationContext-persist.xml</code>
+in this project. The <code class="literal">contextConfigLocation</code> is used by the
+<code class="literal">ContextLoaderListener</code> to create an <code class="literal">ApplicationContext</code>. When the
+weather servlet is created, the <code class="literal">weather-servlet.xml</code> from
+<a class="xref" href="multimodule-web-spring-sect-simple-web.html#ex-spring-weather-servlet" title="Spring Controller Configuration weather-servlet.xml">Spring Controller Configuration weather-servlet.xml</a> is going to be evaluated with the
+<code class="literal">ApplicationContext</code> created from this <code class="literal">contextConfigLocation</code>. In
+this way, you can define a set of beans in another project and you can
+reference these beans via the classpath. Since the <code class="literal">simple-persist</code>
+and <code class="literal">simple-weather</code> JARs are going to be in <code class="literal">WEB-INF/lib</code>, all we do
+is use the <code class="literal">classpath:</code> prefix to reference these files. (Another
+option would have been to copy these files to <code class="literal">/WEB-INF</code> and reference
+them with something like <code class="literal">/WEB-INF/applicationContext-persist.xml</code>.)
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-2">(2)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">log4jConfigLocation</code> is used to tell the
+<code class="literal">Log4JConfigListener</code> where to look for Log4J logging
+configuration. In this example, we tell Log4J to look in
+<code class="literal">/WEB-INF/log4j.properties</code>.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-3">(3)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+This makes sure that the Log4J system is configured when the web
+application starts. It is important to put this <code class="literal">Log4JConfigListener</code>
+before the <code class="literal">ContextLoaderListener</code>; otherwise, you may miss important
+logging messages which point to a problem preventing application
+startup. If you have a particularly large set of beans managed by
+Spring, and one of them happens to blow up on application startup,
+your application will fail. If you have logging initialized before
+Spring starts, you might have a chance to catch a warning or an
+error. If you don’t have logging initialized before Spring starts up,
+you’ll have no idea why your application refuses to start.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-4">(4)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">ContextLoaderListener</code> is essentially the Spring
+container. When the application starts, this listener will build an
+<code class="literal">ApplicationContext</code> from the <code class="literal">contextConfigLocation</code> parameter.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-5">(5)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+We define a Spring MVC <code class="literal">DispatcherServlet</code> with a name of
+<code class="literal">weather</code>. This will cause Spring to look for a Spring configuration
+file in <code class="literal">/WEB-INF/weather-servlet.xml</code>. You can have as many
+<code class="literal">DispatcherServlet</code>s as you need; a <code class="literal">DispatcherServlet</code> can contain
+one or more Spring MVC <code class="literal">Controller</code> implementations.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO5-6">(6)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+All requests ending in <code class="literal">.x</code> will be routed to the <code class="literal">weather</code>
+servlet. Note that the <code class="literal">.x</code> extension has no particular meaning; it is
+an arbitrary choice and you can use whatever URL pattern you like.
+</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-persist.html">
+            <span>Prev : 7.5. The Simple Persist Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-spring-running-web.html">
+            <span>Next : 7.7. Running the Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

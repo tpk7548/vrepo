@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.8. Running the Simple Weather Program</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-add-resources.html" title="4.7. Add Resources" />
+    <link rel="next" href="customizing-sect-writing-tests.html" title="4.9. Writing Unit Tests" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-add-resources.html">
+            <span>Prev : 4.7. Add Resources</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-writing-tests.html">
+            <span>Next : 4.9. Writing Unit Tests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-custom-exec"></a>4.8. Running the Simple Weather Program</h2>
+          </div>
+        </div>
+      </div>
+      <p>Using the Exec plugin from the <a class="ulink" href="http://mojo.codehaus.org" target="_top">Codehaus Mojo
+project</a>, we can run the Main class:</p>
+      <pre class="screen">$ mvn install
+$ mvn exec:java -Dexec.mainClass=org.sonatype.mavenbook.weather.Main
+...
+[INFO] [exec:java]
+0INFO  YahooRetriever  - Retrieving Weather Data
+134  INFO  YahooParser  - Creating XML Reader
+333  INFO  YahooParser  - Parsing XML Response
+420  INFO  WeatherFormatter  - Formatting Weather Data
+*********************************
+Current Weather Conditions for:
+Evanston, IL, US
+
+Temperature: 45
+Condition: Cloudy
+Humidity: 76
+Wind Chill: 38
+*********************************
+...</pre>
+      <p>We didn’t supply a command-line argument to the <code class="literal">Main</code> class, so we
+ended up with the default zip code, 60202. To supply a zip code, we
+would use the <code class="literal">-Dexec.args</code> argument and pass in a zip code:</p>
+      <pre class="screen">$ mvn exec:java -Dexec.mainClass=org.sonatype.mavenbook.weather.Main \
+      -Dexec.args="70112"
+...
+[INFO] [exec:java]
+0    INFO  YahooRetriever  - Retrieving Weather Data
+134  INFO  YahooParser  - Creating XML Reader
+333  INFO  YahooParser  - Parsing XML Response
+420  INFO  WeatherFormatter  - Formatting Weather Data
+*********************************
+Current Weather Conditions for:
+New Orleans, LA, US
+
+Temperature: 82
+Condition: Fair
+Humidity: 71
+Wind Chill: 82
+*********************************
+[INFO] Finished at: Sun Aug 31 09:33:34 CDT 2008
+...</pre>
+      <p>As you can see, we’ve successfully executed the Simple Weather
+command-line tool, retrieved some data from Yahoo Weather, parsed the
+result, and formatted the resulting data with Velocity. We achieved
+all of this without doing much more than writing our project’s source
+code and adding some minimal configuration to the <code class="literal">pom.xml</code>. Notice
+that no “build process” was involved. We didn’t need to define how or
+where the Java compiler compiles our source to bytecode, and we didn’t
+need to instruct the build system how to locate the bytecode when we
+executed the example application. All we needed to do to include a few
+dependencies was locate the appropriate Maven coordinates.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-maven-exec"></a>4.8.1. The Maven Exec Plugin</h3>
+            </div>
+          </div>
+        </div>
+        <p>The Exec plugin allows you to execute Java classes and other
+scripts. It is not a core Maven plugin, but it is available from the
+<a class="ulink" href="http://mojo.codehaus.org" target="_top">Mojo</a> project hosted by
+<a class="ulink" href="http://www.codehaus.org" target="_top">Codehaus</a>. For a full description of the Exec
+plugin, run:</p>
+        <pre class="screen">$ mvn help:describe -Dplugin=exec -Dfull</pre>
+        <p>This will list all of the goals that are available in the Maven Exec
+plugin. The Help plugin will also list all of the valid parameters for
+the Exec plugin. If you would like to customize the behavior of the
+Exec plugin you should use the documentation provided by
+<code class="literal">help:describe</code> as a guide. Although the Exec plugin is useful, you
+shouldn’t rely on it as a way to execute your application outside of
+running tests during development. For a more robust solution, use the
+Maven Assembly plugin that is demonstrated in the section
+<a class="xref" href="customizing-sect-custom-packaged.html" title="4.13. Building a Packaged Command Line Application">Section 4.13, “Building a Packaged Command Line Application”</a>, later in this chapter.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-exploring-dependencies"></a>4.8.2. Exploring Your Project Dependencies</h3>
+            </div>
+          </div>
+        </div>
+        <p>The Exec plugin makes it possible for us to run the Simple Weather
+program without having to load the appropriate dependencies into the
+classpath. In any other build system, we would have to copy all of the
+program dependencies into some sort of <code class="literal">lib/</code> directory containing a
+collection of JAR files. Then, we would have to write a simple script
+that includes our program’s bytecode and all of our dependencies in a
+classpath. Only then could we run <code class="literal">java
+org.sonatype.mavenbook.weather.Main</code>. The Exec plugin leverages the
+fact that Maven already knows how to create and manage your classpath
+and dependencies.</p>
+        <p>This is convenient, but it’s also nice to know exactly what is being
+included in your project’s classpath. Although the project depends on
+a few libraries such as Dom4J, Log4J, Jaxen, and Velocity, it also
+relies on a few transitive dependencies. If you need to find out what
+is on the classpath, you can use the Maven Dependency plugin to print
+out a list of dependencies.</p>
+        <pre class="screen">$ mvn dependency:resolve
+...
+[INFO] [dependency:resolve]
+[INFO]
+[INFO] The following files have been resolved:
+[INFO]com.ibm.icu:icu4j:jar:2.6.1 (scope = compile)
+[INFO]commons-collections:commons-collections:jar:3.1 (scope = compile)
+[INFO]commons-lang:commons-lang:jar:2.1 (scope = compile)
+[INFO]dom4j:dom4j:jar:1.6.1 (scope = compile)
+[INFO]jaxen:jaxen:jar:1.1.1 (scope = compile)
+[INFO]jdom:jdom:jar:1.0 (scope = compile)
+[INFO]junit:junit:jar:3.8.1 (scope = test)
+[INFO]log4j:log4j:jar:1.2.14 (scope = compile)
+[INFO]oro:oro:jar:2.0.8 (scope = compile)
+[INFO]velocity:velocity:jar:1.5 (scope = compile)
+[INFO]xalan:xalan:jar:2.6.0 (scope = compile)
+[INFO]xerces:xercesImpl:jar:2.6.2 (scope = compile)
+[INFO]xerces:xmlParserAPIs:jar:2.6.2 (scope = compile)
+[INFO]xml-apis:xml-apis:jar:1.0.b2 (scope = compile)
+[INFO]xom:xom:jar:1.0 (scope = compile)</pre>
+        <p>As you can see, our project has a very large set of
+dependencies. While we only included direct dependencies on four
+libraries, we appear to be depending on 15 dependencies in
+total. Dom4J depends on Xerces and the XML Parser APIs, and Jaxen depends
+on Xalan. The Dependency plugin is
+going to print out the final combination of dependencies under which
+your project is being compiled. If you would like to know about the
+entire dependency tree of your project, you can run the
+<code class="literal">dependency:tree</code> goal.</p>
+        <pre class="screen">$ mvn dependency:tree
+...
+[INFO] [dependency:tree]
+[INFO] org.sonatype.mavenbook.custom:simple-weather:jar:1.0
+[INFO] +- log4j:log4j:jar:1.2.14:compile
+[INFO] +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  \- xml-apis:xml-apis:jar:1.0.b2:compile
+[INFO] +- jaxen:jaxen:jar:1.1.1:compile
+[INFO] |  +- jdom:jdom:jar:1.0:compile
+[INFO] |  +- xerces:xercesImpl:jar:2.6.2:compile
+[INFO] |  \- xom:xom:jar:1.0:compile
+[INFO] | +- xerces:xmlParserAPIs:jar:2.6.2:compile
+[INFO] | +- xalan:xalan:jar:2.6.0:compile
+[INFO] | \- com.ibm.icu:icu4j:jar:2.6.1:compile
+[INFO] +- velocity:velocity:jar:1.5:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.1:compile
+[INFO] |  \- oro:oro:jar:2.0.8:compile
+[INFO] +- org.apache.commons:commons-io:jar:1.3.2:test
+[INFO] \- junit:junit:jar:3.8.1:test
+...</pre>
+        <p>If you’re truly adventurous or want to see the full dependency trail,
+including artifacts that were rejected due to conflicts and other
+reasons, run Maven with the <code class="literal">-X</code> debug flag.</p>
+        <pre class="screen">$ mvn install -X
+...
+[DEBUG] org.sonatype.mavenbook.custom:simple-weather:jar:1.0 (selected for null)
+[DEBUG]   log4j:log4j:jar:1.2.14:compile (selected for compile)
+[DEBUG]   dom4j:dom4j:jar:1.6.1:compile (selected for compile)
+[DEBUG] xml-apis:xml-apis:jar:1.0.b2:compile (selected for compile)
+[DEBUG]   jaxen:jaxen:jar:1.1.1:compile (selected for compile)
+[DEBUG] jaxen:jaxen:jar:1.1-beta-6:compile (removed - )
+[DEBUG] jaxen:jaxen:jar:1.0-FCS:compile (removed - )
+[DEBUG] jdom:jdom:jar:1.0:compile (selected for compile)
+[DEBUG] xml-apis:xml-apis:jar:1.3.02:compile (removed - nearer: 1.0.b2)
+[DEBUG] xerces:xercesImpl:jar:2.6.2:compile (selected for compile)
+[DEBUG] xom:xom:jar:1.0:compile (selected for compile)
+[DEBUG]   xerces:xmlParserAPIs:jar:2.6.2:compile (selected for compile)
+[DEBUG]   xalan:xalan:jar:2.6.0:compile (selected for compile)
+[DEBUG]   xml-apis:xml-apis:1.0.b2.
+[DEBUG]   com.ibm.icu:icu4j:jar:2.6.1:compile (selected for compile)
+[DEBUG]   velocity:velocity:jar:1.5:compile (selected for compile)
+[DEBUG] commons-collections:commons-collections:jar:3.1:compile
+[DEBUG] commons-lang:commons-lang:jar:2.1:compile (selected for compile)
+[DEBUG] oro:oro:jar:2.0.8:compile (selected for compile)
+[DEBUG]   junit:junit:jar:3.8.1:test (selected for test)</pre>
+        <p>In the debug output, we see some of the guts of the dependency
+management system at work. What you see here is the tree of
+dependencies for this project. Maven is printing out the full Maven
+coordinates for all of your project’s dependencies and the mechanism
+at work.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-add-resources.html">
+            <span>Prev : 4.7. Add Resources</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-writing-tests.html">
+            <span>Next : 4.9. Writing Unit Tests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

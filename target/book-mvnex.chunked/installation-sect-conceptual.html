@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>1.5. Conceptual Model of a “Project”</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="introduction.html" title="Chapter 1. Introducing Apache Maven" />
+    <link rel="prev" href="installation-sect-universal-reuse.html" title="1.4. Universal Reuse through Maven Plugins" />
+    <link rel="next" href="installation-sect-mavenAlternativeAnt.html" title="1.6. Is Maven an alternative to XYZ?" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-universal-reuse.html">
+            <span>Prev : 1.4. Universal Reuse through Maven Plugins</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-mavenAlternativeAnt.html">
+            <span>Next : 1.6. Is Maven an alternative to XYZ?</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-conceptual"></a>1.5. Conceptual Model of a “Project”</h2>
+          </div>
+        </div>
+      </div>
+      <p>Maven maintains a model of a project. You are not just compiling
+source code into bytecode, you are developing a description of a
+software project and assigning a unique set of coordinates to a
+project. You are describing the attributes of the project. What is the
+project’s license? Who develops and contributes to the project? What
+other projects does this project depend upon? Maven is more than just
+a “build tool”, it is more than just an improvement on tools like make
+and Ant, it is a platform that encompasses a new semantics related to
+software projects and software development. This definition of a model
+for every project enables such features as:</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt>
+            <span class="term">
+Dependency Management
+</span>
+          </dt>
+          <dd>
+   Because a project is defined by a unique set of coordinates
+   consisting of a group identifier, an artifact identifier, and a
+   version, projects can now use these coordinates to declare
+   dependencies.
+</dd>
+          <dt>
+            <span class="term">
+Remote Repositories
+</span>
+          </dt>
+          <dd>
+   Related to dependency management, we can use the coordinates
+   defined in the Maven Project Object Model (POM) to create
+   repositories of Maven artifacts.
+</dd>
+          <dt>
+            <span class="term">
+Universal Reuse of Build Logic
+</span>
+          </dt>
+          <dd>
+   Plugins contain logic that works with the descriptive data and
+   configuration parameters defined in Project Object Model (POM);
+   they are not designed to operate upon specific files in known
+   locations.
+</dd>
+          <dt>
+            <span class="term">
+Tool Portability / Integration
+</span>
+          </dt>
+          <dd>
+   Tools like Eclipse, NetBeans, and IntelliJ now have a common place
+   to find information about a project. Before the advent of Maven,
+   every IDE had a different way to store what was essentially a
+   custom Project Object Model (POM). Maven has standardized this
+   description, and while each IDE continues to maintain custom
+   project files, they can be easily generated from the model.
+</dd>
+          <dt>
+            <span class="term">
+Easy Searching and Filtering of Project Artifacts
+</span>
+          </dt>
+          <dd>
+   Tools like Nexus allow you to index and search the contents of a
+   repository using the information stored in the POM.
+</dd>
+        </dl>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-universal-reuse.html">
+            <span>Prev : 1.4. Universal Reuse through Maven Plugins</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-mavenAlternativeAnt.html">
+            <span>Next : 1.6. Is Maven an alternative to XYZ?</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

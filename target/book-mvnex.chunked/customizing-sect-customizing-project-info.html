@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.4. Customize Project Information</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-creating-simple-weather.html" title="4.3. Creating the Simple Weather Project" />
+    <link rel="next" href="customizing-sect-add-depend.html" title="4.5. Add New Dependencies" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-creating-simple-weather.html">
+            <span>Prev : 4.3. Creating the Simple Weather Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-add-depend.html">
+            <span>Next : 4.5. Add New Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-customizing-project-info"></a>4.4. Customize Project Information</h2>
+          </div>
+        </div>
+      </div>
+      <p>Before we start writing code, let’s customize the project information
+a bit. We want to add some information about the project’s license,
+the organization, and a few of the developers associated with the
+project. This is all standard information you would expect to see in
+most projects. <a class="xref" href="customizing-sect-customizing-project-info.html#ex-custom-org-info" title="Adding Organizational, Legal, and Developer Information to the pom.xml">Adding Organizational, Legal, and Developer Information to the pom.xml</a> shows the XML that supplies the
+organizational information, the licensing information, and the
+developer information.</p>
+      <p><a id="ex-custom-org-info"></a><strong>Adding Organizational, Legal, and Developer Information to the pom.xml. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    ...
+
+    &lt;name&gt;simple-weather&lt;/name&gt;
+    &lt;url&gt;http://www.sonatype.com&lt;/url&gt;
+
+    &lt;licenses&gt;
+        &lt;license&gt;
+            &lt;name&gt;Apache 2&lt;/name&gt;
+            &lt;url&gt;http://www.apache.org/licenses/LICENSE-2.0.txt&lt;/url&gt;
+            &lt;distribution&gt;repo&lt;/distribution&gt;
+            &lt;comments&gt;A business-friendly OSS license&lt;/comments&gt;
+        &lt;/license&gt;
+    &lt;/licenses&gt;
+
+    &lt;organization&gt;
+        &lt;name&gt;Sonatype&lt;/name&gt;
+        &lt;url&gt;http://www.sonatype.com&lt;/url&gt;
+    &lt;/organization&gt;
+
+    &lt;developers&gt;
+        &lt;developer&gt;
+            &lt;id&gt;jason&lt;/id&gt;
+            &lt;name&gt;Jason Van Zyl&lt;/name&gt;
+            &lt;email&gt;jason@maven.org&lt;/email&gt;
+            &lt;url&gt;http://www.sonatype.com&lt;/url&gt;
+            &lt;organization&gt;Sonatype&lt;/organization&gt;
+            &lt;organizationUrl&gt;http://www.sonatype.com&lt;/organizationUrl&gt;
+            &lt;roles&gt;
+                &lt;role&gt;developer&lt;/role&gt;
+            &lt;/roles&gt;
+            &lt;timezone&gt;-6&lt;/timezone&gt;
+        &lt;/developer&gt;
+    &lt;/developers&gt;
+    ...
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>The ellipses in <a class="xref" href="customizing-sect-customizing-project-info.html#ex-custom-org-info" title="Adding Organizational, Legal, and Developer Information to the pom.xml">Adding Organizational, Legal, and Developer Information to the pom.xml</a> are shorthand for an
+abbreviated listing. When you see a <code class="literal">pom.xml</code> with “…” and “…”
+directly after the <code class="literal">project</code> element’s start tag and directly before
+the <code class="literal">project</code> element’s end tag, this implies that we are not showing
+the entire <code class="literal">pom.xml</code> file. In this case the <code class="literal">licenses</code>,
+<code class="literal">organization</code>, and <code class="literal">developers</code> elements were all added before the
+<code class="literal">dependencies</code> element.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-creating-simple-weather.html">
+            <span>Prev : 4.3. Creating the Simple Weather Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-add-depend.html">
+            <span>Next : 4.5. Add New Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

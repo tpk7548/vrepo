@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>5.6. Adding J2EE Dependencies</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="web.html" title="Chapter 5. A Simple Web Application" />
+    <link rel="prev" href="web-sect-adding-simple-servlet.html" title="5.5. Adding a Simple Servlet" />
+    <link rel="next" href="web-sect-conclusion.html" title="5.7. Conclusion" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-adding-simple-servlet.html">
+            <span>Prev : 5.5. Adding a Simple Servlet</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-conclusion.html">
+            <span>Next : 5.7. Conclusion</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="web-sect-adding-j2ee-depend"></a>5.6. Adding J2EE Dependencies</h2>
+          </div>
+        </div>
+      </div>
+      <p>To write a servlet, we’ll need to add the Servlet API as a dependency
+to the project’s POM.</p>
+      <p><strong>Add the Servlet 2.4 Specification as a Dependency. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+    [...]
+    &lt;dependencies&gt;
+        [...]
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    [...]
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>It is also worth pointing out that we have used the <code class="literal">provided</code> scope
+for this dependency. This tells Maven that the JAR is "provided" by
+the container and thus should not be included in the WAR. If you were
+interested in writing a custom JSP tag for this simple web
+application, you would need to add a dependency on the JSP 2.0
+API. Use the configuration shown in this example:</p>
+      <p><strong>Adding the JSP 2.0 Specification as a Dependency. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+    [...]
+    &lt;dependencies&gt;
+        [...]
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;
+            &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;
+            &lt;version&gt;2.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    [...]
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Once you’ve added the Servlet specification as a dependency, run <code class="literal">mvn
+clean install</code> followed by <code class="literal">mvn jetty:run</code>.</p>
+      <div class="note" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Note</h3>
+        <p><code class="literal">mvn jetty:run</code> will continue to run the Jetty servlet container
+until you stop the process with CTRL-C. If you started Jetty in
+<a class="xref" href="web-sect-configuring-jetty.html" title="5.4. Configuring the Jetty Plugin">Section 5.4, “Configuring the Jetty Plugin”</a>, you will need to stop that process
+before starting Jetty a second time.</p>
+      </div>
+      <pre class="screen">[tobrien@t1 simple-webapp]$ mvn clean install
+...
+[tobrien@t1 simple-webapp]$ mvn jetty:run
+[INFO] [jetty:run]
+...
+2007-12-14 16:18:31.305::INFO:  jetty-6.1.6rc1
+2007-12-14 16:18:31.453::INFO:  No Transaction manager found
+2007-12-14 16:18:32.745::INFO:  Started SelectChannelConnector@0.0.0.0:8080
+[INFO] Started Jetty Server</pre>
+      <p>At this point, you should be able to retrieve the output of the
+<code class="literal">SimpleServlet</code>. From the command line, you can use curl to print the
+output of this servlet to standard output:</p>
+      <pre class="screen">~/examples/ch-simple-web $ curl http://localhost:8080/simple-webapp/simple
+SimpleServlet Executed</pre>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-adding-simple-servlet.html">
+            <span>Prev : 5.5. Adding a Simple Servlet</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-conclusion.html">
+            <span>Next : 5.7. Conclusion</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

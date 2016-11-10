@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.11. Adding Unit Test Resources</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-test-scope.html" title="4.10. Adding Test-scoped Dependencies" />
+    <link rel="next" href="customizing-sect-executing-tests.html" title="4.12. Executing Unit Tests" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-test-scope.html">
+            <span>Prev : 4.10. Adding Test-scoped Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-executing-tests.html">
+            <span>Next : 4.12. Executing Unit Tests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-custom-test-resource"></a>4.11. Adding Unit Test Resources</h2>
+          </div>
+        </div>
+      </div>
+      <p>A unit test has access to a set of resources which are specific to
+tests. Often you’ll store files containing expected results and files
+containing dummy input in the test classpath. In this project, we’re
+storing a test XML document for <code class="literal">YahooParserTest</code> named
+<code class="literal">ny-weather.xml</code> and a file containing expected output from the
+<code class="literal">WeatherFormatter</code> in <code class="literal">format-expected.dat</code>.</p>
+      <p>To add test resources, you’ll need to create the <code class="literal">src/test/resources</code>
+directory. This is the default directory in which Maven looks for unit
+test resources. To create this directory execute the following
+commands from your project’s base directory.</p>
+      <pre class="screen">$ cd src/test
+$ mkdir resources
+$ cd resources</pre>
+      <p>Once you’ve create the resources directory, create a file named
+<code class="literal">format-expected.dat</code> in the <code class="literal">resources</code> directory.</p>
+      <p><strong>Simple Weather’s WeatherFormatterTest Expected Output. </strong>
+</p>
+      <pre class="screen">*********************************
+Current Weather Conditions for:
+New York, NY, US
+
+Temperature: 39
+Condition: Fair
+Humidity: 67
+Wind Chill: 39
+*********************************</pre>
+      <p>
+</p>
+      <p>This file should look familiar. It is the same output that was
+generated previously when you ran the Simple Weather project with the
+Maven Exec plugin. The second file you’ll need to add to the resources
+directory is <code class="literal">ny-weather.xml</code>.</p>
+      <p><strong>Simple Weather’s YahooParserTest XML Input. </strong>
+</p>
+      <pre class="screen">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes" ?&gt;
+&lt;rss version="2.0" xmlns:yweather="http://xml.weather.yahoo.com/ns/rss/1.0"
+     xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"&gt;
+  &lt;channel&gt;
+    &lt;title&gt;Yahoo Weather - New York, NY&lt;/title&gt;
+    &lt;link&gt;http://us.rd.yahoo.com/dailynews/rss/weather/New_York__NY/
+      &lt;/link&gt;
+    &lt;description&gt;Yahoo Weather for New York, NY&lt;/description&gt;
+    &lt;language&gt;en-us&lt;/language&gt;
+    &lt;lastBuildDate&gt;Sat, 10 Nov 2007 8:51 pm EDT&lt;/lastBuildDate&gt;
+
+    &lt;ttl&gt;60&lt;/ttl&gt;
+    &lt;yweather:location city="New York" region="NY" country="US" /&gt;
+    &lt;yweather:units temperature="F" distance="mi" pressure="in"
+      speed="mph"/&gt;
+    &lt;yweather:wind chill="39" direction="0" speed="0" /&gt;
+    &lt;yweather:atmosphere humidity="67" visibility="1609"
+      pressure="30.18" rising="1" /&gt;
+    &lt;yweather:astronomy sunrise="6:36 am" sunset="4:43 pm" /&gt;
+    &lt;image&gt;
+      &lt;title&gt;Yahoo Weather&lt;/title&gt;
+      &lt;width&gt;142&lt;/width&gt;
+      &lt;height&gt;18&lt;/height&gt;
+      &lt;link&gt;http://weather.yahoo.com/&lt;/link&gt;
+      &lt;url&gt;http://l.yimg.com/us.yimg.com/i/us/nws/th/main_142b.gif&lt;/url&gt;
+    &lt;/image&gt;
+    &lt;item&gt;
+      &lt;title&gt;Conditions for New York, NY at 8:51 pm EDT&lt;/title&gt;
+      &lt;geo:lat&gt;40.67&lt;/geo:lat&gt;
+      &lt;geo:long&gt;-73.94&lt;/geo:long&gt;
+      &lt;link&gt;http://us.rd.yahoo.com/dailynews/rss/weather/New_York__NY/
+        &lt;/link&gt;
+      &lt;pubDate&gt;Sat, 10 Nov 2007 8:51 pm EDT&lt;/pubDate&gt;
+      &lt;yweather:condition text="Fair" code="33" temp="39"
+                                date="Sat, 10 Nov 2007 8:51 pm EDT"/&gt;
+      &lt;description&gt;&lt;![CDATA[
+&lt;img src="http://l.yimg.com/us.yimg.com/i/us/we/52/33.gif" /&gt;&lt;br /&gt;
+&lt;b&gt;Current Conditions:&lt;/b&gt;&lt;br /&gt;
+Fair, 39 F&lt;BR /&gt;&lt;BR /&gt;
+&lt;b&gt;Forecast:&lt;/b&gt;&lt;BR /&gt;
+Sat - Partly Cloudy. High: 45 Low: 32&lt;br /&gt;
+Sun - Sunny. High: 50 Low: 38&lt;br /&gt;
+&lt;br /&gt;
+]]&gt;&lt;/description&gt;
+      &lt;yweather:forecast day="Sat" date="10 Nov 2007" low="32" high="45"
+                               text="Partly Cloudy" code="29" /&gt;
+
+      &lt;yweather:forecast day="Sun" date="11 Nov 2007" low="38" high="50"
+                               text="Sunny" code="32" /&gt;
+      &lt;guid isPermaLink="false"&gt;10002_2007_11_10_20_51_EDT&lt;/guid&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</pre>
+      <p>
+</p>
+      <p>This file contains a test XML document for the <code class="literal">YahooParserTest</code>. We
+store this file so that we can test the <code class="literal">YahooParser</code> without having
+to retrieve an XML response from Yahoo Weather.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-test-scope.html">
+            <span>Prev : 4.10. Adding Test-scoped Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-executing-tests.html">
+            <span>Next : 4.12. Executing Unit Tests</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

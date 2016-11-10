@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>3.5. Core Concepts</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="simple-project.html" title="Chapter 3. A Simple Maven Project" />
+    <link rel="prev" href="simple-project-sect-pom.html" title="3.4. Simple Project Object Model" />
+    <link rel="next" href="simple-project-sect-summary.html" title="3.6. Summary" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-pom.html">
+            <span>Prev : 3.4. Simple Project Object Model</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-summary.html">
+            <span>Next : 3.6. Summary</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-simple-core"></a>3.5. Core Concepts</h2>
+          </div>
+        </div>
+      </div>
+      <p>Having just run Maven for the first time, it is a good time to
+introduce a few of the core concepts of Maven. In the previous
+example, you generated a project which consisted of a POM and some
+code assembled in the Maven standard directory layout. You then
+executed Maven with a lifecycle phase as an argument, which prompted
+Maven to execute a series of Maven plugin goals. Lastly, you installed
+a Maven artifact into your local repository. Wait? What is a
+"lifecycle"? What is a "local repository"? The following section
+defines some of Maven’s central concepts.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-plugins-goals"></a>3.5.1. Maven Plugins and Goals</h3>
+            </div>
+          </div>
+        </div>
+        <p>To execute a single Maven plugin goal, we used the syntax <code class="literal">mvn
+archetype:generate</code>, where <code class="literal">archetype</code> is the identifier of a plugin
+and <code class="literal">generate</code> is the identifier of a goal. When Maven executes a
+plugin goal, it prints out the plugin identifier and goal identifier
+to standard output:</p>
+        <pre class="screen">$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook.simple
+...
+[INFO] [archetype:generate]
+...</pre>
+        <p>A Maven Plugin is a collection of one or more goals. Examples of Maven
+plugins can be simple core plugins like the Jar plugin, which contains
+goals for creating JAR files, Compiler plugin, which contains goals
+for compiling source code and unit tests, or the Surefire plugin,
+which contains goals for executing unit tests and generating
+reports. Other, more specialized Maven plugins include plugins like
+the Hibernate3 plugin for integration with the popular persistence
+library Hibernate, the JRuby plugin which allows you to execute ruby
+as part of a Maven build or to write Maven plugins in Ruby. Maven also
+provides for the ability to define custom plugins. A custom plugin can
+be written in Java, or a plugin can be written in any number of
+languages including Ant, Groovy, beanshell, and, as previously
+mentioned, Ruby.</p>
+        <div class="figure">
+          <a id="fig-plugin-goals"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_plugin.png" alt="figs/web/simple-project_plugin.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.1. A Plugin Contains Goals</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>A goal is a specific task that may be executed as a standalone goal or
+along with other goals as part of a larger build. A goal is a “unit of
+work” in Maven. Examples of goals include the <code class="literal">compile</code> goal in the
+Compiler plugin, which compiles all of the source code for a project,
+or the <code class="literal">test</code> goal of the Surefire plugin, which can execute unit
+tests. Goals are configured via configuration properties that can be
+used to customize behavior. For example, the <code class="literal">compile</code> goal of the
+Compiler plugin defines a set of configuration parameters.  When
+running the <code class="literal">archetype:generate</code> goal earlier in
+<a class="xref" href="simple-project-sect-create-simple.html" title="3.2. Creating a Simple Project">Section 3.2, “Creating a Simple Project”</a> we passed the <code class="literal">package</code>
+parameter to the <code class="literal">generate</code> goal as <code class="literal">org.sonatype.mavenbook</code>. If we
+had omitted the <code class="literal">package</code> parameter, the package name would have
+defaulted to <code class="literal">org.sonatype.mavenbook.simple</code>.</p>
+        <div class="note" style="margin-left: 0; margin-right: 10%;">
+          <h3 class="title">Note</h3>
+          <p>When referring to a plugin goal, we frequently use the shorthand
+notation: pluginId:goalId. For example, when referring to the
+<code class="literal">generate</code> goal in the Archetype plugin, we write
+<code class="literal">archetype:generate</code>.</p>
+        </div>
+        <p>Goals define parameters that can define sensible default values. In
+the <code class="literal">archetype:generate</code> example, we did not specify what kind of
+archetype the goal was to create on our command line; we simply passed
+in a <code class="literal">groupId</code> and an <code class="literal">artifactId</code>. Not passing in the type of
+artifact we wanted to create caused the <code class="literal">generate</code> goal to prompt us
+for input, the generate goal stopped and asked us to choose an
+archetype from a list. If you had run the <code class="literal">archetype:create</code> goal
+instead, Maven would have assumed that you wanted to generate a new
+project using the default <code class="literal">maven-archetype-quickstart</code> archetype. This
+is our first brush with convention over configuration. The convention,
+or default, for the <code class="literal">create</code> goal is to create a simple project called
+Quickstart. The <code class="literal">create</code> goal defines a configuration property
+<code class="literal">archetypeArtifactId</code> that has a default value of
+<code class="literal">maven-archetype-quickstart</code>. The Quickstart archetype generates a
+minimal project shell that contains a POM and a single class. The
+Archetype plugin is far more powerful than this first example
+suggests, but it is a great way to get new projects started
+fast. Later in this book, we’ll show you how the Archetype plugin can
+be used to generate more complex projects such as web applications,
+and how you can use the Archetype plugin to define your own set of
+projects.</p>
+        <p>The core of Maven has little to do with the specific tasks involved in
+your project’s build. By itself, Maven doesn’t know how to compile
+your code or even how to make a JAR file. It delegates all of this
+work to Maven plugins like the Compiler plugin and the Jar plugin,
+which are downloaded on an as-needed basis and periodically updated
+from the central Maven repository. When you download Maven, you are
+getting the core of Maven, which consists of a very basic shell that
+knows only how to parse the command line, manage a classpath, parse a
+POM file, and download Maven plugins as needed. By keeping the
+Compiler plugin separate from Maven’s core and providing for an update
+mechanism, Maven makes it easier for users to have access to the
+latest options in the compiler. In this way, Maven plugins allow for
+universal reusability of common build logic. You are not defining the
+compile task in a build file; you are using a Compiler plugin that is
+shared by every user of Maven. If there is an improvement to the
+Compiler plugin, every project that uses Maven can immediately benefit
+from this change. (And, if you don’t like the Compiler plugin, you can
+override it with your own implementation.)</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-lifecycle"></a>3.5.2. Maven Lifecycle</h3>
+            </div>
+          </div>
+        </div>
+        <p>The second command we ran in the previous section included an
+execution of the Maven lifecycle. It begins with a phase to validate
+the basic integrity of the project and ends with a phase that involves
+deploying a project to production. Lifecycle phases are intentionally
+vague, defined solely as validation, testing, or deployment, and they
+may mean different things to different projects. For example, in a
+project that produces a Java archive, the <code class="literal">package</code> phase produces a
+JAR; in a project that produces a web application, the <code class="literal">package</code> phase
+produces a WAR.</p>
+        <p>Plugin goals can be attached to a lifecycle phase. As Maven moves
+through the phases in a lifecycle, it will execute the goals attached
+to each particular phase. Each phase may have zero or more goals bound
+to it. In the previous section, when you ran <code class="literal">mvn install</code>, you might
+have noticed that more than one goal was executed. Examine the output
+after running <code class="literal">mvn install</code> and take note of the various goals that
+are executed. When this simple example reached the <code class="literal">package</code> phase, it
+executed the <code class="literal">jar</code> goal in the Jar plugin. Since our simple Quickstart
+project has (by default) a <code class="literal">jar</code> packaging type, the <code class="literal">jar:jar</code> goal is
+bound to the <code class="literal">package</code> phase.</p>
+        <div class="figure">
+          <a id="fig-goals-bind-to-phases"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_phasebinding.png" alt="figs/web/simple-project_phasebinding.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.2. A Goal Binds to a Phase</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>We know that the <code class="literal">package</code> phase is going to create a JAR file for a
+project with <code class="literal">jar</code> packaging. But what of the goals preceding it, such
+as <code class="literal">compiler:compile</code> and <code class="literal">surefire:test</code>? These goals are executed as
+Maven steps in the phases preceding <code class="literal">package</code> in the Maven lifecycle.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+<code class="literal">resources:resources</code>
+</span>
+            </dt>
+            <dd>
+  plugin is bound to the <code class="literal">process-resources</code> phase. This goal copies
+  all of the resources from <code class="literal">src/main/resources</code> and any other
+  configured resource directories to the output directory.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">compiler:compile</code>
+</span>
+            </dt>
+            <dd>
+  is bound to the <code class="literal">compile</code> phase. This goal compiles all of the
+  source code from <code class="literal">src/main/java</code> or any other configured source
+  directories to the output directory.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">resources:testResources</code>
+</span>
+            </dt>
+            <dd>
+  plugin is bound to the <code class="literal">process-test-resources</code> phase. This goal
+  copies all of the resources from <code class="literal">src/test/resources</code> and any other
+  configured test resource directories to a test output directory.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">compiler:testCompile</code>
+</span>
+            </dt>
+            <dd>
+  plugin is bound to the <code class="literal">test-compile</code> phase. This goal compiles test
+  cases from <code class="literal">src/test/java</code> and any other configured test source
+  directories to a test output directory.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">surefire:test</code>
+</span>
+            </dt>
+            <dd>
+  bound to the <code class="literal">test</code> phase. This goal executes all of the tests and
+  creates output files that capture detailed results. By default, this
+  goal will terminate a build if there is a test failure.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">jar:jar</code>
+</span>
+            </dt>
+            <dd>
+  to the <code class="literal">package</code> phase. This goal packages the output directory into
+  a JAR file.
+</dd>
+          </dl>
+        </div>
+        <div class="figure">
+          <a id="fig-goals-bind-to-default-lifecycle"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_lifecyclebinding.png" alt="figs/web/simple-project_lifecyclebinding.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.3. Bound Goals are Run when Phases Execute</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>To summarize, when we executed <code class="literal">mvn install</code>, Maven executes all
+phases up to the install phase, and in the process of stepping through
+the lifecycle phases it executes all goals bound to each
+phase. Instead of executing a Maven lifecycle goal you could achieve
+the same results by specifying a sequence of plugin goals as follows:</p>
+        <pre class="screen">mvn resources:resources \
+    compiler:compile \
+    resources:testResources \
+    compiler:testCompile \
+    surefire:test \
+    jar:jar \
+    install:install</pre>
+        <p>It is much easier to execute lifecycle phases than it is to specify
+explicit goals on the command line, and the common lifecycle allows
+every project that uses Maven to adhere to a well-defined set of
+standards. The lifecycle is what allows a developer to jump from one
+Maven project to another without having to know very much about the
+details of each particular project’s build. If you can build one Maven
+project, you can build them all.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-maven-coordinates"></a>3.5.3. Maven Coordinates</h3>
+            </div>
+          </div>
+        </div>
+        <p>The Archetype plugin created a project with a file named
+<code class="literal">pom.xml</code>. This is the Project Object Model (POM), a declarative
+description of a project. When Maven executes a goal, each goal has
+access to the information defined in a project’s POM. When the
+<code class="literal">jar:jar</code> goal needs to create a JAR file, it looks to the POM to find
+out what the JAR file’s name is. When the <code class="literal">compiler:compile</code> goal
+compiles Java source code into bytecode, it looks to the POM to see if
+there are any parameters for the compile goal. Goals execute in the
+context of a POM. Goals are actions we wish to take upon a project,
+and a project is defined by a POM. The POM names the project, provides
+a set of unique identifiers (coordinates) for a project, and defines
+the relationships between this project and others through
+dependencies, parents, and prerequisites. A POM can also customize
+plugin behavior and supply information about the community and
+developers involved in a project.</p>
+        <p>Maven coordinates define a set of identifiers which can be used to
+uniquely identify a project, a dependency, or a plugin in a Maven
+POM. Take a look at the following POM.</p>
+        <div class="figure">
+          <a id="fig-project-coords"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_annopom.png" alt="figs/web/simple-project_annopom.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.4. A Maven Project’s Coordinates</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>We’ve highlighted the Maven coordinates for this project: the
+<code class="literal">groupId</code>, <code class="literal">artifactId</code>, <code class="literal">version</code> and <code class="literal">packaging</code>. These combined
+identifiers make up a project’s coordinates.  There is a fifth,
+seldom-used coordinate named <code class="literal">classifier</code> which we will introduce
+later in the book. You can feel free to ignore classifiers for
+now. Just like in any other coordinate system, a set of Maven
+coordinates is an address for a specific point in "space". Maven
+pinpoints a project via its coordinates when one project relates to
+another, either as a dependency, a plugin, or a parent project
+reference. Maven coordinates are often written using a colon as a
+delimiter in the following format:
+<code class="literal">groupId:artifactId:packaging:version</code>. In the above <code class="literal">pom.xml</code> file
+for our current project, its coordinates are represented as
+<code class="literal">mavenbook:my-app:jar:1.0-SNAPSHOT</code>.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+<code class="literal">groupId</code>
+</span>
+            </dt>
+            <dd>
+   The group, company, team, organization, project, or other
+   group. The convention for group identifiers is that they begin with
+   the reverse domain name of the organization that creates the
+   project. Projects from Sonatype would have a <code class="literal">groupId</code> that begins
+   with <code class="literal">com.sonatype</code>, and projects in the Apache Software Foundation
+   would have a <code class="literal">groupId</code> that starts with <code class="literal">org.apache</code>.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">artifactId</code>
+</span>
+            </dt>
+            <dd>
+   A unique identifier under <code class="literal">groupId</code> that represents a single
+   project.
+</dd>
+            <dt>
+              <span class="term">
+<code class="literal">version</code>
+</span>
+            </dt>
+            <dd>
+   A specific release of a project. Projects that have been released
+   have a fixed version identifier that refers to a specific version
+   of the project. Projects undergoing active development can use a
+   special identifier that marks a version as a <code class="literal">SNAPSHOT</code>.
+</dd>
+          </dl>
+        </div>
+        <p>The packaging format of a project is also an important component in
+the Maven coordinates, but it isn’t a part of a project’s unique
+identifier. A project’s <code class="literal">groupId:artifactId:version</code> make that project
+unique; you can’t have a project with the same three <code class="literal">groupId</code>,
+<code class="literal">artifactId</code>, and <code class="literal">version</code> identifiers.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+<code class="literal">packaging</code>
+</span>
+            </dt>
+            <dd>
+   The type of project, defaulting to <code class="literal">jar</code>, describing the packaged
+   output produced by a project. A project with packaging <code class="literal">jar</code>
+   produces a JAR archive; a project with packaging <code class="literal">war</code> produces a
+   web application.
+</dd>
+          </dl>
+        </div>
+        <p>These four elements become the key to locating and using one
+particular project in the vast space of other “Mavenized” projects
+. Maven repositories (public, private, and local) are organized
+according to these identifiers. When this project is installed into
+the local Maven repository, it immediately becomes locally available
+to any other project that wishes to use it. All you must do is add it
+as a dependency of another project using the unique Maven coordinates
+for a specific artifact.</p>
+        <div class="figure">
+          <a id="fig-simple-mavenspace"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_mavenspace.png" alt="figs/web/simple-project_mavenspace.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.5. Maven Space is a Coordinate System of Projects</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-section-simple-repo"></a>3.5.4. Maven Repositories</h3>
+            </div>
+          </div>
+        </div>
+        <p>When you run Maven for the first time, you will notice that Maven
+downloads a number of files from a remote Maven repository. If the
+simple project was the first time you ran Maven, the first thing it
+will do is download the latest release of the Resources plugin when it
+triggers the <code class="literal">resources:resource</code> goal. In Maven, artifacts and
+plugins are retrieved from a remote repository when they are
+needed. One of the reasons the initial Maven download is so small (1.5
+MiB) is due to the fact that Maven doesn’t ship with much in the way
+of plugins. Maven ships with the bare minimum and fetches from a
+remote repository when it needs to. Maven ships with a default remote
+repository location
+(<a class="ulink" href="http://repo1.maven.org/maven2" target="_top">http://repo1.maven.org/maven2</a>) which
+it uses to download the core Maven plugins and dependencies.</p>
+        <p>Often you will be writing a project which depends on libraries that
+are neither free nor publicly distributed. In this case you will need
+to either setup a custom repository inside your organization’s network
+or download and install the dependencies manually. The default remote
+repositories can be replaced or augmented with references to custom
+Maven repositories maintained by your organization. There are multiple
+products available to allow organizations to manage and maintain
+mirrors of the public Maven repositories.</p>
+        <p>What makes a Maven repository a Maven repository? A repository is a
+collection of project artifacts stored in a directory structure that
+closely matches a project’s Maven coordinates. You can see this
+structure by opening up a web browser and browsing the central Maven
+repository at
+<a class="ulink" href="http://repo1.maven.org/maven2/" target="_top">http://repo1.maven.org/maven2/</a>. You
+will see that an artifact with the coordinates
+<code class="literal">org.apache.commons:commons-email:1.1</code> is available under the
+directory <code class="literal">/org/apache/commons/commons-email/1.1/</code> in a file named
+<code class="literal">commons-email-1.1.jar</code>. The standard for a Maven repository is to
+store an artifact in the following directory relative to the root of
+the repository:</p>
+        <pre class="screen">/&lt;groupId&gt;/&lt;artifactId&gt;/&lt;version&gt;/&lt;artifactId&gt;-&lt;version&gt;.&lt;packaging&gt;</pre>
+        <p>Maven downloads artifacts and plugins from a remote repository to your
+local machine and stores these artifacts in your local Maven
+repository. Once Maven has downloaded an artifact from the remote
+Maven repository it never needs to download that artifact again as
+Maven will always look for the artifact in the local repository before
+looking elsewhere. On Windows XP, your local repository is likely in
+<code class="literal">C:\Documents and Settings\USERNAME\.m2\repository</code>, and on Windows
+Vista, your local repository is in
+<code class="literal">C:\Users\USERNAME\.m2\repository</code>. On Unix systems, your local Maven
+repository is available in <code class="literal">~/.m2/repository</code>. When you build a
+project like the simple project you created in the previous section,
+the <code class="literal">install</code> phase executes a goal which installs your project’s
+artifacts in your local Maven repository.</p>
+        <p>In your local repository, you should be able to see the artifact
+created by our simple project. If you run the <code class="literal">mvn install</code> command,
+Maven will install our project’s artifact in your local
+repository. Try it.</p>
+        <pre class="screen">$ mvn install
+...
+[INFO] [install:install]
+[INFO] Installing .../simple-1.0-SNAPSHOT.jar to \
+~/.m2/repository/com/sonatype/maven/simple/1.0-SNAPSHOT/ \
+simple-1.0-SNAPSHOT.jar
+...</pre>
+        <p>As you can see from the output of this command, Maven installed our
+project’s JAR file into our local Maven repository. Maven uses the
+local repository to share dependencies across local projects. If you
+develop two projects—project A and project B—with project B depending
+on the artifact produced by project A, Maven will retrieve project A’s
+artifact from your local repository when it is building project
+B. Maven repositories are both a local cache of artifacts downloaded
+from a remote repository and a mechanism for allowing your projects to
+depend on each other.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-dep-management"></a>3.5.5. Maven’s Dependency Management</h3>
+            </div>
+          </div>
+        </div>
+        <p>In this chapter’s simple example, Maven resolved the coordinates of
+the JUnit dependency <code class="literal">junit:junit:3.8.1</code> to a path in a Maven
+repository <code class="literal">/junit/junit/3.8.1/junit-3.8.1.jar</code>. The ability to locate
+an artifact in a repository based on Maven coordinates gives us the
+ability to define dependencies in a project’s POM. If you examine the
+simple project’s <code class="literal">pom.xml</code> file, you will see that there is a section
+which deals with dependencies, and that this section contains a single
+dependency—JUnit.</p>
+        <p>A more complex project would contain more than one dependency, or it
+might contain dependencies that depend on other artifacts. Support for
+transitive dependencies is one of Maven’s most powerful
+features. Let’s say your project depends on a library that, in turn,
+depends on 5 or 10 other libraries (Spring or Hibernate, for
+example). Instead of having to track down all of these dependencies
+and list them in your <code class="literal">pom.xml</code> explicitly, you can simply depend on
+the library you are interested in and Maven will add the dependencies
+of this library to your project’s dependencies implicitly. Maven will
+also take care of working out conflicts between dependencies, and
+provides you with the ability to customize the default behavior and
+exclude certain transitive dependencies.</p>
+        <p>Let’s take a look at a dependency which was downloaded to your local
+repository when you ran the previous example. Look in your local
+repository path under <code class="literal">~/.m2/repository/junit/junit/3.8.1/</code>. If you
+have been following this chapter’s examples, there will be a file
+named <code class="literal">junit-3.8.1.jar</code> and a <code class="literal">junit-3.8.1.pom</code> file in addition to a
+few checksum files which Maven uses to verify the authenticity of a
+downloaded artifact. Note that Maven doesn’t just download the JUnit
+JAR file, Maven also downloads a POM file for the JUnit
+dependency. The fact that Maven downloads POM files in addition to
+artifacts is central to Maven’s support for transitive dependencies.</p>
+        <p>When you install your project’s artifact in the local repository, you
+will also notice that Maven publishes a slightly modified version of
+the project’s <code class="literal">pom.xml</code> file in the same directory as the JAR
+file. Storing a POM file in the repository gives other projects
+information about this project, most importantly what dependencies it
+has. If Project B depends on Project A, it also depends on Project A’s
+dependencies. When Maven resolves a dependency artifact from a set of
+Maven coordinates, it also retrieves the POM and consults the
+dependencies POM to find any transitive dependencies. These transitive
+dependencies are then added as dependencies of the current project.</p>
+        <p>A dependency in Maven isn’t just a JAR file; it’s a POM file that, in
+turn, may declare dependencies on other artifacts. These dependencies
+of dependencies are called transitive dependencies, and they are made
+possible by the fact that the Maven repository stores more than just
+bytecode; it stores metadata about artifacts.</p>
+        <div class="figure">
+          <a id="fig-resolve-transitive"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/simple-project_depgraph.png" alt="figs/web/simple-project_depgraph.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 3.6. Maven Resolves Transitive Dependencies</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>In the previous figure, project A depends on projects B and C. Project
+B depends on project D, and project C depends on project E. The full
+set of direct and transitive dependencies for project A would be
+projects B, C, D, and E, but all project A had to do was define a
+dependency on B and C. Transitive dependencies can come in handy when
+your project relies on other projects with several small dependencies
+(like Hibernate, Apache Struts, or the Spring Framework). Maven also
+provides you with the ability to exclude transitive dependencies from
+being included in a project’s classpath.</p>
+        <p>Maven also provides for different dependency scopes. The simple
+project’s <code class="literal">pom.xml</code> contains a single dependency
+—<code class="literal">junit:junit:jar:3.8.1</code> — with a scope of <code class="literal">test</code>. When a dependency
+has a scope of <code class="literal">test</code>, it will not be available to the <code class="literal">compile</code> goal
+of the Compiler plugin. It will be added to the classpath for only the
+<code class="literal">compiler:testCompile</code> and <code class="literal">surefire:test</code> goals.</p>
+        <p>When you create a JAR for a project, dependencies are not bundled with
+the generated artifact; they are used only for compilation. When you
+use Maven to create a WAR or an EAR file, you can configure Maven to
+bundle dependencies with the generated artifact, and you can also
+configure it to exclude certain dependencies from the WAR file using
+the <code class="literal">provided</code> scope. The <code class="literal">provided</code> scope tells Maven that a
+dependency is needed for compilation, but should not be bundled with
+the output of a build. This scope comes in handy when you are
+developing a web application. You’ll need to compile your code against
+the Servlet specification, but you don’t want to include the Servlet
+API JAR in your web application’s <code class="literal">WEB-INF/lib</code> directory.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-site-generation"></a>3.5.6. Site Generation and Reporting</h3>
+            </div>
+          </div>
+        </div>
+        <p>Another important feature of Maven is its ability to generate
+documentation and reports. In your simple project’s directory, execute
+the following command:</p>
+        <pre class="screen">$ mvn site</pre>
+        <p>This will execute the <code class="literal">site</code> lifecycle phase. Unlike the default build
+lifecycle that manages generation of code, manipulation of resources,
+compilation, packaging, etc., this lifecycle is concerned solely with
+processing site content under the <code class="literal">src/site</code> directories and
+generating reports. After this command executes, you should see a
+project web site in the <code class="literal">target/site</code> directory. Load
+<code class="literal">target/site/index.html</code> and you should see a basic shell of a project
+site. This shell contains some reports under “Project Reports” in the
+lefthand navigation menu, and it also contains information about the
+project, the dependencies, and developers associated with it under
+“Project Information.” The simple project’s web site is mostly empty,
+since the POM contains very little information about itself beyond its
+Maven coordinates, a name, a URL, and a single test dependency.</p>
+        <p>On this site, you’ll notice that some default reports are available. A
+unit test report communicates the success and failure of all unit
+tests in the project. Another report generates Javadoc for the
+project’s API. Maven provides a full range of configurable reports,
+such as the Clover report that examines unit test coverage, the JXR
+report that generates cross-referenced HTML source code listings
+useful for code reviews, the PMD report that analyzes source code for
+various coding problems, and the JDepend report that analyzes the
+dependencies between packages in a codebase. You can customize site
+reports by configuring which reports are included in a build via the
+<code class="literal">pom.xml</code> file.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-pom.html">
+            <span>Prev : 3.4. Simple Project Object Model</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-summary.html">
+            <span>Next : 3.6. Summary</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

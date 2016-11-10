@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.5. The Simple Persist Module</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-simple-weather.html" title="7.4. The Simple Weather Module" />
+    <link rel="next" href="multimodule-web-spring-sect-simple-web.html" title="7.6. The Simple Web Application Module" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-weather.html">
+            <span>Prev : 7.4. The Simple Weather Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-web.html">
+            <span>Next : 7.6. The Simple Web Application Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-simple-persist"></a>7.5. The Simple Persist Module</h2>
+          </div>
+        </div>
+      </div>
+      <p>This module defines two very simple Data Access Objects (DAOs). A DAO
+is an object that provides an interface for persistence operations. In
+an application that makes use of an Object-Relational Mapping (ORM)
+framework such as Hibernate, DAOs are usually defined around
+objects. In this project, we are defining two DAO objects:
+<code class="literal">WeatherDAO</code> and <code class="literal">LocationDAO</code>. The <code class="literal">WeatherDAO</code> class allows us to
+save a <code class="literal">Weather</code> object to a database and retrieve a <code class="literal">Weather</code> object
+by <code class="literal">id</code>, and to retrieve <code class="literal">Weather</code> objects that match a specific
+<code class="literal">Location</code>. The <code class="literal">LocationDAO</code> has a method that allows us to retrieve
+a <code class="literal">Location</code> object by zip code. First, let’s take a look at the
+<code class="literal">simple-persist</code> POM in <a class="xref" href="multimodule-web-spring-sect-simple-persist.html#ex-simple-persist-POM" title="simple-persist POM">simple-persist POM</a>.</p>
+      <p><a id="ex-simple-persist-POM"></a><strong>simple-persist POM. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+        &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+        &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;artifactId&gt;simple-persist&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;Simple Persistence API&lt;/name&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+            &lt;artifactId&gt;simple-model&lt;/artifactId&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate&lt;/artifactId&gt;
+            &lt;version&gt;3.2.5.ga&lt;/version&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;javax.transaction&lt;/groupId&gt;
+                    &lt;artifactId&gt;jta&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-annotations&lt;/artifactId&gt;
+            &lt;version&gt;3.3.0.ga&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-commons-annotations&lt;/artifactId&gt;
+            &lt;version&gt;3.3.0.ga&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring&lt;/artifactId&gt;
+            &lt;version&gt;2.0.7&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>This POM file references <code class="literal">simple-parent</code> as a parent POM, and it
+defines a few dependencies. The dependencies listed in
+<code class="literal">simple-persist</code>'s POM are:</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.multispring:simple-model:1.0</code>
+</span>
+          </dt>
+          <dd>
+   Just like the <code class="literal">simple-weather</code> module, this persistence module
+   references the core model objects defined in <code class="literal">simple-model</code>.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.hibernate:hibernate:3.2.5.ga</code>
+</span>
+          </dt>
+          <dd>
+   We define a dependency on Hibernate version 3.2.5.ga, but notice
+   that we’re excluding a dependency of Hibernate. We’re doing this
+   because the <code class="literal">javax.<code class="literal">transaction:</code>jta</code> dependency is not available
+   in the public Maven repository. This dependency happens to be one
+   of those Sun dependencies that has not yet made it into the free
+   central Maven repository. To avoid an annoying message telling us
+   to go download these nonfree dependencies, we simply exclude this
+   dependency from Hibernate.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">javax.servlet:servlet-api:2.4</code>
+</span>
+          </dt>
+          <dd>
+   Since this project contains a Servlet, we need to include the
+   Servlet API version 2.4.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.springframework:spring:2.0.7</code>
+</span>
+          </dt>
+          <dd>
+   This includes the entire Spring Framework as a dependency.  It is
+   generally a good practice to depend on only the components of
+   Spring you happen to be using. The Spring Framework project has
+   been nice enough to create focused artifacts such as
+   <code class="literal">spring-hibernate3</code>.
+</dd>
+        </dl>
+      </div>
+      <p>Why depend on Spring? When it comes to Hibernate integration, Spring
+allows us to leverage helper classes such as
+<code class="literal">HibernateDaoSupport</code>. For an example of what is possible with the
+help of <code class="literal">HibernateDaoSupport</code>, take a look at the code for the
+<code class="literal">WeatherDAO</code> in <a class="xref" href="multimodule-web-spring-sect-simple-persist.html#ex-persist-weatherdao-class" title="simple-persist’s WeatherDAO Class">simple-persist’s WeatherDAO Class</a>.</p>
+      <p><a id="ex-persist-weatherdao-class"></a><strong>simple-persist’s WeatherDAO Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather.persist;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import org.sonatype.mavenbook.weather.model.Location;
+import org.sonatype.mavenbook.weather.model.Weather;
+
+public class WeatherDAO extends HibernateDaoSupport { <a id="CO2-1"></a>(1)
+
+  public WeatherDAO() {}
+
+  public void save(Weather weather) { <a id="CO2-2"></a>(2)
+    getHibernateTemplate().save( weather );
+  }
+
+  public Weather load(Integer id) { <a id="CO2-3"></a>(3)
+    return (Weather) getHibernateTemplate().load( Weather.class, id);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List&lt;Weather&gt; recentForLocation( final Location location ) {
+    return (List&lt;Weather&gt;) getHibernateTemplate().execute(
+        new HibernateCallback() { <a id="CO2-4"></a>(4)
+          public Object doInHibernate(Session session) {
+              Query query =
+                getSession().getNamedQuery("Weather.byLocation");
+              query.setParameter("location", location);
+              return new ArrayList&lt;Weather&gt;( query.list() );
+        }
+    });
+  }
+}</pre>
+      <p>
+</p>
+      <p>That’s it. No really, you are done writing a class that can insert new
+rows, select by primary key, and find all rows in Weather that join to
+an id in the Location table. Clearly, we can’t stop this book and
+insert the five hundred pages it would take to get you up to speed on
+the intricacies of Hibernate, but we can do some very quick
+explanation:</p>
+      <div class="calloutlist">
+        <table border="0" summary="Callout list">
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO2-1">(1)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+This class extends <code class="literal">HibernateDaoSupport</code>. What this means is that
+the class is going to be associated with a Hibernate <code class="literal">SessionFactory</code>
+which it is going to use to create Hibernate <code class="literal">Session</code> objects. In
+Hibernate, every operation goes through a <code class="literal">Session</code> object, a
+<code class="literal">Session</code> mediates access to the underlying database and takes care of
+managing the connection to the JDBC <code class="literal">DataSource</code>. Extending
+<code class="literal">HibernateDaoSupport</code> also means that we can access the
+<code class="literal">HibernateTemplate</code> using <code class="literal">getHibernateTemplate()</code>. For an example of
+what can be done with the <code class="literal">HibernateTemplate</code>…
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO2-2">(2)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">save()</code> method takes an instance of <code class="literal">Weather</code> and calls the
+<code class="literal">save()</code> method on a <code class="literal">HibernateTemplate</code>. The <code class="literal">HibernateTemplate</code>
+simplifies calls to common Hibernate operations and converts any
+database specific exceptions to runtime exceptions. Here we call out
+to <code class="literal">save()</code> which inserts a new record into the <code class="literal">Weather</code>
+table. Alternatives to <code class="literal">save()</code> are <code class="literal">update()</code> which updates an
+existing row, or <code class="literal">saveOrUpdate()</code> which would either save or update
+depending on the presence of a non-null <code class="literal">id</code> property in Weather.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO2-3">(3)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+The <code class="literal">load()</code> method, once again, is a one-liner that just calls a
+method on an instance of <code class="literal">HibernateTemplate</code>. <code class="literal">load()</code> on
+<code class="literal">HibernateTemplate</code> takes a <code class="literal">Class</code> object and a <code class="literal">Serializable</code>
+object. In this case, the <code class="literal">Serializable</code> corresponds to the <code class="literal">id</code> value
+of the <code class="literal">Weather</code> object to load.
+</p>
+            </td>
+          </tr>
+          <tr>
+            <td width="5%" valign="top" align="left">
+              <p><a href="#CO2-4">(4)</a> </p>
+            </td>
+            <td valign="top" align="left">
+              <p>
+This last method <code class="literal">recentForLocation()</code> calls out to a <code class="literal">NamedQuery</code>
+defined in the <code class="literal">Weather</code> model object. If you can think back that far,
+the <code class="literal">Weather</code> model object defined a named query
+<code class="literal">"Weather.byLocation"</code> with a query of <code class="literal">"from Weather w where
+w.location = :location"</code>. We’re loading this <code class="literal">NamedQuery</code> using a
+reference to a Hibernate <code class="literal">Session</code> object inside a <code class="literal">HibernateCallback</code>
+which is executed by the <code class="literal">execute()</code> method on
+<code class="literal">HibernateTemplate</code>. You can see in this method that we’re populating
+the named parameter <code class="literal">location</code> with the parameter passed in to the
+<code class="literal">recentForLocation()</code> method.
+</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>Now is a good time for some clarification. <code class="literal">HibernateDaoSupport</code> and
+<code class="literal">HibernateTemplate</code> are classes from the Spring Framework. They were
+created by the Spring Framework to make writing Hibernate DAO objects
+painless. To support this DAO, we’ll need to do some configuration in
+the <code class="literal">simple-persist</code> Spring <code class="literal">ApplicationContext</code> definition. The XML
+document shown in <a class="xref" href="multimodule-web-spring-sect-simple-persist.html#ex-persist-spring" title="Spring Application Context for simple-persist">Spring Application Context for simple-persist</a> is stored in
+<code class="literal">src/main/resources</code> in a file named <code class="literal">applicationContext-persist.xml</code>.</p>
+      <p><a id="ex-persist-spring"></a><strong>Spring Application Context for simple-persist. </strong>
+</p>
+      <pre class="screen">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-lazy-init="true"&gt;
+
+  &lt;bean id="sessionFactory"
+    class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"&gt;
+    &lt;property name="annotatedClasses"&gt;
+      &lt;list&gt;
+        &lt;value&gt;org.sonatype.mavenbook.weather.model.Atmosphere&lt;/value&gt;
+        &lt;value&gt;org.sonatype.mavenbook.weather.model.Condition&lt;/value&gt;
+        &lt;value&gt;org.sonatype.mavenbook.weather.model.Location&lt;/value&gt;
+        &lt;value&gt;org.sonatype.mavenbook.weather.model.Weather&lt;/value&gt;
+        &lt;value&gt;org.sonatype.mavenbook.weather.model.Wind&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="hibernateProperties"&gt;
+      &lt;props&gt;
+        &lt;prop key="hibernate.show_sql"&gt;false&lt;/prop&gt;
+        &lt;prop key="hibernate.format_sql"&gt;true&lt;/prop&gt;
+        &lt;prop key="hibernate.transaction.factory_class"&gt;
+          org.hibernate.transaction.JDBCTransactionFactory
+        &lt;/prop&gt;
+        &lt;prop key="hibernate.dialect"&gt;
+          org.hibernate.dialect.HSQLDialect
+        &lt;/prop&gt;
+        &lt;prop key="hibernate.connection.pool_size"&gt;0&lt;/prop&gt;
+        &lt;prop key="hibernate.connection.driver_class"&gt;
+          org.hsqldb.jdbcDriver
+        &lt;/prop&gt;
+        &lt;prop key="hibernate.connection.url"&gt;
+          jdbc:hsqldb:data/weather;shutdown=true
+        &lt;/prop&gt;
+        &lt;prop key="hibernate.connection.username"&gt;sa&lt;/prop&gt;
+        &lt;prop key="hibernate.connection.password"&gt;&lt;/prop&gt;
+        &lt;prop key="hibernate.connection.autocommit"&gt;true&lt;/prop&gt;
+        &lt;prop key="hibernate.jdbc.batch_size"&gt;0&lt;/prop&gt;
+      &lt;/props&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="locationDAO"
+        class="org.sonatype.mavenbook.weather.persist.LocationDAO"&gt;
+    &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="weatherDAO"
+        class="org.sonatype.mavenbook.weather.persist.WeatherDAO"&gt;
+    &lt;property name="sessionFactory" ref="sessionFactory"/&gt;
+  &lt;/bean&gt;
+&lt;/beans&gt;</pre>
+      <p>
+</p>
+      <p>In this application context, we’re accomplishing a few things. The
+<code class="literal">sessionFactory</code> bean is the bean from which the DAOs retrieve
+Hibernate <code class="literal">Session</code> objects. This bean is an instance of
+<code class="literal">AnnotationSessionFactoryBean</code> and is supplied with a list of
+<code class="literal">annotatedClasses</code>. Note that the list of annotated classes is the
+list of classes defined in our <code class="literal">simple-model</code> module. Next, the
+<code class="literal">sessionFactory</code> is configured with a set of Hibernate configuration
+properties (<code class="literal">hibernateProperties</code>). In this example, our Hibernate
+properties define a number of settings:</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt>
+            <span class="term">
+<code class="literal">hibernate.dialect</code>
+</span>
+          </dt>
+          <dd>
+   This setting controls how SQL is to be generated for our
+   database. Since we are using the HSQLDB database, our database
+   dialect is set to
+   <code class="literal">org.hibernate.dialect.HSQLDialect</code>. Hibernate has dialects
+   for all major databases such as Oracle, MySQL, Postgres, and SQL
+   Server.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">hibernate.connection.*</code>
+</span>
+          </dt>
+          <dd>
+   In this example, we’re configuring the JDBC connection properties
+   from the Spring configuration. Our applications are configured to
+   run against a HSQLDB in the <code class="literal">./data/weather</code> directory. In a real
+   enterprise application, it is more likely you would use something
+   like JNDI to externalize database configuration from your
+   application’s code.
+</dd>
+        </dl>
+      </div>
+      <p>Lastly, in this bean definition file, both of the <code class="literal">simple-persist</code> DAO
+objects are created and given a reference to the <code class="literal">sessionFactory</code> bean
+just defined. Just like the Spring application context in
+<code class="literal">simple-weather</code>, this <code class="literal">applicationContext-persist.xml</code> file defines
+the architecture of a submodule in a larger enterprise design. If you
+were working with a larger collection of persistence classes, you
+might find it useful to capture them in an application context which
+is separate from your application.</p>
+      <p>There’s one last piece of the puzzle in <code class="literal">simple-persist</code>. Later in
+this chapter, we’re going to use <code class="literal">hibernate.cfg.xml</code> in
+<code class="literal">src/main/resources</code>. The purpose of this file (which duplicates some
+of the configuration in <code class="literal">applicationContext-persist.xml</code>) is to allow
+us to leverage the Maven Hibernate3 plugin to generate Data Definition
+Language (DDL) from nothing more than our annotations. See
+<a class="xref" href="multimodule-web-spring-sect-simple-persist.html#ex-hibernate-cfg" title="simple-persist hibernate.cfg.xml">simple-persist hibernate.cfg.xml</a>.</p>
+      <p><a id="ex-hibernate-cfg"></a><strong>simple-persist hibernate.cfg.xml. </strong>
+</p>
+      <pre class="screen">&lt;!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;
+
+&lt;hibernate-configuration&gt;
+  &lt;session-factory&gt;
+
+    &lt;!-- SQL dialect --&gt;
+    &lt;property name="dialect"&gt;
+      org.hibernate.dialect.HSQLDialect
+    &lt;/property&gt;
+
+    &lt;!-- Database connection settings --&gt;
+    &lt;property name="connection.driver_class"&gt;
+      org.hsqldb.jdbcDriver
+    &lt;/property&gt;
+    &lt;property name="connection.url"&gt;jdbc:hsqldb:data/weather&lt;/property&gt;
+    &lt;property name="connection.username"&gt;sa&lt;/property&gt;
+    &lt;property name="connection.password"&gt;&lt;/property&gt;
+    &lt;property name="connection.shutdown"&gt;true&lt;/property&gt;
+
+    &lt;!-- JDBC connection pool (use the built-in one) --&gt;
+    &lt;property name="connection.pool_size"&gt;1&lt;/property&gt;
+
+    &lt;!-- Enable Hibernate's automatic session context management --&gt;
+    &lt;property name="current_session_context_class"&gt;thread&lt;/property&gt;
+
+    &lt;!-- Disable the second-level cache  --&gt;
+    &lt;property name="cache.provider_class"&gt;
+            org.hibernate.cache.NoCacheProvider
+    &lt;/property&gt;
+
+    &lt;!-- Echo all executed SQL to stdout --&gt;
+    &lt;property name="show_sql"&gt;true&lt;/property&gt;
+
+    &lt;!-- disable batching so HSQLDB will propagate errors correctly. --&gt;
+    &lt;property name="jdbc.batch_size"&gt;0&lt;/property&gt;
+
+    &lt;!-- List all the mapping documents we're using --&gt;
+    &lt;mapping class="org.sonatype.mavenbook.weather.model.Atmosphere"/&gt;
+    &lt;mapping class="org.sonatype.mavenbook.weather.model.Condition"/&gt;
+    &lt;mapping class="org.sonatype.mavenbook.weather.model.Location"/&gt;
+    &lt;mapping class="org.sonatype.mavenbook.weather.model.Weather"/&gt;
+    &lt;mapping class="org.sonatype.mavenbook.weather.model.Wind"/&gt;
+
+  &lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;</pre>
+      <p>
+</p>
+      <p>The contents of <a class="xref" href="multimodule-web-spring-sect-simple-persist.html#ex-persist-spring" title="Spring Application Context for simple-persist">Spring Application Context for simple-persist</a> and
+<a class="xref" href="multimodule-web-spring-sect-simple-parent.html#ex-multimodule-web-spring-parent" title="simple-parent Project POM">simple-parent Project POM</a> are redundant. While the Spring
+Application Context XML is going to be used by the web application and
+the command-line application, the <code class="literal">hibernate.cfg.xml</code> exists only to
+support the Maven Hibernate3 plugin. Later in this chapter, we’ll see
+how to use this <code class="literal">hibernate.cfg.xml</code> and the Maven Hibernate3 plugin to
+generate a database schema based on the annotated object model defined
+in <code class="literal">simple-model</code>. This <code class="literal">hibernate.cfg.xml</code> file is the file that will
+configure the JDBC connection properties and enumerate the list of
+annotated model classes for the Maven Hibernate3 plugin.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-weather.html">
+            <span>Prev : 7.4. The Simple Weather Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-web.html">
+            <span>Next : 7.6. The Simple Web Application Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.6. Simple Weather Source Code</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-add-depend.html" title="4.5. Add New Dependencies" />
+    <link rel="next" href="customizing-sect-add-resources.html" title="4.7. Add Resources" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-add-depend.html">
+            <span>Prev : 4.5. Add New Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-add-resources.html">
+            <span>Next : 4.7. Add Resources</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-simple-weather-source"></a>4.6. Simple Weather Source Code</h2>
+          </div>
+        </div>
+      </div>
+      <p>The Simple Weather command-line application consists of five Java
+classes.</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.weather.Main</code>
+</span>
+          </dt>
+          <dd>
+   The <code class="literal">Main</code> class contains a static <code class="literal">main()</code> method: the entry
+   point for this system.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.weather.Weather</code>
+</span>
+          </dt>
+          <dd>
+   The <code class="literal">Weather</code> class is a straightforward Java bean that holds the
+   location of our weather report and some key facts, such as the
+   temperature and humidity.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.weather.YahooRetriever</code>
+</span>
+          </dt>
+          <dd>
+   The <code class="literal">YahooRetriever</code> class connects to Yahoo Weather and returns
+   an <code class="literal">InputStream</code> of the data from the feed.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.weather.YahooParser</code>
+</span>
+          </dt>
+          <dd>
+   The <code class="literal">YahooParser</code> class parses the XML from Yahoo Weather and
+   returns a <code class="literal">Weather</code> object.
+</dd>
+          <dt>
+            <span class="term">
+<code class="literal">org.sonatype.mavenbook.weather.WeatherFormatter</code>
+</span>
+          </dt>
+          <dd>
+   The <code class="literal">WeatherFormatter</code> class takes a <code class="literal">Weather</code> object, creates a
+   <code class="literal">VelocityContext</code>, and evaluates a Velocity template.
+</dd>
+        </dl>
+      </div>
+      <p>Although we won’t dwell on the code here, we will provide all the
+necessary code for you to get the example working. We assume that most
+readers have downloaded the examples that accompany this book, but
+we’re also mindful of those who may wish to follow the example in this
+chapter step-by-step. The sections that follow list classes in the
+<code class="literal">simple-weather</code> project. Each of these classes should be placed in
+the same package: <code class="literal">org.sonatype.mavenbook.weather</code>.</p>
+      <p>Let’s remove the <code class="literal">App</code> and the <code class="literal">AppTest</code> classes created by
+<code class="literal">archetype:generate</code> and add our new package. In a Maven project, all
+of a project’s source code is stored in <code class="literal">src/main/java</code>. From the base
+directory of the new project, execute the following commands:</p>
+      <pre class="screen">$ cd src/test/java/org/sonatype/mavenbook/custom
+$ rm AppTest.java
+$ cd ../../../../../../..
+$ cd src/main/java/org/sonatype/mavenbook/custom
+$ cd ..
+$ rm App.java
+$ mkdir weather
+$ cd weather</pre>
+      <p>This creates a new package named <code class="literal">org.sonatype.mavenbook.weather</code>. Now
+we need to put some classes in this directory. Using your favorite
+text editor, create a new file named <code class="literal">Weather.java</code> with the contents
+shown in <a class="xref" href="customizing-sect-simple-weather-source.html#ex-simple-weather-model-object" title="Simple Weather’s Weather Model Object">Simple Weather’s Weather Model Object</a>.</p>
+      <p><a id="ex-simple-weather-model-object"></a><strong>Simple Weather’s Weather Model Object. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+public class Weather {
+  private String city;
+  private String region;
+  private String country;
+  private String condition;
+  private String temp;
+  private String chill;
+  private String humidity;
+
+  public Weather() {}
+
+  public String getCity() { return city; }
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getRegion() { return region; }
+  public void setRegion(String region) {
+    this.region = region;
+  }
+
+  public String getCountry() { return country; }
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  public String getCondition() { return condition; }
+  public void setCondition(String condition) {
+    this.condition = condition;
+  }
+
+  public String getTemp() { return temp; }
+  public void setTemp(String temp) {
+    this.temp = temp;
+  }
+
+  public String getChill() { return chill; }
+  public void setChill(String chill) {
+    this.chill = chill;
+  }
+
+  public String getHumidity() { return humidity; }
+  public void setHumidity(String humidity) {
+    this.humidity = humidity;
+  }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">Weather</code> class defines a simple bean that is used to hold the
+weather information parsed from the Yahoo Weather feed. This feed
+provides a wealth of information, from the sunrise and sunset times to
+the speed and direction of the wind. To keep this example as simple as
+possible, the <code class="literal">Weather</code> model object keeps track of only the
+temperature, chill, humidity, and a textual description of current
+conditions.</p>
+      <p>Now, in the same directory, create a file named <code class="literal">Main.java</code>. This
+<code class="literal">Main</code> class will hold the static <code class="literal">main()</code> method—the entry point
+for this example.</p>
+      <p><strong>Simple Weather’s Main Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.io.InputStream;
+
+import org.apache.log4j.PropertyConfigurator;
+
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // Configure Log4J
+        PropertyConfigurator
+          .configure(Main.class.getClassLoader()
+                      .getResource("log4j.properties"));
+
+        // Read the zip code from the command line
+        // (if none supplied, use 60202)
+        String zipcode = "60202";
+        try {
+            zipcode = args[0];
+        } catch( Exception e ) {}
+
+        // Start the program
+        new Main(zipcode).start();
+    }
+
+    private String zip;
+
+    public Main(String zip) {
+        this.zip = zip;
+    }
+
+    public void start() throws Exception {
+        // Retrieve Data
+        InputStream dataIn = new YahooRetriever().retrieve( zip );
+
+        // Parse Data
+        Weather weather = new YahooParser().parse( dataIn );
+
+        // Format (Print) Data
+        System.out.print( new WeatherFormatter().format( weather ) );
+    }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">main()</code> method shown above configures Log4J by retrieving a
+resource from the classpath. It then tries to read a zip code from the
+command line. If an exception is thrown while it is trying to read the
+zip code, the program will default to a zip code of 60202. Once it has
+a zip code, it instantiates an instance of <code class="literal">Main</code> and calls the
+<code class="literal">start()</code> method on an instance of <code class="literal">Main</code>. The <code class="literal">start()</code> method calls
+out to the <code class="literal">YahooRetriever</code> to retrieve the weather XML. The
+<code class="literal">YahooRetriever</code> returns an <code class="literal">InputStream</code> which is then passed to the
+<code class="literal">YahooParser</code>. The <code class="literal">YahooParser</code> parses the Yahoo Weather XML and
+returns a <code class="literal">Weather</code> object. Finally, the <code class="literal">WeatherFormatter</code> takes a
+<code class="literal">Weather</code> object and spits out a formatted <code class="literal">String</code> which is printed
+to standard output.</p>
+      <p>Create a file named <code class="literal">YahooRetriever.java</code> in the same directory with
+the contents shown in <a class="xref" href="customizing-sect-simple-weather-source.html#ex-simple-weather-yahoo-retriever-class" title="Simple Weather’s YahooRetriever Class">Simple Weather’s YahooRetriever Class</a>.</p>
+      <p><a id="ex-simple-weather-yahoo-retriever-class"></a><strong>Simple Weather’s YahooRetriever Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.apache.log4j.Logger;
+
+public class YahooRetriever {
+
+    private static Logger log = Logger.getLogger(YahooRetriever.class);
+
+    public InputStream retrieve(String zipcode) throws Exception {
+        log.info( "Retrieving Weather Data" );
+        String url = "http://weather.yahooapis.com/forecastrss?p="
+          + zipcode;
+        URLConnection conn = new URL(url).openConnection();
+        return conn.getInputStream();
+    }
+}</pre>
+      <p>
+</p>
+      <p>This simple class opens a <code class="literal">URLConnection</code> to the Yahoo Weather API
+and returns an <code class="literal">InputStream</code>. To create something to parse this feed,
+we’ll need to create the <code class="literal">YahooParser.java</code> file in the same
+directory.</p>
+      <p><strong>Simple Weather’s YahooParser Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
+import org.dom4j.io.SAXReader;
+
+public class YahooParser {
+
+  private static Logger log = Logger.getLogger(YahooParser.class);
+
+  public Weather parse(InputStream inputStream) throws Exception {
+    Weather weather = new Weather();
+
+    log.info( "Creating XML Reader" );
+    SAXReader xmlReader = createXmlReader();
+    Document doc = xmlReader.read( inputStream );
+
+    log.info( "Parsing XML Response" );
+    weather.setCity(
+      doc.valueOf("/rss/channel/y:location/@city") );
+    weather.setRegion(
+      doc.valueOf("/rss/channel/y:location/@region") );
+    weather.setCountry(
+      doc.valueOf("/rss/channel/y:location/@country") );
+    weather.setCondition(
+      doc.valueOf("/rss/channel/item/y:condition/@text") );
+    weather.setTemp(
+      doc.valueOf("/rss/channel/item/y:condition/@temp") );
+    weather.setChill(
+      doc.valueOf("/rss/channel/y:wind/@chill") );
+    weather.setHumidity(
+      doc.valueOf("/rss/channel/y:atmosphere/@humidity") );
+
+    return weather;
+  }
+
+  private SAXReader createXmlReader() {
+    Map&lt;String,String&gt; uris = new HashMap&lt;String,String&gt;();
+    uris.put( "y", "http://xml.weather.yahoo.com/ns/rss/1.0" );
+
+    DocumentFactory factory = new DocumentFactory();
+        factory.setXPathNamespaceURIs( uris );
+
+    SAXReader xmlReader = new SAXReader();
+      xmlReader.setDocumentFactory( factory );
+    return xmlReader;
+  }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">YahooParser</code> is the most complex class in this example. We’re not
+going to dive into the details of Dom4J or Jaxen here, but the class
+deserves some explanation. <code class="literal">YahooParser</code>'s <code class="literal">parse()</code> method takes an
+<code class="literal">InputStream</code> and returns a <code class="literal">Weather</code> object. To do this, it needs to
+parse an XML document with Dom4J. Since we’re interested in elements
+under the Yahoo Weather XML namespace, we need to create a
+namespace-aware <code class="literal">SAXReader</code> in the <code class="literal">createXmlReader()</code> method. Once we
+create this reader and parse the document, we get an
+<code class="literal">org.dom4j.Document</code> object back. Instead of iterating through child
+elements, we simply address each piece of information we need using an
+XPath expression. Dom4J provides the XML parsing in this example, and
+Jaxen provides the XPath capabilities.</p>
+      <p>Once we’ve created a <code class="literal">Weather</code> object, we need to format our output
+for human consumption. Create a file named <code class="literal">WeatherFormatter.java</code> in
+the same directory as the other classes.</p>
+      <p><strong>Simple Weather’s WeatherFormatter Class. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+
+import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+
+public class WeatherFormatter {
+
+    private static Logger log = Logger.getLogger(WeatherFormatter.class);
+
+    public String format( Weather weather ) throws Exception {
+        log.info( "Formatting Weather Data" );
+        Reader reader =
+            new InputStreamReader( getClass().getClassLoader()
+                                   .getResourceAsStream("output.vm"));
+        VelocityContext context = new VelocityContext();
+        context.put("weather", weather );
+        StringWriter writer = new StringWriter();
+        Velocity.evaluate(context, writer, "", reader);
+        return writer.toString();
+    }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">WeatherFormatter</code> uses Velocity to render a template. The
+<code class="literal">format()</code> method takes a <code class="literal">Weather</code> bean and spits out a formatted
+<code class="literal">String</code>. The first thing the <code class="literal">format()</code> method does is load a
+Velocity template from the classpath named <code class="literal">output.vm</code>. We then create
+a <code class="literal">VelocityContext</code> which is populated with a single <code class="literal">Weather</code> object
+named <code class="literal">weather</code>. A <code class="literal">StringWriter</code> is created to hold the results of
+the template merge. The template is evaluated with a call to
+<code class="literal">Velocity.evaluate()</code> and the results are returned as a <code class="literal">String</code>.</p>
+      <p>Before we can run this example, we’ll need to add some resources to
+our classpath.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-add-depend.html">
+            <span>Prev : 4.5. Add New Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-add-resources.html">
+            <span>Next : 4.7. Add Resources</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

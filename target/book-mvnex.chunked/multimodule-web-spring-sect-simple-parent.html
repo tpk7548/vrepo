@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.2. The Simple Parent Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-intro.html" title="7.1. Introduction" />
+    <link rel="next" href="multimodule-web-spring-sect-simple-model-project.html" title="7.3. The Simple Model Module" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-intro.html">
+            <span>Prev : 7.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-model-project.html">
+            <span>Next : 7.3. The Simple Model Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-simple-parent"></a>7.2. The Simple Parent Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>This <code class="literal">simple-parent</code> project has a <code class="literal">pom.xml</code> that references five
+submodules: <code class="literal">simple-command</code>, <code class="literal">simple-model</code>, <code class="literal">simple-weather</code>,
+<code class="literal">simple-persist</code>, and <code class="literal">simple-webapp</code>. The top-level <code class="literal">pom.xml</code> is
+shown in <a class="xref" href="multimodule-web-spring-sect-simple-parent.html#ex-multimodule-web-spring-parent" title="simple-parent Project POM">simple-parent Project POM</a>.</p>
+      <p><a id="ex-multimodule-web-spring-parent"></a><strong>simple-parent Project POM. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;name&gt;Multi-Spring Chapter Simple Parent Project&lt;/name&gt;
+
+    &lt;modules&gt;
+        &lt;module&gt;simple-command&lt;/module&gt;
+        &lt;module&gt;simple-model&lt;/module&gt;
+        &lt;module&gt;simple-weather&lt;/module&gt;
+        &lt;module&gt;simple-persist&lt;/module&gt;
+        &lt;module&gt;simple-webapp&lt;/module&gt;
+    &lt;/modules&gt;
+
+    &lt;build&gt;
+        &lt;pluginManagement&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                    &lt;configuration&gt;
+                        &lt;source&gt;1.5&lt;/source&gt;
+                        &lt;target&gt;1.5&lt;/target&gt;
+                    &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/pluginManagement&gt;
+    &lt;/build&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <div class="note" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Note</h3>
+        <p>If you are already familiar with Maven POMs, you might notice
+that this top-level POM does not define a dependencyManagement
+element. The dependencyManagement element allows you to define
+dependency versions in a single, top-level POM, and it is introduced
+in <a class="xref" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs">Chapter 8, <em>Optimizing and Refactoring POMs</em></a>.</p>
+      </div>
+      <p>Note the similarities of this parent POM to the parent POM defined in
+<a class="xref" href="multimodule-sect-simple-parent.html#ex-multimodule-parent-pom" title="simple-parent Project POM">simple-parent Project POM</a>. The only real difference between these
+two POMs is the list of submodules. Where that example only listed two
+submodules, this parent POM lists five submodules. The next few
+sections explore each of these five submodules in some detail. Because
+our example uses Java annotations, we’ve configured the compiler to
+target the Java 5 JVM.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-intro.html">
+            <span>Prev : 7.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-model-project.html">
+            <span>Next : 7.3. The Simple Model Module</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

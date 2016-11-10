@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>6.6. Running the Web Application</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule.html" title="Chapter 6. A Multi-Module Project" />
+    <link rel="prev" href="multimodule-sect-building-multimodule.html" title="6.5. Building the Multimodule Project" />
+    <link rel="next" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-building-multimodule.html">
+            <span>Prev : 6.5. Building the Multimodule Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring.html">
+            <span>Next : Chapter 7. Multi-Module Enterprise Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-sect-running-web"></a>6.6. Running the Web Application</h2>
+          </div>
+        </div>
+      </div>
+      <p>Once the multi-module project has been installed with <code class="literal">mvn install</code>, you
+can run the web application with <code class="literal">mvn jetty:run</code>.</p>
+      <pre class="screen">~/examples/ch-multi/simple-parent/simple-webapp $ mvn jetty:run
+[INFO] -----------------------------------------
+[INFO] Building simple-webapp Maven Webapp
+[INFO]task-segment: [jetty:run]
+[INFO] -----------------------------------------
+[...]
+[INFO] [jetty:run]
+[INFO] Configuring Jetty for project: simple-webapp Maven Webapp
+[...]
+[INFO] Webapp directory = ~/examples/ch-multi/simple-parent/\
+simple-webapp/src/main/webapp
+[INFO] Starting jetty 6.1.6rc1 ...
+2007-11-18 1:58:26.980::INFO:  jetty-6.1.6rc1
+2007-11-18 1:58:26.125::INFO:  No Transaction manager found
+2007-11-18 1:58:27.633::INFO:  Started SelectChannelConnector@0.0.0.0:8080
+[INFO] Started Jetty Server</pre>
+      <p>Once Jetty has started, load
+<a class="ulink" href="http://localhost:8080/simple-webapp/weather?zip=01201" target="_top">http://localhost:8080/simple-webapp/weather?zip=01201</a>
+in a browser and you should see the formatted weather output.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-building-multimodule.html">
+            <span>Prev : 6.5. Building the Multimodule Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring.html">
+            <span>Next : Chapter 7. Multi-Module Enterprise Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

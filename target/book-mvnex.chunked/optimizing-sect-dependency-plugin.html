@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>8.5. Optimizing with the Maven Dependency Plugin</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+    <link rel="prev" href="optimizing-sect-plugins.html" title="8.4. Optimizing Plugins" />
+    <link rel="next" href="optimizing-sect-final-poms.html" title="8.6. Final POMs" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-plugins.html">
+            <span>Prev : 8.4. Optimizing Plugins</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-final-poms.html">
+            <span>Next : 8.6. Final POMs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="optimizing-sect-dependency-plugin"></a>8.5. Optimizing with the Maven Dependency Plugin</h2>
+          </div>
+        </div>
+      </div>
+      <p>On larger projects, additional dependencies often tend to creep into a
+POM as the number of dependencies grow. As dependencies change, you
+are often left with dependencies that are not being used, and just as
+often, you may forget to declare explicit dependencies for libraries
+you require. Because Maven 2.x includes transitive dependencies in the
+compile scope, your project may compile properly but fail to run in
+production. Consider a case where a project uses classes from a widely
+used project such as Jakarta Commons BeanUtils. Instead of declaring
+an explicit dependency on BeanUtils, your project simply relies on a
+project like Hibernate that references BeanUtils as a transitive
+dependency. Your project may compile successfully and run just fine,
+but if you upgrade to a new version of Hibernate that doesn’t depend
+on BeanUtils, you’ll start to get compile and runtime errors, and it
+won’t be immediately obvious why your project stopped compiling. Also,
+because you haven’t explicitly listed a dependency version, Maven
+cannot resolve any version conflicts that may arise.</p>
+      <p>A good rule of thumb in Maven is to always declare explicit
+dependencies for classes referenced in your code. If you are going to
+be importing Commons BeanUtils classes, you should also be declaring a
+direct dependency on Commons BeanUtils. Fortunately, via bytecode
+analysis, the Maven Dependency plugin is able to assist you in
+uncovering direct references to dependencies. Using the updated POMs
+we previously optimized, let’s look to see if any errors pop up:</p>
+      <pre class="screen">$ mvn dependency:analyze
+[INFO] Scanning for projects...
+[INFO] Reactor build order:
+[INFO]   Chapter 8 Simple Parent Project
+[INFO]   Chapter 8 Simple Object Model
+[INFO]   Chapter 8 Simple Weather API
+[INFO]   Chapter 8 Simple Persistence API
+[INFO]   Chapter 8 Simple Command Line Tool
+[INFO]   Chapter 8 Simple Web Application
+[INFO]   Chapter 8 Parent Project
+[INFO] Searching repository for plugin with prefix: 'dependency'.
+
+...
+
+[INFO] -----------------------------------------------------
+[INFO] Building Chapter 8 Simple Object Model
+[INFO]task-segment: [dependency:analyze]
+[INFO] -----------------------------------------------------
+[INFO] Preparing dependency:analyze
+[INFO] [resources:resources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:compile]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [resources:testResources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:testCompile]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [dependency:analyze]
+[WARNING] Used undeclared dependencies found:
+[WARNING]javax.persistence:persistence-api:jar:1.0:compile
+[WARNING] Unused declared dependencies found:
+[WARNING]org.hibernate:hibernate-annotations:jar:3.3.0.ga:compile
+[WARNING]org.hibernate:hibernate:jar:3.2.5.ga:compile
+[WARNING]junit:junit:jar:3.8.1:test
+
+...
+
+[INFO] -----------------------------------------------------
+[INFO] Building Chapter 8 Simple Web Application
+[INFO]task-segment: [dependency:analyze]
+[INFO] -----------------------------------------------------
+[INFO] Preparing dependency:analyze
+[INFO] [resources:resources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:compile]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [resources:testResources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:testCompile]
+[INFO] No sources to compile
+[INFO] [dependency:analyze]
+[WARNING] Used undeclared dependencies found:
+[WARNING]org.sonatype.mavenbook.optimize:simple-model:jar:1.0:compile
+[WARNING] Unused declared dependencies found:
+[WARNING]org.apache.velocity:velocity:jar:1.5:compile
+[WARNING]javax.servlet:jstl:jar:1.1.2:compile
+[WARNING]taglibs:standard:jar:1.1.2:compile
+[WARNING]junit:junit:jar:3.8.1:test</pre>
+      <p>In the truncated output just shown, you can see the output of the
+<code class="literal">dependency:analyze</code> goal. This goal analyzes the project to see
+whether there are any indirect dependencies, or dependencies that are
+being referenced but are not directly declared. In the <code class="literal">simple-model</code>
+project, the Dependency plugin indicates a “used undeclared
+dependency” on <code class="literal">javax.persistence:persistence-api</code>. To investigate
+further, go to the <code class="literal">simple-model</code> directory and run the
+<code class="literal">dependency:tree</code> goal, which will list all of the project’s direct
+and transitive dependencies:</p>
+      <pre class="screen">$ mvn dependency:tree
+[INFO] Scanning for projects...
+[INFO] Searching repository for plugin with prefix: 'dependency'.
+[INFO] -----------------------------------------------------
+[INFO] Building Chapter 8 Simple Object Model
+[INFO]task-segment: [dependency:tree]
+[INFO] -----------------------------------------------------
+[INFO] [dependency:tree]
+[INFO] org.sonatype.mavenbook.optimize:simple-model:jar:1.0
+[INFO] +- org.hibernate:hibernate-annotations:jar:3.3.0.ga:compile
+[INFO] |  \- javax.persistence:persistence-api:jar:1.0:compile
+[INFO] +- org.hibernate:hibernate:jar:3.2.5.ga:compile
+[INFO] |  +- net.sf.ehcache:ehcache:jar:1.2.3:compile
+[INFO] |  +- commons-logging:commons-logging:jar:1.0.4:compile
+[INFO] |  +- asm:asm-attrs:jar:1.5.3:compile
+[INFO] |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  +- cglib:cglib:jar:2.1_3:compile
+[INFO] |  +- asm:asm:jar:1.5.3:compile
+[INFO] |  \- commons-collections:commons-collections:jar:2.1.1:compile
+[INFO] \- junit:junit:jar:3.8.1:test
+[INFO] -----------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] -----------------------------------------------------</pre>
+      <p>From this output, we can see that the <code class="literal">persistence-api</code> dependency is
+coming from <code class="literal">hibernate</code>. A cursory scan of the source in this module
+will reveal many <code class="literal">javax.persistence</code> import statements confirming that
+we are, indeed, directly referencing this dependency. The simple fix
+is to add a direct reference to the dependency. In this example, we
+put the dependency version in <code class="literal">simple-parent</code>'s <code class="literal">dependencyManagement</code>
+section because the dependency is linked to Hibernate, and the
+Hibernate version is declared here. Eventually you are going to want
+to upgrade your project’s version of Hibernate. Listing the
+<code class="literal">persistence-api</code> dependency version near the Hibernate dependency
+version will make it more obvious later when your team modifies the
+parent POM to upgrade the Hibernate version.</p>
+      <p>If you look at the <code class="literal">dependency:analyze</code> output from the <code class="literal">simple-web</code>
+module, you will see that we also need to add a direct reference to
+the <code class="literal">simple-model</code> dependency. The code in <code class="literal">simple-webapp</code> directly
+references the model objects in <code class="literal">simple-model</code>, and the <code class="literal">simple-model</code>
+is exposed to <code class="literal">simple-webapp</code> as a transitive dependency via
+<code class="literal">simple-persist</code>. Since this is a sibling dependency that shares both
+the <code class="literal">version</code> and <code class="literal">groupId</code>, the dependency can be defined in
+<code class="literal">simple-webapp</code>'s <code class="literal">pom.xml</code> using the <code class="literal">${project.groupId}</code> and
+<code class="literal">${project.version}</code>.</p>
+      <p>How did the Maven Dependency plugin uncover these issues? How does
+<code class="literal">dependency:analyze</code> know which classes and dependencies are directly
+referenced by your project’s bytecode? The Dependency plugin uses the
+ObjectWeb ASM (<a class="ulink" href="http://asm.objectweb.org/" target="_top">http://asm.objectweb.org/</a>) library
+to produce a list of “used, undeclared dependencies” dependencies</p>
+      <p>In contrast, the list of unused, declared dependencies is a little
+trickier to validate, and less useful than the “used, undeclared
+dependencies.” For one, some dependencies are used only at runtime or
+for tests, and they won’t be found in the bytecode. These are pretty
+obvious when you see them in the output; for example, JUnit appears in
+this list, but this is expected because it is used only for unit
+tests. You’ll also notice that the Velocity and Servlet API
+dependencies are listed in this list for the <code class="literal">simple-web</code> module. This
+is also expected because, although the project doesn’t have any direct
+references to the classes of these artifacts, they are still essential
+during runtime.</p>
+      <p>Be careful when removing any unused, declared dependencies unless you
+have very good test coverage, or you might introduce a runtime
+error. A more sinister issue pops up with bytecode optimization. For
+example, it is legal for a compiler to substitute the value of a
+constant and optimize away the reference. Removing this dependency
+will cause the compile to fail, yet the tool shows it as
+unused. Future versions of the Maven Dependency plugin will provide
+better techniques for detecting and/or ignoring these types of issues.</p>
+      <p>You should use the <code class="literal">dependency:analyze</code> tool periodically to detect
+these common errors in your projects. It can be configured to fail the
+build if certain conditions are found, and it is also available as a
+report.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-plugins.html">
+            <span>Prev : 8.4. Optimizing Plugins</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-final-poms.html">
+            <span>Next : 8.6. Final POMs</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>1.2. Convention Over Configuration</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="introduction.html" title="Chapter 1. Introducing Apache Maven" />
+    <link rel="prev" href="introduction-sect-whatIsMaven.html" title="1.1. Maven… What is it?" />
+    <link rel="next" href="installation-sect-common-interface.html" title="1.3. A Common Interface" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="introduction-sect-whatIsMaven.html">
+            <span>Prev : 1.1. Maven… What is it?</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-common-interface.html">
+            <span>Next : 1.3. A Common Interface</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-conventionConfiguration"></a>1.2. Convention Over Configuration</h2>
+          </div>
+        </div>
+      </div>
+      <p>Convention over configuration is a simple concept: Systems, libraries,
+and frameworks should assume reasonable defaults. Without requiring
+unnecessary configuration, systems should “just work”. Popular
+frameworks such as <a class="ulink" href="http://www.rubyonrails.org/" target="_top">Ruby on Rails</a> and EJB3
+have started to adhere to these principles in reaction to the
+configuration complexity of frameworks such as the initial EJB 2.1
+specifications. An illustration of convention over configuration is
+something like EJB3 persistence: all you need to do to make a
+particular bean persistent is to annotate that class with @Entity.
+The framework assumes table and column names based on the name of the
+class and the names of the properties. Hooks are provided for you to
+override these default, assumed names if the need arises, but, in most
+cases, you will find that using the framework-supplied defaults
+results in a faster project execution.</p>
+      <p>Maven incorporates this concept by providing sensible default behavior
+for projects. Without customization, source code is assumed to be in
+<code class="literal">${basedir}/src/main/java</code> and resources are assumed to be in
+<code class="literal">${basedir}/src/main/resources</code>. Tests are assumed to be in
+<code class="literal">${basedir}/src/test</code>, and a project is assumed to produce a JAR
+file. Maven assumes that you want the compile bytecode to
+<code class="literal">${basedir}/target/classes</code> and then create a distributable JAR file
+in <code class="literal">${basedir}/target</code>. While this might seem trivial, consider the
+fact that most Ant-based builds have to define the locations of these
+directories. Ant doesn’t ship with any built-in idea of where source
+code or resources might be in a project; you have to supply this
+information. Maven’s adoption of convention over configuration goes
+farther than just simple directory locations. Maven’s core plugins
+apply a common set of conventions for compiling source code, packaging
+distributions, generating web sites, and many other processes. Maven’s
+strength comes from the fact that it is “opinionated”; it has a
+defined life-cycle and a set of common plugins that know how to build
+and assemble software. If you follow the conventions, Maven will
+require almost zero effort - just put your source in the correct
+directory, and Maven will take care of the rest.</p>
+      <p>One side effect of using systems that follow “convention over
+configuration” is that end-users might feel that they are forced to
+use a particular methodology or approach. While it is certainly true
+that Maven has some core opinions that shouldn’t be challenged, most
+of the defaults can be customized. For example, the location of a
+project’s source code and resources can be customized, names of JAR
+files can be customized, and through the development of custom
+plugins, almost any behavior can be tailored to your specific
+environment’s requirements. If you don’t care to follow convention,
+Maven will allow you to customize defaults in order to adapt to your
+specific requirements.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="introduction-sect-whatIsMaven.html">
+            <span>Prev : 1.1. Maven… What is it?</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-common-interface.html">
+            <span>Next : 1.3. A Common Interface</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

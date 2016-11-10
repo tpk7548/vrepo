@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>3.4. Simple Project Object Model</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="simple-project.html" title="Chapter 3. A Simple Maven Project" />
+    <link rel="prev" href="simple-project-sect-building-simple.html" title="3.3. Building a Simple Project" />
+    <link rel="next" href="simple-project-sect-simple-core.html" title="3.5. Core Concepts" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-building-simple.html">
+            <span>Prev : 3.3. Building a Simple Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-simple-core.html">
+            <span>Next : 3.5. Core Concepts</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="simple-project-sect-pom"></a>3.4. Simple Project Object Model</h2>
+          </div>
+        </div>
+      </div>
+      <p><a id="example_simple-project-pom"></a><strong>Simple Project’s <code class="literal">pom.xml</code> file. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.simple&lt;/groupId&gt;
+    &lt;artifactId&gt;simple&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;simple&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>This <code class="literal">pom.xml</code> file is the most basic POM you will ever deal with for
+a Maven project, usually a POM file is considerably more complex:
+defining multiple dependencies and customizing plugin behavior. The
+first few elements—groupId, artifactId, packaging, version—are what is
+known as the Maven coordinates which uniquely identify a project. name
+and url are descriptive elements of the POM providing a human readable
+name and associating the project with a web site. The dependencies
+element defines a single, test-scoped dependency on a unit testing
+framework called JUnit. These topics will be further introduced in
+<a class="xref" href="simple-project-sect-simple-core.html" title="3.5. Core Concepts">Section 3.5, “Core Concepts”</a>, all you need to know, at this
+point, is that the <code class="literal">pom.xml</code> is the file that makes Maven go.</p>
+      <p>Maven always executes against an effective POM, a combination of
+settings from this project’s <code class="literal">pom.xml</code>, all parent POMs, a super-POM
+defined within Maven, user-defined settings, and active profiles. All
+projects ultimately extend the super-POM, which defines a set of
+sensible default configuration settings. While your project might have
+a relatively minimal <code class="literal">pom.xml</code>, the contents of your project’s POM are
+interpolated with the contents of all parent POMs, user settings, and
+any active profiles. To see this "effective" POM, run the following
+command in the simple project’s base directory.</p>
+      <pre class="screen">$ mvn help:effective-pom</pre>
+      <p>When you run this, you should see a much larger POM which exposes the
+default settings of Maven. This goal can come in handy if you are
+trying to debug a build and want to see how all of the current
+project’s ancestor POMs are contributing to the effective POM.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="simple-project-sect-building-simple.html">
+            <span>Prev : 3.3. Building a Simple Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="simple-project-sect-simple-core.html">
+            <span>Next : 3.5. Core Concepts</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

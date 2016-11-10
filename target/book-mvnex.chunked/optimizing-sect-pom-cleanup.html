@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>8.2. POM Cleanup</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+    <link rel="prev" href="optimizing-sect-intro.html" title="8.1. Introduction" />
+    <link rel="next" href="optimizing-sect-dependencies.html" title="8.3. Optimizing Dependencies" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-intro.html">
+            <span>Prev : 8.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-dependencies.html">
+            <span>Next : 8.3. Optimizing Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="optimizing-sect-pom-cleanup"></a>8.2. POM Cleanup</h2>
+          </div>
+        </div>
+      </div>
+      <p>Optimizing a multimodule project’s POM is best done in several passes,
+as there are many areas to focus on. In general, we are looking for
+repetition within a POM and across the sibling POMs. When you are
+starting out, or when a project is still evolving rapidly, it is
+acceptable to duplicate some dependencies and plugin configurations
+here and there, but as the project matures and as the number of
+modules increases, you will want to take some time to refactor common
+dependencies and configuration points. Making your POMs more efficient
+will go a long way to helping you manage complexity as your project
+grows. Whenever there is duplication of some piece of information,
+there is usually a better way.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-intro.html">
+            <span>Prev : 8.1. Introduction</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-dependencies.html">
+            <span>Next : 8.3. Optimizing Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

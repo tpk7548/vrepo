@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.9. Running the Simple Command</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-simple-command.html" title="7.8. The Simple Command Module" />
+    <link rel="next" href="multimodule-web-spring-sect-conclusion.html" title="7.10. Conclusion" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-command.html">
+            <span>Prev : 7.8. The Simple Command Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-conclusion.html">
+            <span>Next : 7.10. Conclusion</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-running-simple-command"></a>7.9. Running the Simple Command</h2>
+          </div>
+        </div>
+      </div>
+      <p>The <code class="literal">simple-command</code> project is configured to create a single JAR
+containing the bytecode of the project and all of the bytecode from
+the dependencies. To create this assembly, run the <code class="literal">assembly</code> goal of
+the Maven Assembly plugin from the <code class="literal">simple-command</code> project directory:</p>
+      <pre class="screen">$ mvn assembly:assembly
+[INFO] -----------------------------------------------------
+[INFO] Building Multi-spring Chapter Simple Command Line Tool
+[INFO]task-segment: [assembly:assembly] (aggregator-style)
+[INFO] -----------------------------------------------------
+[INFO] [resources:resources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:compile]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [resources:testResources]
+[INFO] Using default encoding to copy filtered resources.
+[INFO] [compiler:testCompile]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [surefire:test]
+...
+[INFO] [jar:jar]
+[INFO] Building jar: .../simple-parent/simple-command/target/simple-command.jar
+[INFO] [assembly:assembly]
+[INFO] Processing DependencySet (output=)
+[INFO] Building jar: .../simple-parent/simple-command/target
+/simple-command-jar-with-dependencies.jar</pre>
+      <p>The build progresses through the lifecycle compiling bytecode, running
+tests, and finally building a JAR for the project. Then the
+<code class="literal">assembly:assembly</code> goal creates a JAR with dependencies by unpacking
+all of the dependencies to temporary directories and then collecting
+all of the bytecode into a single JAR in <code class="literal">target/</code> named
+<code class="literal">simple-command-jar-with-dependencies.jar</code>. This "uber" JAR weighs in
+at 15 MB.</p>
+      <p>Before you run the command-line tool, you will need to invoke the
+<code class="literal">hbm2ddl</code> goal of the Hibernate3 plugin to create the HSQLDB
+database. Do this by running the following command from the
+<code class="literal">simple-command</code> directory:</p>
+      <pre class="screen">$ mvn hibernate3:hbm2ddl
+[INFO] Scanning for projects...
+[INFO] Searching repository for plugin with prefix: 'hibernate3'.
+[INFO] org.codehaus.mojo: checking for updates from central
+[INFO] -----------------------------------------------------
+[INFO] Building Multi-spring Chapter Simple Command Line Tool
+[INFO]task-segment: [hibernate3:hbm2ddl]
+[INFO] -----------------------------------------------------
+[INFO] Preparing hibernate3:hbm2ddl
+...
+10:24:56,151  INFO org.hibernate.tool.hbm2ddl.SchemaExport - export complete
+[INFO] -----------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] -----------------------------------------------------</pre>
+      <p>Once you run this, you should see a <code class="literal">data</code> directory under
+<code class="literal">simple-command</code>. This <code class="literal">data</code> directory holds the HSQLDB database. To
+run the command-line weather forecaster, run the following from the
+<code class="literal">simple-command</code> project directory:</p>
+      <pre class="screen">$ java -cp target/simple-command-jar-with-dependencies.jar \
+       org.sonatype.mavenbook.weather.Main 60202
+2321 INFO  YahooRetriever  - Retrieving Weather Data
+2489 INFO  YahooParser  - Creating XML Reader
+2581 INFO  YahooParser  - Parsing XML Response
+2875 INFO  WeatherFormatter  - Formatting Weather Data
+****************************************
+Current Weather Conditions for:
+Evanston,
+IL,
+US
+****************************************
+
+* Temperature: 75
+* Condition: Partly Cloudy
+* Humidity: 64
+* Wind Chill: 75
+* Date: Wed Aug 06 09:35:30 CDT 2008</pre>
+      <p>To run a history query, execute the following command:</p>
+      <pre class="screen">$ java -cp target/simple-command-jar-with-dependencies.jar \
+       org.sonatype.mavenbook.weather.Main 60202 history
+2470 INFO  WeatherFormatter  - Formatting History Data
+Weather History for:
+Evanston, IL, US
+
+****************************************
+* Temperature: 39
+* Condition: Heavy Rain
+* Humidity: 93
+* Wind Chill: 36
+* Date: 2007-12-02 13:45:27.187
+****************************************
+* Temperature: 75
+* Condition: Partly Cloudy
+* Humidity: 64
+* Wind Chill: 75
+* Date: 2008-08-06 09:24:11.725
+****************************************
+* Temperature: 75
+* Condition: Partly Cloudy
+* Humidity: 64
+* Wind Chill: 75
+* Date: 2008-08-06 09:27:28.475</pre>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-simple-command.html">
+            <span>Prev : 7.8. The Simple Command Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-conclusion.html">
+            <span>Next : 7.10. Conclusion</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>1.3. A Common Interface</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="introduction.html" title="Chapter 1. Introducing Apache Maven" />
+    <link rel="prev" href="installation-sect-conventionConfiguration.html" title="1.2. Convention Over Configuration" />
+    <link rel="next" href="installation-sect-universal-reuse.html" title="1.4. Universal Reuse through Maven Plugins" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-conventionConfiguration.html">
+            <span>Prev : 1.2. Convention Over Configuration</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-universal-reuse.html">
+            <span>Next : 1.4. Universal Reuse through Maven Plugins</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="installation-sect-common-interface"></a>1.3. A Common Interface</h2>
+          </div>
+        </div>
+      </div>
+      <p>Before Maven provided a common interface for building software, every
+single project had someone dedicated to managing a fully customized
+build system. Developers had to take time away from developing
+software to learn about the idiosyncrasies of each new project they
+wanted to contribute to. In 2001, you’d have a completely different
+approach to building a project like
+<a class="ulink" href="http://turbine.apache.org/" target="_top">Turbine</a> than you would to building a
+project like <a class="ulink" href="http://tomcat.apache.org" target="_top">Tomcat</a>. If a new source code
+analysis tool came out that would perform static analysis on source
+code, or if someone developed a new unit testing framework, everybody
+would have to drop what they were doing and figure out how to fit it
+into each project’s custom build environment. How do you run unit
+tests? There were a thousand different answers. This environment was
+characterized by a thousand endless arguments about tools and build
+procedures. The age before Maven was an age of inefficiency, the age
+of the “Build Engineer”.</p>
+      <p>Today, most open source developers have used or are currently using
+Maven to manage new software projects. This transition is less about
+developers moving from one build tool to another and more about
+developers starting to adopt a common interface for project builds. As
+software systems have become more modular, build systems have become
+more complex, and the number of projects has skyrocketed. Before
+Maven, when you wanted to check out a project like
+<a class="ulink" href="http://activemq.apache.org" target="_top">Apache ActiveMQ</a> or
+<a class="ulink" href="http://servicemix.apache.org" target="_top">Apache ServiceMix</a> from Subversion and
+build it from source, you really had to set aside about an hour to
+figure out the build system for each particular project. What does the
+project need to build? What libraries do I need to download? Where do
+I put them? What goals can I execute in the build? In the best case,
+it took a few minutes to figure out a new project’s build, and in the
+worst cases (like the old Servlet API implementation in the Jakarta
+Project), a project’s build was so difficult it would take multiple
+hours just to get to the point where a new contributor could edit
+source and compile the project. These days, you check it out from
+source, and you run <code class="literal">mvn install</code>.</p>
+      <p>While Maven provides an array of benefits including dependency
+management and reuse of common build logic through plugins, the core
+reason why it has succeeded is that it has defined a common interface
+for building software. When you see that a project like
+<a class="ulink" href="http://activemq.apache.org" target="_top">Apache ActiveMQ</a> uses Maven, you can assume
+that you’ll be able to check it out from source and build it with <code class="literal">mvn
+install</code> without much hassle. You know where the ignition keys goes,
+you know that the gas pedal is on the right side, and the brake is on
+the left.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="installation-sect-conventionConfiguration.html">
+            <span>Prev : 1.2. Convention Over Configuration</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="installation-sect-universal-reuse.html">
+            <span>Next : 1.4. Universal Reuse through Maven Plugins</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

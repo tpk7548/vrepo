@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>8.4. Optimizing Plugins</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+    <link rel="prev" href="optimizing-sect-dependencies.html" title="8.3. Optimizing Dependencies" />
+    <link rel="next" href="optimizing-sect-dependency-plugin.html" title="8.5. Optimizing with the Maven Dependency Plugin" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-dependencies.html">
+            <span>Prev : 8.3. Optimizing Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-dependency-plugin.html">
+            <span>Next : 8.5. Optimizing with the Maven Dependency Plugin</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="optimizing-sect-plugins"></a>8.4. Optimizing Plugins</h2>
+          </div>
+        </div>
+      </div>
+      <p>If we take a look at the various plugin configurations, we can see the
+HSQLDB dependencies duplicated in several places. Unfortunately,
+<code class="literal">dependencyManagement</code> doesn’t apply to plugin dependencies, but we can
+still use a property to consolidate the versions. Most complex Maven
+multimodule projects tend to define all versions in the top-level
+POM. This top-level POM then becomes a focal point for changes that
+affect the entire project. Think of version numbers as string literals
+in a Java class; if you are constantly repeating a literal, you’ll
+likely want to make it a variable so that when it needs to be changed,
+you have to change it in only one place. Rolling up the version of
+HSQLDB into a property in the top-level POM yields the following
+<code class="literal">properties</code> element:</p>
+      <pre class="screen">&lt;project&gt;
+  ...
+  &lt;properties&gt;
+    &lt;hibernate.annotations.version&gt;3.3.0.ga
+      &lt;/hibernate.annotations.version&gt;
+    &lt;hsqldb.version&gt;1.8.0.7&lt;/hsqldb.version&gt;
+  &lt;/properties&gt;
+  ...
+&lt;/project&gt;</pre>
+      <p>The next thing we notice is that the <code class="literal">hibernate3-maven-plugin</code>
+configuration is duplicated in the <code class="literal">simple-webapp</code> and
+<code class="literal">simple-command</code> modules. We can manage the plugin configuration in
+the top-level POM just as we managed the dependencies in the top-level
+POM with the <code class="literal">dependencyManagement</code> section. To do this, we use the
+<code class="literal">pluginManagement</code> element in the top-level POM’s <code class="literal">build</code> element:</p>
+      <pre class="screen">&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;pluginManagement&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+          &lt;configuration&gt;
+            &lt;source&gt;1.5&lt;/source&gt;
+            &lt;target&gt;1.5&lt;/target&gt;
+          &lt;/configuration&gt;
+        &lt;/plugin&gt;
+        &lt;plugin&gt;
+          &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+          &lt;artifactId&gt;hibernate3-maven-plugin&lt;/artifactId&gt;
+          &lt;version&gt;2.1&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;components&gt;
+              &lt;component&gt;
+                &lt;name&gt;hbm2ddl&lt;/name&gt;
+                &lt;implementation&gt;annotationconfiguration&lt;/implementation&gt;
+              &lt;/component&gt;
+            &lt;/components&gt;
+          &lt;/configuration&gt;
+          &lt;dependencies&gt;
+            &lt;dependency&gt;
+              &lt;groupId&gt;hsqldb&lt;/groupId&gt;
+              &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+              &lt;version&gt;${hsqldb.version}&lt;/version&gt;
+            &lt;/dependency&gt;
+          &lt;/dependencies&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/pluginManagement&gt;
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;</pre>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing-sect-dependencies.html">
+            <span>Prev : 8.3. Optimizing Dependencies</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-dependency-plugin.html">
+            <span>Next : 8.5. Optimizing with the Maven Dependency Plugin</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

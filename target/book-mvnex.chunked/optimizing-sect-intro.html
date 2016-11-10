@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>8.1. Introduction</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+    <link rel="prev" href="optimizing.html" title="Chapter 8. Optimizing and Refactoring POMs" />
+    <link rel="next" href="optimizing-sect-pom-cleanup.html" title="8.2. POM Cleanup" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing.html">
+            <span>Prev : Chapter 8. Optimizing and Refactoring POMs</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-pom-cleanup.html">
+            <span>Next : 8.2. POM Cleanup</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="optimizing-sect-intro"></a>8.1. Introduction</h2>
+          </div>
+        </div>
+      </div>
+      <p>In <a class="xref" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project">Chapter 7, <em>Multi-Module Enterprise Project</em></a>, we showed how many pieces of Maven come
+together to produce a fully functional multimodule build. Although the
+example from that chapter suggests a real application—one that
+interacts with a database, a web service, and that itself presents two
+interfaces: one in a web application, and one on the command line—that
+example project is still contrived. To present the complexity of a
+real project would require a book far larger than the one you are now
+reading. Real-life applications evolve over years and are often
+maintained by large, diverse groups of developers, each with a
+different focus. In a real-world project, you are often evaluating
+decisions and designs made and created by others. In this chapter, we
+take a step back from the examples you’ve seen in the previous
+chapters, and we ask ourselves if there are any optimizations that
+might make more sense given what we now know about Maven. Maven is a
+very capable tool that can be as simple or as complex as you need it
+to be. Because of this, there are often a million ways to accomplish
+the same task, and there is often no one “right” way to configure your
+Maven project.</p>
+      <p>Don’t misinterpret that last sentence as a license to go off and ask
+Maven to do something it wasn’t designed for. While Maven allows for a
+diversity of approach, there is certainly “A Maven Way”, and you’ll be
+more productive using Maven as it was designed to be used. All this
+chapter is trying to do is communicate some of the optimizations you
+can perform on an existing Maven project. Why didn’t we just introduce
+an optimized POM in the first place? Designing POMs for pedagogy is a
+very different requirement from designing POMs for efficiency. While
+it is certainly much easier to define a certain setting in your
+<code class="literal">~/.m2/settings.xml</code> than to declare a profile in a <code class="literal">pom.xml</code>, writing
+a book, and reading a book is mostly about pacing and making sure
+we’re not introducing concepts before you are ready. In the previous
+chapters, we’ve made an effort not to overwhelm the reader with too
+much information, and, in doing so, we’ve skipped some core concepts
+like the <code class="literal">dependencyManagement</code> element introduced in this chapter.</p>
+      <p>There are many instances in the previous chapters when the authors of
+this book took a shortcut or glossed over an important detail to
+shuffle you along to the main point of a specific chapter. You learned
+how to create a Maven project, and you compiled and installed it
+without having to wade through hundreds of pages introducing every
+last switch and dial available to you. We’ve done this because we
+believe it is important to deliver the new Maven user to a result
+faster rather than meandering our way through a very long, seemingly
+interminable story. Once you’ve started to use Maven, you should know
+how to analyze your own projects and POMs. In this chapter, we take a
+step back and look at what we are left with after the example from
+<a class="xref" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project">Chapter 7, <em>Multi-Module Enterprise Project</em></a>.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="optimizing.html">
+            <span>Prev : Chapter 8. Optimizing and Refactoring POMs</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="optimizing-sect-pom-cleanup.html">
+            <span>Next : 8.2. POM Cleanup</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

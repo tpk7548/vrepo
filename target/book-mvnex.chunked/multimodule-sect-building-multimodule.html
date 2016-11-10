@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>6.5. Building the Multimodule Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule.html" title="Chapter 6. A Multi-Module Project" />
+    <link rel="prev" href="multimodule-sect-simple-web.html" title="6.4. The Simple Web Application Module" />
+    <link rel="next" href="multimodule-sect-running-web.html" title="6.6. Running the Web Application" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-simple-web.html">
+            <span>Prev : 6.4. The Simple Web Application Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-running-web.html">
+            <span>Next : 6.6. Running the Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-sect-building-multimodule"></a>6.5. Building the Multimodule Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>With the <code class="literal">simple-weather</code> project containing all WAR file. To do this,
+you will want to compile and install both projects in the appropriate
+order; since <code class="literal">simple-webapp</code> depends on <code class="literal">simple-weather</code>, the
+<code class="literal">simple-weather</code> JAR needs to be created before the <code class="literal">simple-webapp</code>
+project can compile. To do this, you will run <code class="literal">mvn clean install</code>
+command from the <code class="literal">simple-parent</code> project:</p>
+      <pre class="screen">~/examples/ch-multi/simple-parent$ mvn clean install
+[INFO] Scanning for projects...
+[INFO] Reactor build order:
+[INFO]   Simple Parent Project
+[INFO]   simple-weather
+[INFO]   simple-webapp Maven Webapp
+[INFO] -----------------------------------------
+[INFO] Building simple-weather
+[INFO]task-segment: [clean, install]
+[INFO] -----------------------------------------
+[...]
+[INFO] [install:install]
+[INFO] Installing simple-weather-1.0.jar to simple-weather-1.0.jar
+[INFO] -----------------------------------------
+[INFO] Building simple-webapp Maven Webapp
+[INFO]task-segment: [clean, install]
+[INFO] -----------------------------------------
+[...]
+[INFO] [install:install]
+[INFO] Installing simple-webapp.war to simple-webapp-1.0.war
+[INFO]
+[INFO] -----------------------------------------
+[INFO] Reactor Summary:
+[INFO] -----------------------------------------
+[INFO] Simple Parent Project .................. SUCCESS [3.041s]
+[INFO] simple-weather ......................... SUCCESS [4.802s]
+[INFO] simple-webapp Maven Webapp ............. SUCCESS [3.065s]
+[INFO] -----------------------------------------</pre>
+      <p>When Maven is executed against a project with submodules, Maven first
+loads the parent POM and locates all of the submodule POMs. Maven then
+puts all of these project POMs into something called the Maven Reactor
+which analyzes the dependencies between modules. The Reactor takes
+care of ordering components to ensure that interdependent modules are
+compiled and installed in the proper order.</p>
+      <div class="note" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Note</h3>
+        <p>The Reactor preserves the order of modules as defined in the POM
+unless changes need to be made. A helpful mental model for this is to
+picture that modules with dependencies on sibling projects are "pushed
+down" the list until the dependency ordering is satisfied. On rare
+occasions, it may be handy to rearrange the module order of your build — for example if you want a frequently unstable module towards the
+beginning of the build.</p>
+      </div>
+      <p>Once the Reactor figures out the order in which projects must be
+built, Maven then executes the specified goals for every module in the
+multi-module build. In this example, you can see that Maven builds
+<code class="literal">simple-weather</code> before <code class="literal">simple-webapp</code>, effectively executing <code class="literal">mvn
+clean install</code> for each submodule.</p>
+      <div class="note" style="margin-left: 0; margin-right: 10%;">
+        <h3 class="title">Note</h3>
+        <p>When you run Maven from the command line you’ll frequently want
+to specify the <code class="literal">clean</code> lifecycle phase before any other lifecycle
+stages. When you specify <code class="literal">clean</code>, you make sure that Maven is going to
+remove old output before it compiles and packages an
+application. Running <code class="literal">clean</code> isn’t necessary, but it is a useful
+precaution to make sure that you are performing a "clean build".</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-sect-simple-web.html">
+            <span>Prev : 6.4. The Simple Web Application Module</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-sect-running-web.html">
+            <span>Next : 6.6. Running the Web Application</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

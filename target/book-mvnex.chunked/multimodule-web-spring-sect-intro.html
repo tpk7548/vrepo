@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.1. Introduction</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="next" href="multimodule-web-spring-sect-simple-parent.html" title="7.2. The Simple Parent Project" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring.html">
+            <span>Prev : Chapter 7. Multi-Module Enterprise Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-parent.html">
+            <span>Next : 7.2. The Simple Parent Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-intro"></a>7.1. Introduction</h2>
+          </div>
+        </div>
+      </div>
+      <p>In this chapter, we create a multi-module project that evolves the
+examples from <a class="xref" href="multimodule.html" title="Chapter 6. A Multi-Module Project">Chapter 6, <em>A Multi-Module Project</em></a> and <a class="xref" href="web.html" title="Chapter 5. A Simple Web Application">Chapter 5, <em>A Simple Web Application</em></a> into a project that uses the
+Spring Framework and Hibernate to create both a simple web application
+and a command-line utility to read data from the Yahoo Weather
+feed. The <code class="literal">simple-weather</code> code developed in <a class="xref" href="customizing.html" title="Chapter 4. Customizing a Maven Project">Chapter 4, <em>Customizing a Maven Project</em></a> will be
+combined with the <code class="literal">simple-webapp</code> project defined in <a class="xref" href="web.html" title="Chapter 5. A Simple Web Application">Chapter 5, <em>A Simple Web Application</em></a>. In the
+process of creating this multi-module project, we’ll explore Maven and
+discuss the different ways it can be used to create modular projects
+that encourage reuse.</p>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-downloading-example"></a>7.1.1. Downloading this Chapter’s Example</h3>
+            </div>
+          </div>
+        </div>
+        <p>The multi-module project developed in this example consists of
+modified versions of the projects developed in <a class="xref" href="customizing.html" title="Chapter 4. Customizing a Maven Project">Chapter 4, <em>Customizing a Maven Project</em></a> and
+<a class="xref" href="web.html" title="Chapter 5. A Simple Web Application">Chapter 5, <em>A Simple Web Application</em></a>, and we are not using the Maven Archetype plug-in to generate
+this multi-module project. We strongly recommend downloading a copy of
+the example code to use as a supplemental reference while reading the
+content in this chapter. Without the examples, you won’t be able to
+recreate this chapter’s example code. This chapter’s example project
+may be downloaded with the book’s example code at:</p>
+        <pre class="screen">http://books.sonatype.com/mvnex-book/mvnex-examples.zip</pre>
+        <p>Unzip this archive in any directory, and then go to the
+<code class="literal">ch-multi-spring</code> directory. There you will see a directory named
+<code class="literal">simple-parent</code> that contains the multi-module Maven project
+developed in this chapter. In the <code class="literal">simple-parent/</code> project directory
+you will see a <code class="literal">pom.xml</code> and the five submodule directories
+<code class="literal">simple-model/</code>, <code class="literal">simple-persist/</code>, <code class="literal">simple-command/</code>,
+<code class="literal">simple-weather/</code> and <code class="literal">simple-webapp/</code>.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-project-description"></a>7.1.2. Multi-Module Enterprise Project</h3>
+            </div>
+          </div>
+        </div>
+        <p>Presenting the complexity of a massive Enterprise-level project far
+exceeds the scope of this book. Such projects are characterized by
+multiple databases, integration with external systems, and subprojects
+which may be divided by departments. These projects usually span
+thousands of lines of code, and involve the effort of tens or hundreds
+of software developers. While such a complete example is outside the
+scope of this book, we can provide you with a sample project that
+suggests the complexity of a larger Enterprise application. In the
+conclusion we suggest some possibilities for modularity beyond that
+presented in this chapter.</p>
+        <p>In this chapter, we’re going to look at a multi-module Maven project
+that will produce two applications: a command-line query tool for the
+Yahoo Weather feed and a web application which queries the Yahoo
+Weather feed. Both of these applications will store the results of
+queries in an embedded database. Each will allow the user to retrieve
+historical weather data from this embedded database. Both applications
+will reuse application logic and share a persistence library. This
+chapter’s example builds upon the Yahoo Weather parsing code
+introduced in <a class="xref" href="customizing.html" title="Chapter 4. Customizing a Maven Project">Chapter 4, <em>Customizing a Maven Project</em></a>. This project is divided into five
+submodules shown in <a class="xref" href="multimodule-web-spring-sect-intro.html#fig-multimodule-web-spring-projects" title="Figure 7.1. Multi-Module Enterprise Application Module Relationships">Figure 7.1, “Multi-Module Enterprise Application Module Relationships”</a>.</p>
+        <div class="figure">
+          <a id="fig-multimodule-web-spring-projects"></a>
+          <div class="figure-contents">
+            <div class="mediaobject">
+              <img src="figs/web/multimodule-web-spring_projects.png" alt="figs/web/multimodule-web-spring_projects.png" />
+            </div>
+          </div>
+          <p class="title">
+            <strong>Figure 7.1. Multi-Module Enterprise Application Module Relationships</strong>
+          </p>
+        </div>
+        <br class="figure-break" />
+        <p>In <a class="xref" href="multimodule-web-spring-sect-intro.html#fig-multimodule-web-spring-projects" title="Figure 7.1. Multi-Module Enterprise Application Module Relationships">Figure 7.1, “Multi-Module Enterprise Application Module Relationships”</a>, you can see that there are
+five submodules of <code class="literal">simple-parent</code>. They are:</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+simple-model
+</span>
+            </dt>
+            <dd>
+   This module defines a simple object model which models the data
+   returned from the Yahoo Weather feed. This object model contains
+   the <code class="literal">Weather</code>, <code class="literal">Condition</code>, <code class="literal">Atmosphere</code>, <code class="literal">Location</code>, and <code class="literal">Wind</code>
+   objects. When our application parses the Yahoo Weather feed, the
+   parsers defined in <code class="literal">simple-weather</code> will parse the XML and create
+   <code class="literal">Weather</code> objects which are then used by the application. This
+   project contains model objects annotated with Hibernate 3
+   Annotations. These annotations are used by the logic in
+   <code class="literal">simple-persist</code> to map each model object to a corresponding table
+   in a relational database.
+</dd>
+            <dt>
+              <span class="term">
+simple-weather
+</span>
+            </dt>
+            <dd>
+   This module contains all of the logic required to retrieve data
+   from the Yahoo Weather feed and parse the resulting XML. The XML
+   returned from this feed is converted into the model objects defined
+   in <code class="literal">simple-model</code>. <code class="literal">simple-weather</code> has a dependency on
+   <code class="literal">simple-model</code>. <code class="literal">simple-weather</code> defines a <code class="literal">WeatherService</code> object
+   which is referenced by both the <code class="literal">simple-command</code> and
+   <code class="literal">simple-webapp</code> projects.
+</dd>
+            <dt>
+              <span class="term">
+simple-persist
+</span>
+            </dt>
+            <dd>
+   This module contains some Data Access Objects (DAO) which are
+   configured to store <code class="literal">Weather</code> objects in an embedded database. Both
+   of the applications defined in this multi-module project will use
+   the DAOs defined in <code class="literal">simple-persist</code> to store data in an embedded
+   database. The DAOs defined in this project understand and return
+   the model objects defined in <code class="literal">simple-model</code>. <code class="literal">simple-persist</code> has a
+   direct dependency on <code class="literal">simple-model</code> and it depends upon the
+   Hibernate Annotations present on the model objects.
+</dd>
+            <dt>
+              <span class="term">
+simple-webapp
+</span>
+            </dt>
+            <dd>
+   The web application project contains two Spring MVC Controller
+   implementations which use the <code class="literal">WeatherService</code> defined in
+   <code class="literal">simple-weather</code> and the DAOs defined in
+   <code class="literal">simple-persist</code>. <code class="literal">simple-webapp</code> has a direct dependency on
+   <code class="literal">simple-weather</code> and <code class="literal">simple-persist</code>; it has a transitive
+   dependency on <code class="literal">simple-model</code>.
+</dd>
+            <dt>
+              <span class="term">
+simple-command
+</span>
+            </dt>
+            <dd>
+   This module contains a simple command-line tool which can be used
+   to query the Yahoo Weather feed. This project contains a class
+   with a static <code class="literal">main()</code> method and interacts with the
+   <code class="literal">WeatherService</code> defined in <code class="literal">simple-weather</code> and the DAOs defined
+   in <code class="literal">simple-persist</code>. <code class="literal">simple-command</code> has a direct dependency on
+   <code class="literal">simple-weather</code> and <code class="literal">simple-persist</code>; it has a transitive
+   dependency on <code class="literal">simple-model</code>.
+</dd>
+          </dl>
+        </div>
+        <p>This chapter contains a contrived example simple enough to introduce
+in a book, yet complex enough to justify a set of five submodules. Our
+contrived example has a model project with five classes, a persistence
+library with two service classes, and a weather parsing library with
+five or six classes, but a real-world system might have a model
+project with a hundred objects, several persistence libraries, and
+service libraries spanning multiple departments. Although we’ve tried
+to make sure that the code contained in this example is
+straightforward enough to comprehend in a single sitting, we’ve also
+gone out of our way to build a modular project. You might be tempted
+to look at the examples in this chapter and walk away with the idea
+that Maven encourages too much complexity given that our model project
+has only five classes. Although using Maven does suggest a certain
+level of modularity, do realize that we’ve gone out of our way to
+complicate our simple example projects for the purpose of
+demonstrating Maven’s multi-module features.</p>
+      </div>
+      <div class="section">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h3 xmlns="" class="title"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-example-tech"></a>7.1.3. Technology Used in this Example</h3>
+            </div>
+          </div>
+        </div>
+        <p>This chapter’s example involves some technology which, while popular,
+is not directly related to Maven. These technologies are the Spring
+Framework and Hibernate. The Spring Framework is an Inversion of
+Control (IoC) container and a set of frameworks that aim to simplify
+interaction with various J2EE libraries. Using the Spring Framework as
+a foundational framework for application development gives you access
+to a number of helpful abstractions that can take much of the
+meddlesome busywork out of dealing with persistence frameworks like
+Hibernate or iBatis or enterprise APIs like JDBC, JNDI, and JMS. The
+Spring Framework has grown in popularity over the past few years as a
+replacement for the heavy weight enterprise standards coming out of
+Sun Microsystems. Hibernate is a widely used Object-Relational Mapping
+framework which allows you to interact with a relational database as
+if it were a collection of Java objects. This example focuses on
+building a simple web application and a command-line application that
+use the Spring Framework to expose a set of reusable components to
+applications and which also use Hibernate to persist weather data in
+an embedded database.</p>
+        <p>We’ve decided to include references to these frameworks to demonstrate
+how one would construct projects using these technologies when using
+Maven. Although we make brief efforts to introduce these technologies
+throughout this chapter, we will not go out of our way to fully
+explain these technologies. For more information about the Spring
+Framework, please see the project’s web site at
+<a class="ulink" href="http://www.springframework.org/" target="_top">http://www.springsource.org/documentation</a>. For
+more information about Hibernate and Hibernate Annotations, please see
+the project’s web site at
+<a class="ulink" href="http://www.hibernate.org" target="_top">http://www.hibernate.org</a>. This chapter uses
+Hyper Structured Query Language Database (HSQLDB) as an embedded
+database; for more information about this database, see the project’s
+web site at <a class="ulink" href="http://hsqldb.org/" target="_top">http://hsqldb.org</a>.</p>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring.html">
+            <span>Prev : Chapter 7. Multi-Module Enterprise Project</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-simple-parent.html">
+            <span>Next : 7.2. The Simple Parent Project</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

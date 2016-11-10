@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>7.8. The Simple Command Module</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="multimodule-web-spring.html" title="Chapter 7. Multi-Module Enterprise Project" />
+    <link rel="prev" href="multimodule-web-spring-sect-spring-running-web.html" title="7.7. Running the Web Application" />
+    <link rel="next" href="multimodule-web-spring-sect-running-simple-command.html" title="7.9. Running the Simple Command" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-spring-running-web.html">
+            <span>Prev : 7.7. Running the Web Application</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-running-simple-command.html">
+            <span>Next : 7.9. Running the Simple Command</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="multimodule-web-spring-sect-simple-command"></a>7.8. The Simple Command Module</h2>
+          </div>
+        </div>
+      </div>
+      <p>The <code class="literal">simple-command</code> project is a command-line version of the
+<code class="literal">simple-webapp</code>. It is a utility that relies on the same dependencies:
+<code class="literal">simple-persist</code> and <code class="literal">simple-weather</code>. Instead of interacting with
+this application via a web browser, you would run the <code class="literal">simple-command</code>
+utility from the command line.</p>
+      <div class="figure">
+        <a id="fig-multi-spring-command"></a>
+        <div class="figure-contents">
+          <div class="mediaobject">
+            <img src="figs/web/multimodule-web-command-spring.png" alt="figs/web/multimodule-web-command-spring.png" />
+          </div>
+        </div>
+        <p class="title">
+          <strong>Figure 7.4. Command Line Application Referencing simple-weather and simple-persist</strong>
+        </p>
+      </div>
+      <br class="figure-break" />
+      <p><strong>POM for simple-command. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+  &lt;/parent&gt;
+
+  &lt;artifactId&gt;simple-command&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;name&gt;Simple Command Line Tool&lt;/name&gt;
+
+  &lt;build&gt;
+    &lt;finalName&gt;${project.artifactId}&lt;/finalName&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;source&gt;1.5&lt;/source&gt;
+          &lt;target&gt;1.5&lt;/target&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;testFailureIgnore&gt;true&lt;/testFailureIgnore&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;descriptorRefs&gt;
+            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;
+          &lt;/descriptorRefs&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate3-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.1&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;components&gt;
+            &lt;component&gt;
+              &lt;name&gt;hbm2ddl&lt;/name&gt;
+              &lt;implementation&gt;annotationconfiguration&lt;/implementation&gt;
+            &lt;/component&gt;
+          &lt;/components&gt;
+        &lt;/configuration&gt;
+        &lt;dependencies&gt;
+          &lt;dependency&gt;
+            &lt;groupId&gt;hsqldb&lt;/groupId&gt;
+            &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+            &lt;version&gt;1.8.0.7&lt;/version&gt;
+          &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+      &lt;artifactId&gt;simple-weather&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.sonatype.mavenbook.multispring&lt;/groupId&gt;
+      &lt;artifactId&gt;simple-persist&lt;/artifactId&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+      &lt;artifactId&gt;spring&lt;/artifactId&gt;
+      &lt;version&gt;2.0.7&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;hsqldb&lt;/groupId&gt;
+      &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+      &lt;version&gt;1.8.0.7&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>This POM creates a JAR file which will contain the
+<code class="literal">org.sonatype.mavenbook.weather.Main</code> class shown in
+<a class="xref" href="multimodule-web-spring-sect-simple-command.html#ex-spring-command-main-class" title="The Main Class for simple-command">The Main Class for simple-command</a>. In this POM we configure the Maven
+Assembly plugin to use a built-in assembly descriptor named
+<code class="literal">jar-with-dependencies</code> which creates a single JAR file containing all
+the bytecode a project needs to execute, including the bytecode from
+the project you are building and all the bytecode from libraries your
+project depends upons.</p>
+      <p><a id="ex-spring-command-main-class"></a><strong>The Main Class for simple-command. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.util.List;
+
+import org.apache.log4j.PropertyConfigurator;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import org.sonatype.mavenbook.weather.model.Location;
+import org.sonatype.mavenbook.weather.model.Weather;
+import org.sonatype.mavenbook.weather.persist.LocationDAO;
+import org.sonatype.mavenbook.weather.persist.WeatherDAO;
+
+public class Main {
+
+    private WeatherService weatherService;
+    private WeatherDAO weatherDAO;
+    private LocationDAO locationDAO;
+
+    public static void main(String[] args) throws Exception {
+        // Configure Log4J
+        PropertyConfigurator.configure(
+          Main.class.getClassLoader().getResource("log4j.properties"));
+
+        // Read the zip code from the Command-line
+        // (if none supplied, use 60202)
+        String zipcode = "60202";
+        try {
+            zipcode = args[0];
+        } catch (Exception e) {
+        }
+
+        // Read the Operation from the Command-line
+        // (if none supplied use weather)
+        String operation = "weather";
+        try {
+            operation = args[1];
+        } catch (Exception e) {
+        }
+
+        // Start the program
+        Main main = new Main(zipcode);
+
+        ApplicationContext context =
+          new ClassPathXmlApplicationContext(
+            new String[] { "classpath:applicationContext-weather.xml",
+              "classpath:applicationContext-persist.xml" });
+        main.weatherService =
+          (WeatherService) context.getBean("weatherService");
+        main.locationDAO = (LocationDAO) context.getBean("locationDAO");
+        main.weatherDAO = (WeatherDAO) context.getBean("weatherDAO");
+        if( operation.equals("weather")) {
+            main.getWeather();
+        } else {
+            main.getHistory();
+        }
+    }
+
+    private String zip;
+
+    public Main(String zip) {
+        this.zip = zip;
+    }
+
+    public void getWeather() throws Exception {
+        Weather weather = weatherService.retrieveForecast(zip);
+        weatherDAO.save( weather );
+        System.out.print(new WeatherFormatter().formatWeather(weather));
+    }
+
+    public void getHistory() throws Exception {
+        Location location = locationDAO.findByZip(zip);
+        List&lt;Weather&gt; weathers = weatherDAO.recentForLocation(location);
+        System.out.print(
+          new WeatherFormatter().formatHistory(location, weathers));
+    }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">Main</code> class has a reference to <code class="literal">WeatherDAO</code>, <code class="literal">LocationDAO</code>, and
+<code class="literal">WeatherService</code>. The static <code class="literal">main()</code> method in this class:</p>
+      <div class="itemizedlist">
+        <ul class="itemizedlist" style="list-style-type: disc; ">
+          <li class="listitem">
+Reads the zip code from the first command line argument
+</li>
+          <li class="listitem">
+Reads the operation from the second command line argument. If the
+   operation is "weather", the latest weather will be retrieved from
+   the web service. If the operation is "history", the program will
+   fetch historical weather records from the local database.
+</li>
+          <li class="listitem">
+Loads a Spring <code class="literal">ApplicationContext</code> using two XML files loaded from
+   <code class="literal">simple-persist</code> and <code class="literal">simple-weather</code>
+</li>
+          <li class="listitem">
+Creates an instance of <code class="literal">Main</code>
+</li>
+          <li class="listitem">
+Populates the <code class="literal">weatherService</code>, <code class="literal">weatherDAO</code>, and <code class="literal">locationDAO</code> with
+   beans from the Spring <code class="literal">ApplicationContext</code>
+</li>
+          <li class="listitem">
+Runs the appropriate method <code class="literal">getWeather()</code> or <code class="literal">getHistory()</code>,
+   depending on the specified operation
+</li>
+        </ul>
+      </div>
+      <p>In the web application we use Spring <code class="literal">VelocityViewResolver</code> to render
+a Velocity template. In the stand-alone implementation, we need to
+write a simple class which renders our weather data with a Velocity
+template. <a class="xref" href="multimodule-web-spring-sect-simple-command.html#ex-spring-weather-formatter" title="WeatherFormatter Renders Weather Data using a Velocity Template">WeatherFormatter Renders Weather Data using a Velocity Template</a> is a listing of the
+<code class="literal">WeatherFormatter</code>, a class with two methods that render the weather
+report and the weather history.</p>
+      <p><a id="ex-spring-weather-formatter"></a><strong>WeatherFormatter Renders Weather Data using a Velocity Template. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+
+import org.sonatype.mavenbook.weather.model.Location;
+import org.sonatype.mavenbook.weather.model.Weather;
+
+public class WeatherFormatter {
+
+    private static Logger log = Logger.getLogger(WeatherFormatter.class);
+
+    public String formatWeather(Weather weather) throws Exception {
+        log.info( "Formatting Weather Data" );
+        Reader reader =
+            new InputStreamReader( getClass().getClassLoader().
+                                   getResourceAsStream("weather.vm"));
+        VelocityContext context = new VelocityContext();
+        context.put("weather", weather );
+        StringWriter writer = new StringWriter();
+        Velocity.evaluate(context, writer, "", reader);
+        return writer.toString();
+    }
+
+    public String formatHistory(Location location, List&lt;Weather&gt; weathers)
+        throws Exception {
+        log.info( "Formatting History Data" );
+        Reader reader =
+            new InputStreamReader( getClass().getClassLoader().
+                                   getResourceAsStream("history.vm"));
+        VelocityContext context = new VelocityContext();
+        context.put("location", location );
+        context.put("weathers", weathers );
+        StringWriter writer = new StringWriter();
+        Velocity.evaluate(context, writer, "", reader);
+        return writer.toString();
+    }
+}</pre>
+      <p>
+</p>
+      <p>The <code class="literal">weather.vm</code> template simply prints the zip code’s city, country,
+and region as well as the current temperature. The <code class="literal">history.vm</code>
+template prints the location and then iterates through the weather
+records stored in the local database. Both of these templates
+are in <code class="literal">${basedir}/src/main/resources</code>.</p>
+      <p><strong>The weather.vm Velocity Template. </strong>
+</p>
+      <pre class="screen">****************************************
+Current Weather Conditions for:
+${weather.location.city},
+${weather.location.region},
+${weather.location.country}
+****************************************
+
+* Temperature: ${weather.condition.temp}
+* Condition: ${weather.condition.text}
+* Humidity: ${weather.atmosphere.humidity}
+* Wind Chill: ${weather.wind.chill}
+* Date: ${weather.date}</pre>
+      <p>
+</p>
+      <p><strong>The history.vm Velocity Template. </strong>
+</p>
+      <pre class="screen">Weather History for:
+${location.city},
+${location.region},
+${location.country}
+
+
+#foreach( $weather in $weathers )
+****************************************
+* Temperature: $weather.condition.temp
+* Condition: $weather.condition.text
+* Humidity: $weather.atmosphere.humidity
+* Wind Chill: $weather.wind.chill
+* Date: $weather.date
+#end</pre>
+      <p>
+</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="multimodule-web-spring-sect-spring-running-web.html">
+            <span>Prev : 7.7. Running the Web Application</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="multimodule-web-spring-sect-running-simple-command.html">
+            <span>Next : 7.9. Running the Simple Command</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

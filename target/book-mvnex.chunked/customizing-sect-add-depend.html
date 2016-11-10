@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.5. Add New Dependencies</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-customizing-project-info.html" title="4.4. Customize Project Information" />
+    <link rel="next" href="customizing-sect-simple-weather-source.html" title="4.6. Simple Weather Source Code" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-customizing-project-info.html">
+            <span>Prev : 4.4. Customize Project Information</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-simple-weather-source.html">
+            <span>Next : 4.6. Simple Weather Source Code</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-add-depend"></a>4.5. Add New Dependencies</h2>
+          </div>
+        </div>
+      </div>
+      <p>The Simple Weather application is going to have to complete the
+following three tasks: retrieve XML data from Yahoo Weather, parse
+the XML from Yahoo, and then print formatted output to standard
+output. To accomplish these tasks, we have to introduce some new
+dependencies to our project’s <code class="literal">pom.xml</code>. To parse the XML response
+from Yahoo, we’re going to be using Dom4J and Jaxen, to format the
+output of this command-line program we are going to be using Velocity,
+and we will also need to add a dependency for Log4J which we will be
+using for logging. After we add these dependencies, our <code class="literal">dependencies</code>
+element will look like the following example.</p>
+      <p><strong>Adding Dom4J, Jaxen, Velocity, and Log4J as Dependencies. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+    [...]
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;1.2.14&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;dom4j&lt;/groupId&gt;
+            &lt;artifactId&gt;dom4j&lt;/artifactId&gt;
+            &lt;version&gt;1.6.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jaxen&lt;/groupId&gt;
+            &lt;artifactId&gt;jaxen&lt;/artifactId&gt;
+            &lt;version&gt;1.1.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;velocity&lt;/groupId&gt;
+            &lt;artifactId&gt;velocity&lt;/artifactId&gt;
+            &lt;version&gt;1.5&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    [...]
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>As you can see above, we’ve added four more <code class="literal">dependency</code> elements in
+addition to the existing element which was referencing the <code class="literal">test</code>
+scoped dependency on JUnit. If you add these dependencies to the
+project’s <code class="literal">pom.xml</code> file and then run <code class="literal">mvn install</code>, you will see
+Maven downloading all of these dependencies and other transitive
+dependencies to your local Maven repository.</p>
+      <p>How did we find these dependencies? Did we just “know” the appropriate
+<code class="literal">groupId</code> and <code class="literal">artifactId</code> values? Some of the dependencies are so
+widely used (like Log4J) that you’ll just remember what the <code class="literal">groupId</code>
+and <code class="literal">artifactId</code> are every time you need to use them. Velocity, Dom4J,
+and Jaxen were all located using the searching capability on
+<a class="ulink" href="http://repository.sonatype.org" target="_top">http://repository.sonatype.org</a>. This
+is a public Sonatype Nexus instance which provides a search interface
+to various public Maven repositories, you can use it to search for
+dependencies. To test this for yourself, load
+<a class="ulink" href="http://repository.sonatype.org" target="_top">http://repository.sonatype.org</a> and
+search for some commonly used libraries such as Hibernate or the
+Spring Framework. When you search for an artifact on this site, it
+will show you an <code class="literal">artifactId</code> and all of the versions known to the
+central Maven repository. Clicking on the details for a specific
+version will load a page that contains the dependency element you’ll
+need to copy and paste into your own project’s <code class="literal">pom.xml</code>. If you need
+to find a dependency, you’ll want to check out
+<a class="ulink" href="http://repository.sonatype.org" target="_top">repository.sonatype.org</a>, as you’ll
+often find that certain libraries have more than one <code class="literal">groupId</code>. With
+this tool, you can make sense of the Maven repository.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-customizing-project-info.html">
+            <span>Prev : 4.4. Customize Project Information</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-simple-weather-source.html">
+            <span>Next : 4.6. Simple Weather Source Code</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

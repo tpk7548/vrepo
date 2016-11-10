@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.9. Writing Unit Tests</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-custom-exec.html" title="4.8. Running the Simple Weather Program" />
+    <link rel="next" href="customizing-sect-test-scope.html" title="4.10. Adding Test-scoped Dependencies" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-custom-exec.html">
+            <span>Prev : 4.8. Running the Simple Weather Program</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-test-scope.html">
+            <span>Next : 4.10. Adding Test-scoped Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-writing-tests"></a>4.9. Writing Unit Tests</h2>
+          </div>
+        </div>
+      </div>
+      <p>Maven has built-in support for unit tests, and testing is a part of
+the default Maven lifecycle. Let’s add some unit tests to our simple
+weather project. First, let’s create the
+<code class="literal">org.sonatype.mavenbook.weather</code> package under <code class="literal">src/test/java</code>:</p>
+      <pre class="screen">$ cd src/test/java
+$ cd org/sonatype/mavenbook
+$ mkdir -p weather/yahoo
+$ cd weather/yahoo</pre>
+      <p>At this point, we will create two unit tests. The first will test the
+<code class="literal">YahooParser</code>, and the second will test the <code class="literal">WeatherFormatter</code>. In the
+<code class="literal">weather</code> package, create a file named <code class="literal">YahooParserTest.java</code> with the
+contents shown in the next example.</p>
+      <p><strong>Simple Weather’s YahooParserTest Unit Test. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather.yahoo;
+
+import java.io.InputStream;
+
+import junit.framework.TestCase;
+
+import org.sonatype.mavenbook.weather.Weather;
+import org.sonatype.mavenbook.weather.YahooParser;
+
+public class YahooParserTest extends TestCase {
+
+    public YahooParserTest(String name) {
+        super(name);
+    }
+
+    public void testParser() throws Exception {
+        InputStream nyData = getClass().getClassLoader()
+          .getResourceAsStream("ny-weather.xml");
+        Weather weather = new YahooParser().parse( nyData );
+        assertEquals( "New York", weather.getCity() );
+        assertEquals( "NY", weather.getRegion() );
+        assertEquals( "US", weather.getCountry() );
+        assertEquals( "39", weather.getTemp() );
+        assertEquals( "Fair", weather.getCondition() );
+        assertEquals( "39", weather.getChill() );
+        assertEquals( "67", weather.getHumidity() );
+    }
+}</pre>
+      <p>
+</p>
+      <p>This <code class="literal">YahooParserTest</code> extends the <code class="literal">TestCase</code> class defined by
+JUnit. It follows the usual pattern for a JUnit test: a constructor
+that takes a single <code class="literal">String</code> argument that calls the constructor of
+the superclass, and a series of public methods that begin with
+“<code class="literal">test</code>” that are invoked as unit tests. We define a single test
+method, <code class="literal">testParser</code>, which tests the <code class="literal">YahooParser</code> by parsing an XML
+document with known values. The test XML document is named
+<code class="literal">ny-weather.xml</code> and is loaded from the classpath. We’ll add test
+resources in <a class="xref" href="customizing-sect-custom-test-resource.html" title="4.11. Adding Unit Test Resources">Section 4.11, “Adding Unit Test Resources”</a>. In our Maven
+project’s directory layout, the <code class="literal">ny-weather.xml</code> file is found in the
+directory that contains test
+resources — <code class="literal">${basedir}/src/test/resources</code> under <code class="literal">org/sonatype/mavenbook/weather/yahoo/ny-weather.xml</code>. The file is read
+as an <code class="literal">InputStream</code> and passed to the <code class="literal">parse()</code> method on
+<code class="literal">YahooParser</code>. The <code class="literal">parse()</code> method returns a <code class="literal">Weather</code> object, which
+is then tested with a series of calls to <code class="literal">assertEquals()</code>, a method
+defined by <code class="literal">TestCase</code>.</p>
+      <p>In the same directory, create a file named
+<code class="literal">WeatherFormatterTest.java</code>.</p>
+      <p><strong>Simple Weather’s WeatherFormatterTest Unit Test. </strong>
+</p>
+      <pre class="screen">package org.sonatype.mavenbook.weather.yahoo;
+
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
+
+import org.sonatype.mavenbook.weather.Weather;
+import org.sonatype.mavenbook.weather.WeatherFormatter;
+import org.sonatype.mavenbook.weather.YahooParser;
+
+import junit.framework.TestCase;
+
+public class WeatherFormatterTest extends TestCase {
+
+  public WeatherFormatterTest(String name) {
+    super(name);
+  }
+
+  public void testFormat() throws Exception {
+    InputStream nyData = getClass().getClassLoader()
+      .getResourceAsStream("ny-weather.xml");
+    Weather weather = new YahooParser().parse( nyData );
+    String formattedResult = new WeatherFormatter().format( weather );
+    InputStream expected = getClass().getClassLoader()
+      .getResourceAsStream("format-expected.dat");
+    assertEquals( IOUtils.toString( expected ).trim(),
+                      formattedResult.trim() );
+  }
+}</pre>
+      <p>
+</p>
+      <p>The second unit test in this simple project tests the
+<code class="literal">WeatherFormatter</code>. Like the <code class="literal">YahooParserTest</code>, the
+<code class="literal">WeatherFormatterTest</code> also extends JUnit’s <code class="literal">TestCase</code> class. The
+single test function reads the same test resource from
+<code class="literal">${basedir}/src/test/resources</code> under the
+<code class="literal">org/sonatype/mavenbook/weather/yahoo</code> directory via this unit test’s
+classpath. We’ll add test resources in
+<a class="xref" href="customizing-sect-custom-test-resource.html" title="4.11. Adding Unit Test Resources">Section 4.11, “Adding Unit Test Resources”</a>. <code class="literal">WeatherFormatterTest</code> runs
+this sample input file through the <code class="literal">YahooParser</code> which spits out a
+<code class="literal">Weather</code> object, and this object is then formatted with the
+<code class="literal">WeatherFormatter</code>. Since the <code class="literal">WeatherFormatter</code> prints out a
+<code class="literal">String</code>, we need to test it against some expected input. Our expected
+input has been captured in a text file named <code class="literal">format-expected.dat</code>
+which is in the same directory as <code class="literal">ny-weather.xml</code>. To compare the
+test’s output to the expected output, we read this expected output in
+as an <code class="literal">InputStream</code> and use Commons IO’s <code class="literal">IOUtils</code> class to convert
+this file to a <code class="literal">String</code>. This <code class="literal">String</code> is then compared to the test
+output using <code class="literal">assertEquals()</code>.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-custom-exec.html">
+            <span>Prev : 4.8. Running the Simple Weather Program</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-test-scope.html">
+            <span>Next : 4.10. Adding Test-scoped Dependencies</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

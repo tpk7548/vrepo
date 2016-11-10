@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>5.3. Creating the Simple Web Project</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="web.html" title="Chapter 5. A Simple Web Application" />
+    <link rel="prev" href="web-sect-defining-simple-web.html" title="5.2. Defining the Simple Web Application" />
+    <link rel="next" href="web-sect-configuring-jetty.html" title="5.4. Configuring the Jetty Plugin" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-defining-simple-web.html">
+            <span>Prev : 5.2. Defining the Simple Web Application</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-configuring-jetty.html">
+            <span>Next : 5.4. Configuring the Jetty Plugin</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="web-sect-creating-project"></a>5.3. Creating the Simple Web Project</h2>
+          </div>
+        </div>
+      </div>
+      <p>To create your web application:</p>
+      <pre class="screen">$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook.simpleweb \
+      -DartifactId=simple-webapp \
+      -Dpackage=org.sonatype.mavenbook \
+      -Dversion=1.0-SNAPSHOT
+...
+[INFO] [archetype:generate {execution: default-cli}]
+Choose archetype:
+...
+19: internal -&gt; maven-archetype-webapp (A simple Java web application)
+...
+Choose a number:  (...) 15: : 19
+Confirm properties configuration:
+groupId: org.sonatype.mavenbook.simpleweb
+artifactId: simple-webapp
+version: 1.0-SNAPSHOT
+package: org.sonatype.mavenbook.simpleweb
+Y: : Y
+[INFO] Parameter: groupId, Value: org.sonatype.mavenbook.simpleweb
+[INFO] Parameter: packageName, Value: org.sonatype.mavenbook.simpleweb
+[INFO] Parameter: package, Value: org.sonatype.mavenbook.simpleweb
+[INFO] Parameter: artifactId, Value: simple-webapp
+[INFO] Parameter: basedir, Value: /private/tmp
+[INFO] Parameter: version, Value: 1.0-SNAPSHOT
+...
+[INFO] BUILD SUCCESSFUL</pre>
+      <p>Once the Maven Archetype plugin creates the project, change
+directories into the <code class="literal">simple-webapp</code> directory and take a look at the
+<code class="literal">pom.xml</code>. You should see something close to the following.</p>
+      <p><strong>Initial POM for the simple-webapp Project. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.simpleweb&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-webapp&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;simple-webapp Maven Webapp&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;simple-webapp&lt;/finalName&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Next, you will need to configure the Maven Compiler plugin to target
+Java 5. To do this, add the plugins element to the initial POM as
+shown in <a class="xref" href="web-sect-creating-project.html#ex-web-initial-pom-with-compiler" title="POM for the simple-webapp Project with Compiler Configuration">POM for the simple-webapp Project with Compiler Configuration</a>.</p>
+      <p><a id="ex-web-initial-pom-with-compiler"></a><strong>POM for the simple-webapp Project with Compiler Configuration. </strong>
+</p>
+      <pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.sonatype.mavenbook.simpleweb&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-webapp&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;simple-webapp Maven Webapp&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.12&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;simple-webapp&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.3&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.5&lt;/source&gt;
+                    &lt;target&gt;1.5&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>Notice the <code class="literal">packaging</code> element contains the value <code class="literal">war</code>. This packaging
+type is what configures Maven to produce a web application archive in
+a WAR file. A project with <code class="literal">war</code> packaging is going to create a WAR
+file in the <code class="literal">target/</code> directory. The default name of this file is
+<code class="literal">${artifactId}-${version}.war</code>. In this project, the default WAR
+would be generated in <code class="literal">target/simple-webapp-1.0-SNAPSHOT.war</code>. In the
+<code class="literal">simple-webapp</code> project, we’ve customized the name of the generated
+WAR file by adding a finalName element inside of this project’s build
+configuration. With a finalName of <code class="literal">simple-webapp</code>, the <code class="literal">package</code>
+phase produces a WAR file in <code class="literal">target/simple-webapp.war</code>.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="web-sect-defining-simple-web.html">
+            <span>Prev : 5.2. Defining the Simple Web Application</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="web-sect-configuring-jetty.html">
+            <span>Next : 5.4. Configuring the Jetty Plugin</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

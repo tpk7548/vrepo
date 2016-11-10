@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>4.10. Adding Test-scoped Dependencies</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="up" href="customizing.html" title="Chapter 4. Customizing a Maven Project" />
+    <link rel="prev" href="customizing-sect-writing-tests.html" title="4.9. Writing Unit Tests" />
+    <link rel="next" href="customizing-sect-custom-test-resource.html" title="4.11. Adding Unit Test Resources" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-writing-tests.html">
+            <span>Prev : 4.9. Writing Unit Tests</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-custom-test-resource.html">
+            <span>Next : 4.11. Adding Unit Test Resources</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="section">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h2 xmlns="" class="title" style="clear: both"><a xmlns="http://www.w3.org/1999/xhtml" id="customizing-sect-test-scope"></a>4.10. Adding Test-scoped Dependencies</h2>
+          </div>
+        </div>
+      </div>
+      <p>In <code class="literal">WeatherFormatterTest</code>, we used a utility from Apache Commons
+IO—the <code class="literal">IOUtils</code> class. <code class="literal">IOUtils</code> provides a number of helpful static
+methods that take most of the work out of input/output
+operations. In this particular unit test, we used <code class="literal">IOUtils.toString()</code> to copy the
+<code class="literal">format-expected.dat</code> classpath resource to a <code class="literal">String</code>. We could have
+done this without using Commons IO, but it would have required an
+extra six or seven lines of code to deal with the various
+<code class="literal">InputStreamReader</code> and <code class="literal">StringWriter</code> objects. The main reason we
+used Commons IO was to give us an excuse to add a <code class="literal">test</code>-scoped
+dependency on Commons IO.</p>
+      <p>A <code class="literal">test</code>-scoped dependency is a dependency that is available on the
+classpath only during test compilation and test execution. If your
+project has <code class="literal">war</code> or <code class="literal">ear</code> packaging, a <code class="literal">test</code>-scoped dependency would
+not be included in the project’s output archive. To add a
+<code class="literal">test</code>-scoped dependency, add the <code class="literal">dependency</code> element to your project’s
+<code class="literal">dependencies</code> section, as shown in the following example:</p>
+      <p><strong>Adding a Test-scoped Dependency. </strong>
+</p>
+      <pre class="screen">&lt;project&gt;
+    ...
+    &lt;dependencies&gt;
+        ...
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+            &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+            &lt;version&gt;1.3.2&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        ...
+    &lt;/dependencies&gt;
+&lt;/project&gt;</pre>
+      <p>
+</p>
+      <p>After you add this dependency to the <code class="literal">pom.xml</code>, run <code class="literal">mvn
+dependency:resolve</code> and you should see that <code class="literal">commons-io</code> is now listed
+as a dependency with scope <code class="literal">test</code>. We need to do one more thing before
+we are ready to run this project’s unit tests. We need to create the
+classpath resources these unit tests depend on.</p>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub">
+        <li class="first">
+          <a accesskey="p" href="customizing-sect-writing-tests.html">
+            <span>Prev : 4.9. Writing Unit Tests</span>
+          </a>
+        </li>
+        <li>
+          <a accesskey="h" href="index.html">
+            <span>TOC</span>
+          </a>
+        </li>
+        <li class="last">
+          <a accesskey="n" href="customizing-sect-custom-test-resource.html">
+            <span>Next : 4.11. Adding Unit Test Resources</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

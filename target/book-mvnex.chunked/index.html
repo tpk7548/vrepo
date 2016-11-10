@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Maven by Example</title>
+    <link rel="stylesheet" type="text/css" href="docbook-xsl.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="home" href="index.html" title="Maven by Example" />
+    <link rel="next" href="preface-1.html" title="Preface" />
+  </head>
+  <body>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub"> <li class="last"><a accesskey="n" href="preface-1.html"><span>Next : Preface</span></a></li></ul>
+    </div>
+    <div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" class="book" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="idm139829552220256"></a>Maven by Example</h1>
+          </div>
+          <div>
+            <div xmlns="" class="toc_intro">
+              <p>As developers, we understand that you don’t want to spend
+          years reading documentation about your build tool.  We get
+          it.  You just want to get to work. On the other hand, if you
+          don’t take a little bit of time to understand what Maven can
+          do and what it was designed for, there’s a good possibility
+          you’ll be needlessly reinventing wheels.  Take an hour or
+          two and walk through <i>Maven by Example</i>. It’s a gentle
+          introduction to Maven and we promise it will save you time.</p>
+              <p>Sonatype maintains two books focused on Maven: an
+          example-driven introduction to Maven, <a href="http://www.sonatype.com/books/mvnex-book/reference/public-book.html"><i>Maven
+          by Example</i></a>, and <a href="http://www.sonatype.com/books/mvnref-book/reference/public-book.html"><i>Maven:
+          The Complete Reference</i></a>.  If you already understand how
+          to use Maven and are just looking for a reference, <a href="http://www.sonatype.com/books/mvnref-book/reference/public-book.html">go
+          read the other book</a>.</p>
+            </div>
+            <div xmlns="" class="authorgroup">
+              <h2>Authors</h2>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Tim</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">O'Brien</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">John</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Casey</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Brian</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Fox</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Jason</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Van Zyl</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Juven</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Xu</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Thomas</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Locher</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Dan</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Fabulich</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Eric</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Redmond</span></span>
+              <span class="author"><span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Bruce</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">Snyder</span></span>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="toc">
+        <dl class="toc">
+          <dt>
+            <span class="preface">
+              <a href="preface-1.html">Preface</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="_acknowledgements.html">1. Acknowledgements</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="_how_to_contribute.html">2. How to Contribute</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="introduction.html">1. Introducing Apache Maven</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="introduction-sect-whatIsMaven.html">1.1. Maven… What is it?</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-conventionConfiguration.html">1.2. Convention Over Configuration</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-common-interface.html">1.3. A Common Interface</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-universal-reuse.html">1.4. Universal Reuse through Maven Plugins</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-conceptual.html">1.5. Conceptual Model of a “Project”</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-mavenAlternativeAnt.html">1.6. Is Maven an alternative to XYZ?</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-compare-ant-maven.html">1.7. Comparing Maven with Ant</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="installation.html">2. Installing Maven</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-java.html">2.1. Verify your Java Installation</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-maven-download.html">2.2. Downloading Maven</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-maven-install.html">2.3. Installing Maven</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-test-install.html">2.4. Testing a Maven Installation</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-details.html">2.5. Maven Installation Details</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-uninstalling.html">2.6. Uninstalling Maven</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-getting-help.html">2.7. Getting Help with Maven</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="installation-sect-license.html">2.8. About the Apache Software License</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="simple-project.html">3. A Simple Maven Project</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-intro.html">3.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-create-simple.html">3.2. Creating a Simple Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-building-simple.html">3.3. Building a Simple Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-pom.html">3.4. Simple Project Object Model</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-simple-core.html">3.5. Core Concepts</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="simple-project-sect-summary.html">3.6. Summary</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="customizing.html">4. Customizing a Maven Project</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-intro.html">4.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-simple-weather.html">4.2. Defining the Simple Weather Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-creating-simple-weather.html">4.3. Creating the Simple Weather Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-customizing-project-info.html">4.4. Customize Project Information</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-add-depend.html">4.5. Add New Dependencies</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-simple-weather-source.html">4.6. Simple Weather Source Code</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-add-resources.html">4.7. Add Resources</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-custom-exec.html">4.8. Running the Simple Weather Program</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-writing-tests.html">4.9. Writing Unit Tests</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-test-scope.html">4.10. Adding Test-scoped Dependencies</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-custom-test-resource.html">4.11. Adding Unit Test Resources</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-executing-tests.html">4.12. Executing Unit Tests</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="customizing-sect-custom-packaged.html">4.13. Building a Packaged Command Line Application</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="web.html">5. A Simple Web Application</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-intro.html">5.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-defining-simple-web.html">5.2. Defining the Simple Web Application</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-creating-project.html">5.3. Creating the Simple Web Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-configuring-jetty.html">5.4. Configuring the Jetty Plugin</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-adding-simple-servlet.html">5.5. Adding a Simple Servlet</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-adding-j2ee-depend.html">5.6. Adding J2EE Dependencies</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="web-sect-conclusion.html">5.7. Conclusion</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="multimodule.html">6. A Multi-Module Project</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-intro.html">6.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-simple-parent.html">6.2. The Simple Parent Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-simple-weather.html">6.3. The Simple Weather Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-simple-web.html">6.4. The Simple Web Application Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-building-multimodule.html">6.5. Building the Multimodule Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-sect-running-web.html">6.6. Running the Web Application</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="multimodule-web-spring.html">7. Multi-Module Enterprise Project</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-intro.html">7.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-parent.html">7.2. The Simple Parent Project</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-model-project.html">7.3. The Simple Model Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-weather.html">7.4. The Simple Weather Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-persist.html">7.5. The Simple Persist Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-web.html">7.6. The Simple Web Application Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-spring-running-web.html">7.7. Running the Web Application</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-simple-command.html">7.8. The Simple Command Module</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-running-simple-command.html">7.9. Running the Simple Command</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="multimodule-web-spring-sect-conclusion.html">7.10. Conclusion</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="optimizing.html">8. Optimizing and Refactoring POMs</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-intro.html">8.1. Introduction</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-pom-cleanup.html">8.2. POM Cleanup</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-dependencies.html">8.3. Optimizing Dependencies</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-plugins.html">8.4. Optimizing Plugins</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-dependency-plugin.html">8.5. Optimizing with the Maven Dependency Plugin</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-final-poms.html">8.6. Final POMs</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="optimizing-sect-conclusion.html">8.7. Conclusion</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter">
+              <a href="appendix-license.html">9. Creative Commons License</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="chapter">
+              <a href="preface-copyright.html">10. Copyright</a>
+            </span>
+          </dt>
+        </dl>
+      </div>
+      <div class="list-of-figures">
+        <p>
+          <strong>List of Figures</strong>
+        </p>
+        <dl>
+          <dt>3.1. <a href="simple-project-sect-simple-core.html#fig-plugin-goals">A Plugin Contains Goals</a></dt>
+          <dt>3.2. <a href="simple-project-sect-simple-core.html#fig-goals-bind-to-phases">A Goal Binds to a Phase</a></dt>
+          <dt>3.3. <a href="simple-project-sect-simple-core.html#fig-goals-bind-to-default-lifecycle">Bound Goals are Run when Phases Execute</a></dt>
+          <dt>3.4. <a href="simple-project-sect-simple-core.html#fig-project-coords">A Maven Project’s Coordinates</a></dt>
+          <dt>3.5. <a href="simple-project-sect-simple-core.html#fig-simple-mavenspace">Maven Space is a Coordinate System of Projects</a></dt>
+          <dt>3.6. <a href="simple-project-sect-simple-core.html#fig-resolve-transitive">Maven Resolves Transitive Dependencies</a></dt>
+          <dt>7.1. <a href="multimodule-web-spring-sect-intro.html#fig-multimodule-web-spring-projects">Multi-Module Enterprise Application Module Relationships</a></dt>
+          <dt>7.2. <a href="multimodule-web-spring-sect-simple-model-project.html#idm139829545813744">Simple Object Model for Weather Data</a></dt>
+          <dt>7.3. <a href="multimodule-web-spring-sect-simple-web.html#fig-web-components">Spring MVC Controllers Referencing Components in simple-weather and simple-persist.</a></dt>
+          <dt>7.4. <a href="multimodule-web-spring-sect-simple-command.html#fig-multi-spring-command">Command Line Application Referencing simple-weather and simple-persist</a></dt>
+          <dt>7.5. <a href="multimodule-web-spring-sect-conclusion.html#fig-multimodule-web-spring-projects-complex">Programming to Interface Projects</a></dt>
+        </dl>
+      </div>
+    </div>
+    <div id="nav-sub-block">
+      <a class="hide" name="nav-sub-a" id="nav-sub-a"></a>
+      <ul id="nav-sub"> <li class="last"><a accesskey="n" href="preface-1.html"><span>Next : Preface</span></a></li></ul>
+    </div>
+  </body>
+</html>
